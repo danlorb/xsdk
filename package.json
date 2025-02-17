@@ -1,0 +1,26 @@
+{
+  "name": "@global/xsdk",
+  "version": "1.0.0-next.1",
+  "description": "xbash is a bash function library for commonly used operations",
+  "repository": {
+    "type": "git",
+    "url": "git+https://git.x-breitschaft.de/global/xsdk.git"
+  },
+  "author": "github@danlor.simplelogin.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://git.x-breitschaft.de/global/xsdk/issues"
+  },
+  "scripts": {
+    "lint": "mega-linter-runner --image registry.x-breitschaft.de/oxsecurity/megalinter:v8.4.2",
+    "lint:fix": "mega-linter-runner --image registry.x-breitschaft.de/oxsecurity/megalinter:v8.4.2 --fix"
+  },
+  "devDependencies": {
+    "@saithodev/semantic-release-gitea": "^2.1.0",
+    "@semantic-release/git": "^10.0.1",
+    "conventional-changelog-conventionalcommits": "^8.0.0",
+    "hjson": "^3.2.2",
+    "mega-linter-runner": "^7.13.0",
+    "semantic-release": "^24.2.0"
+  }
+}
