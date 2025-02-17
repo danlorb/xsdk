@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <!-- SonarQube needs this, do not change -->
+        <ProjectGuid>27d74d08-be20-4420-bb08-50f359363f7a</ProjectGuid>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="LiteDB" Version="5.0.21" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="LiteDB.Async" Version="0.1.8" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="AutoMapper" Version="14.0.0" PrivateAssets="contentfiles;analyzers;build;compile" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\xSdk.Data\src\xSdk.Data.csproj" />
+    </ItemGroup>
+
+</Project>

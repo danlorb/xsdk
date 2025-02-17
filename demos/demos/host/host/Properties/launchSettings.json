@@ -1,0 +1,11 @@
+{
+    "profiles": {
+        "Host": {
+            "commandName": "Project"
+        },
+        "Host (with logging)": {
+            "commandName": "Project",
+            "commandLineArgs": "--log-level Trace"
+        }
+    }
+}

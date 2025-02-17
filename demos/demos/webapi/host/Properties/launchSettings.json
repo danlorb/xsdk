@@ -1,0 +1,18 @@
+{
+    "profiles": {
+        "WebHost": {
+            "commandName": "Project",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "WEBAPI__WEBSECURITY__CORS": "true",
+                "WEBAPI__AUTH_APIKEY__REALM": "Gateway Realm",                
+                "WEBAPI__API_DOCU__WITH_VARIABLE_DOCUMENTATION": "true"
+            },
+        },
+        "WSL : Ubuntu": {
+            "commandName": "WSL2",
+            "commandLineArgs": "",            
+            "distributionName": "Ubuntu"
+        }
+    }
+}

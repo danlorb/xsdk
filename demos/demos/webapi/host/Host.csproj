@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <!-- SonarQube needs this, do not change -->
+        <ProjectGuid>8FA01CA7-A2B0-4D46-8EFB-F251B2196BAD</ProjectGuid>
+        <SonarQubeExclude>true</SonarQubeExclude>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
+        <PackageReference Include="Microsoft.OpenApi" Version="1.6.23" />
+        <PackageReference Include="AspNetCore.Authentication.ApiKey" Version="8.0.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="7.2.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="7.2.0" />
+        <PackageReference Include="RiskFirst.Hateoas" Version="3.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\libs\xSdk.Extensions.AspNetCore\src\xSdk.Extensions.AspNetCore.csproj" />
+        <ProjectReference Include="..\..\shared\lib\Shared.csproj" />
+    </ItemGroup>
+
+</Project>
