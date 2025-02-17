@@ -49,7 +49,7 @@
 
     <ItemGroup Condition="'$(GenerateEmbeddedFilesManifest)' == 'true'">
         <!-- Add specific settings for angular projects -->
-        <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.12" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.13" PrivateAssets="contentfiles;analyzers;build;compile" />
         <EmbeddedResource Include="wwwroot/**/*" />
         <EmbeddedResource Include="_files/**/*" />
         <Content Remove="wwwroot/**/*" />
