@@ -12,16 +12,16 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="AspNetCore.Authentication.ApiKey" Version="8.0.1" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="CloudNative.CloudEvents.SystemTextJson" Version="2.8.0" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.1" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="NWebsec.AspNetCore.Middleware" Version="3.0.0" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="RiskFirst.Hateoas" Version="3.1.1" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="7.2.0" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="Zio" Version="0.20.0" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="Asp.Versioning.Mvc" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="AspNetCore.Authentication.ApiKey" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="CloudNative.CloudEvents.SystemTextJson" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="Hellang.Middleware.ProblemDetails" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="NWebsec.AspNetCore.Middleware" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="RiskFirst.Hateoas" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="Swashbuckle.AspNetCore" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Filters" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="Zio" PrivateAssets="contentfiles;analyzers;build;compile" />
     </ItemGroup>
 
     <ItemGroup>

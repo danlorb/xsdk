@@ -6,9 +6,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="LiteDB" Version="5.0.21" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="LiteDB.Async" Version="0.1.8" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="AutoMapper" Version="14.0.0" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="LiteDB" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="LiteDB.Async" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="AutoMapper" PrivateAssets="contentfiles;analyzers;build;compile" />
     </ItemGroup>
 
     <ItemGroup>

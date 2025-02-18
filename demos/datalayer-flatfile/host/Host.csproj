@@ -4,6 +4,8 @@
         <!-- SonarQube needs this, do not change -->
         <ProjectGuid>a368c448-4395-4d74-8df9-335cf0e8df42</ProjectGuid>
         <SonarQubeExclude>true</SonarQubeExclude>
+        <IsPublishable>false</IsPublishable>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>

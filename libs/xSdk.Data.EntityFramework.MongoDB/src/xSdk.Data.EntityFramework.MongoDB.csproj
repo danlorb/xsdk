@@ -7,12 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="[8.0.12,9)"
-            PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.2.2"
-            PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="AutoMapper" Version="14.0.0"
-            PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="MongoDB.EntityFrameworkCore" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="AutoMapper" PrivateAssets="contentfiles;analyzers;build;compile" />
     </ItemGroup>
 
     <ItemGroup>

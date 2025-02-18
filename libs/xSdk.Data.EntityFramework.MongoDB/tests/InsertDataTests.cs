@@ -2,6 +2,7 @@ using xSdk.Data.Fakes;
 
 namespace xSdk.Data
 {
+#if NET8_0
     public class InsertDataTests(DatabaseFixture fixture) : IClassFixture<DatabaseFixture>
     {
         [Fact]
@@ -21,4 +22,5 @@ namespace xSdk.Data
             await repo.RemoveAll();
         }
     }
+#endif
 }

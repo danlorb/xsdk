@@ -11,9 +11,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="CloudNative.CloudEvents" Version="2.8.0" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="CloudNative.CloudEvents.AspNetCore" Version="2.8.0" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="CloudNative.CloudEvents.SystemTextJson" Version="2.8.0" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="CloudNative.CloudEvents" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="CloudNative.CloudEvents.AspNetCore" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="CloudNative.CloudEvents.SystemTextJson" PrivateAssets="contentfiles;analyzers;build;compile" />
     </ItemGroup>
 
     <ItemGroup>

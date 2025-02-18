@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="JsonFlatFileDataStore" Version="2.4.2" PrivateAssets="contentfiles;analyzers;build;compile"/>
+        <PackageReference Include="JsonFlatFileDataStore" PrivateAssets="contentfiles;analyzers;build;compile"/>
     </ItemGroup>
 
     <ItemGroup>

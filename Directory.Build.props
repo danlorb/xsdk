@@ -3,27 +3,26 @@
 
 	<PropertyGroup>
 		<Configuration>Debug</Configuration>
-		<TargetFramework>net8.0</TargetFramework>
+		<!--<TargetFramework>net8.0</TargetFramework>-->
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
 		<RootNamespace>xSdk</RootNamespace>
 		<LangVersion>latest</LangVersion>
         <BaseOutputPath>$(SolutionDir)dist\$(MSBuildProjectName)</BaseOutputPath>
-        <PackageOutputPath Condition="'$(PackageBasePath)' != ''">$(SolutionDir)$(PackageBasePath)</PackageOutputPath>
-        <PackageOutputPath Condition="'$(PackageOutputPath)' == '' AND '$(OS)' == 'Windows_NT'">$(USERPROFILE)/.artefacts/nuget</PackageOutputPath>
-        <PackageOutputPath Condition="'$(PackageOutputPath)' == '' AND '$(OS)' != 'Windows_NT'">$(USERPROFILE)/.artefacts/nuget</PackageOutputPath>
-		<AssemblyName>$(MSBuildProjectName)</AssemblyName>
+        <AssemblyName>$(MSBuildProjectName)</AssemblyName>
 		<RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
         <RunSettingsFilePath>$(SolutionDir)xsdk.runsettings</RunSettingsFilePath>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
         <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
-        <IsGitHub>false</IsGitHub>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <IsGitHub>false</IsGitHub>        
     </PropertyGroup>
 
 	<PropertyGroup>
 		<Authors>Roland Breitschaft</Authors>
-		<Company>xCom</Company>
-		<Copyright>Copyright (c)$([System.DateTime]::Now.ToString(yyyy)) xCom</Copyright>
+		<Company>itsolbre</Company>
+		<Copyright>Copyright (c)$([System.DateTime]::Now.ToString(yyyy)) ITSolBre</Copyright>
 		<PackageProjectUrl>https://git.x-breitschaft.de/global/xsdk</PackageProjectUrl>
 	</PropertyGroup>
 
@@ -32,23 +31,21 @@
 	</PropertyGroup>
 
     <!-- see https://github.com/dotnet/sourcelink -->
-    <PropertyGroup Condition="'$(IsTestProject)' != 'true'">
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PropertyGroup Condition="'$(IsTestProject)' != 'true'">        
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+
     <ItemGroup Condition="'$(IsTestProject)' != 'true'">
-        <PackageReference Include="Microsoft.SourceLink.Gitea" Version="8.0.0" PrivateAssets="All"/>
-		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>$(AssemblyName).Tests</_Parameter1>
         </AssemblyAttribute>
-	</ItemGroup>
-
-    <ItemGroup Condition="'$(IsTestProject)' != 'true' AND '$(IsGitHub)' == 'true'">
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
 	</ItemGroup>
 
     <ItemGroup Condition="'$(GenerateEmbeddedFilesManifest)' == 'true'">
@@ -60,24 +57,5 @@
         <Content Remove="_files/**/*" />
         <None Remove="wwwroot/**/*" />
         <None Remove="_files/**/*" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <!-- Helper to read Json Files while build the project -->
-        <PackageReference Include="JsonPeek" Version="1.2.0" PrivateAssets="All" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[8.0.1,9)" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[8.0.2,9)" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="Microsoft.Extensions.Diagnostics.Abstractions" Version="[8.0.1,9)" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="[8.0.1,9)" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="[8.0.3,9)" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="[8.0.1,9)" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="[8.0.1,9)" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="[8.0.2,9)" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="[8.0.0,9)" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.KeyPerFile" Version="[8.0.13,9)" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="NLog" Version="5.4.0" PrivateAssets="contentfiles;analyzers;build;compile" />
     </ItemGroup>
 </Project>

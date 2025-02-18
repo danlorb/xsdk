@@ -4,10 +4,12 @@
         <!-- SonarQube needs this, do not change -->
         <ProjectGuid>d20ef0d4-f6ef-442a-a306-f998f6689130</ProjectGuid>
         <SonarQubeExclude>true</SonarQubeExclude>
+        <IsPublishable>false</IsPublishable>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="[8.0.12,9)" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
     </ItemGroup>
 
     <ItemGroup>

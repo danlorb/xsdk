@@ -25,13 +25,12 @@
     </JsonPeek>
 
     <PropertyGroup>
-      <Version>0.1.0</Version>
+      <Version>0.1.0-next.0</Version>
       <Version Condition="'$(RepositoryVersion)' != ''">$(RepositoryVersion)</Version>
-      <PackageVersion Condition="'$(Version)' != ''">$(Version)</PackageVersion>
     </PropertyGroup>
   </Target>
 
-  <Target Name="ReadVersion" BeforeTargets="PreBuildEvent" Condition="Exists('..\package.json')">
+  <Target Name="ReadProjectVersion" BeforeTargets="PreBuildEvent" Condition="Exists('..\package.json')">
     <JsonPeek ContentPath="..\package.json" Query="$.version">
       <Output TaskParameter="Result" PropertyName="ProjectVersion"/>
     </JsonPeek>
@@ -41,8 +40,7 @@
     </JsonPeek>
 
     <PropertyGroup>
-      <Version Condition="'$(ProjectVersion)' != ''">$(ProjectVersion)</Version>
-      <PackageVersion Condition="'$(Version)' != ''">$(Version)</PackageVersion>
+      <Version Condition="'$(ProjectVersion)' != ''">$(ProjectVersion)</Version>      
       <Description Condition="'$(ProjectDescription)' != ''">$(ProjectDescription)</Description>
     </PropertyGroup>
   </Target>
@@ -62,19 +60,5 @@
           DestinationFiles="@(ApplicationFiles->'$(BaseOutputPath)..\..\apps\$(AssemblyName)\$(ProjectVersion)\bin\%(RecursiveDir)%(Filename)%(Extension)')"/>
 
     <Copy SourceFiles="@(PackageJsonFile)" DestinationFolder="$(BaseOutputPath)..\..\apps\$(AssemblyName)\$(ProjectVersion)"/>
-  </Target>
-
-  <Target Name="CopyXMLFromPackagesForBuild" AfterTargets="Build">
-    <ItemGroup>
-      <PackageReferenceFiles Condition="%(PackageReference.CopyToOutputDirectory) != ''" Include="$(NugetPackageRoot)$([MSBuild]::Escape('%(PackageReference.Identity)').ToLower())/%(PackageReference.Version)/%(PackageReference.CopyToOutputDirectory)" />
-    </ItemGroup>
-    <Copy SourceFiles="@(PackageReferenceFiles)" DestinationFolder="$(OutDir)" />
-  </Target>
-
-  <Target Name="CopyXMLFromPackagesForPublish" BeforeTargets="PrepareForPublish">
-    <ItemGroup>
-      <PackageReferenceFiles Condition="%(PackageReference.CopyToOutputDirectory) != ''" Include="$(NugetPackageRoot)$([MSBuild]::Escape('%(PackageReference.Identity)').ToLower())/%(PackageReference.Version)/%(PackageReference.CopyToOutputDirectory)" />
-    </ItemGroup>
-    <Copy SourceFiles="@(PackageReferenceFiles)" DestinationFolder="$(PublishDir)" />
   </Target>
 </Project>
