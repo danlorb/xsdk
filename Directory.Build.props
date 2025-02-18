@@ -29,20 +29,25 @@
 		<RepositoryUrl>https://git.x-breitschaft.de/global/xsdk</RepositoryUrl>
 	</PropertyGroup>
 
+    <!-- see https://github.com/dotnet/sourcelink -->
     <PropertyGroup Condition="'$(IsTestProject)' != 'true'">
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-
-        <!-- see https://github.com/dotnet/sourcelink -->
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
 
+     <ItemGroup Condition="'$(IsTestProject)' != 'true' AND '$(IsGitHub)' == 'false'">
+		<PackageReference Include="Microsoft.SourceLink.Gitea" Version="8.0.0" PrivateAssets="All"/>
+	</ItemGroup>
+
+    <ItemGroup Condition="'$(IsTestProject)' != 'true' AND '$(IsGitHub)' == 'true'">
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+	</ItemGroup>
+
     <ItemGroup Condition="'$(IsTestProject)' != 'true'">
-		<PackageReference Condition="'$(IsGitHub)' == 'false'" Include="Microsoft.SourceLink.Gitea" Version="8.0.0" PrivateAssets="All"/>
-        <PackageReference Condition="'$(IsGitHub)' == 'true'" Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
-        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>$(AssemblyName).Tests</_Parameter1>
         </AssemblyAttribute>
 	</ItemGroup>

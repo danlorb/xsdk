@@ -13,14 +13,14 @@
   },
   "scripts": {
     "lint": "mega-linter-runner --image registry.x-breitschaft.de/oxsecurity/megalinter:v8.4.2",
-    "lint:fix": "mega-linter-runner --image registry.x-breitschaft.de/oxsecurity/megalinter:v8.4.2 --fix"
+    "lint:fix": "mega-linter-runner --image registry.x-breitschaft.de/oxsecurity/megalinter:v8.4.2 --fix",
+    "version": "semantic-release"
   },
   "devDependencies": {
     "@saithodev/semantic-release-gitea": "^2.1.0",
     "@semantic-release/git": "^10.0.1",
     "conventional-changelog-conventionalcommits": "^8.0.0",
-    "hjson": "^3.2.2",
-    "mega-linter-runner": "^7.13.0",
-    "semantic-release": "^24.2.0"
+    "mega-linter-runner": "^8.4.2",
+    "semantic-release": "^24.2.3"
   }
 }
