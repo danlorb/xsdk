@@ -47,9 +47,9 @@
       },
       "Microsoft.Extensions.Configuration.KeyPerFile": {
         "type": "Direct",
-        "requested": "[8.0.12, 9.0.0)",
-        "resolved": "8.0.12",
-        "contentHash": "Stz6W35GxFftRXsJ7Rcrtyepq73HhCqFozPebpQIiJAR4xn/NhBhLpVhj/tV4ySjwEnxMuRT52msMSCKyq6mhw==",
+        "requested": "[8.0.13, 9.0.0)",
+        "resolved": "8.0.13",
+        "contentHash": "oBDo3fHWWUmv+yZ5t47GJ2za+2BZD86MwzjyDaEpfntfxNGEfPSjyzSF7OH48Ih56ZK4kNB612ncBBXrkUzVJA==",
         "dependencies": {
           "Microsoft.Extensions.Configuration": "8.0.0",
           "Microsoft.Extensions.FileProviders.Physical": "8.0.0"

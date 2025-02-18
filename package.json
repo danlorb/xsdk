@@ -1,6 +1,6 @@
 {
   "name": "@global/xsdk",
-  "version": "1.0.0-next.1",
+  "version": "1.0.0-next.2",
   "description": "xbash is a bash function library for commonly used operations",
   "repository": {
     "type": "git",
@@ -14,7 +14,7 @@
   "scripts": {
     "lint": "mega-linter-runner --image registry.x-breitschaft.de/oxsecurity/megalinter:v8.4.2",
     "lint:fix": "mega-linter-runner --image registry.x-breitschaft.de/oxsecurity/megalinter:v8.4.2 --fix",
-    "version": "semantic-release"
+    "release:version": "semantic-release"
   },
   "devDependencies": {
     "@saithodev/semantic-release-gitea": "^2.1.0",
