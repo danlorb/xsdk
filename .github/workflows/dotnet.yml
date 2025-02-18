@@ -29,7 +29,23 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore --locked-mode
     - name: Build
-      run: dotnet build --configuration RELEASE --nologo --no-restore --property:PackageBasePath=./dist/nuget --property:IsGitHub=true
+      shell: pwsh
+      run: |
+        Remove-Item -Path "./dist/nuget" -Recurse -Force -ErrorAction SilentlyContinue
+        $version = $(Get-Content .\package.json | ConvertFrom-Json).version
+        $versionSuffix = ""
+        try {
+            $versionSuffix = $version.Split("-")[1]
+            $version = $version.Split("-")[0]
+            if ([string]::IsNullOrEmpty($versionSuffix) -eq $false) {
+                $versionSuffix = "--version-suffix=$versionSuffix"
+            }
+        }
+        catch {}
+        
+        dotnet build --configuration RELEASE --nologo --no-restore --property:IsGitHub=true
+        dotnet pack --configuration RELEASE --nologo --no-build --no-restore --output ./dist/nuget $versionSuffix
+        
     - name: Publish
       run: |
         dotnet nuget push --skip-duplicate --api-key "${{ secrets.nuget_token }}" --source https://api.nuget.org/v3/index.json ./dist/nuget/*.nupkg
