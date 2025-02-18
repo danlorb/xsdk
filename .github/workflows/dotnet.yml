@@ -29,4 +29,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore --locked-mode
     - name: Build
-      run: dotnet build --configuration DEBUG --no-incremental --nologo --no-restore --property:PackageBasePath=./dist/nuget
+      run: dotnet build --configuration RELEASE --nologo --no-restore --property:PackageBasePath=./dist/nuget --property:IsGitHub=true
+    - name: Publish
+      run: dotnet nuget push --api-key "${{ secrets.nuget_token }}" ./dist/nuget/*.nupkg
+
