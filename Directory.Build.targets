@@ -40,7 +40,7 @@
     </JsonPeek>
 
     <PropertyGroup>
-      <Version Condition="'$(ProjectVersion)' != ''">$(ProjectVersion)</Version>      
+      <Version Condition="'$(ProjectVersion)' != ''">$(ProjectVersion)</Version>
       <Description Condition="'$(ProjectDescription)' != ''">$(ProjectDescription)</Description>
     </PropertyGroup>
   </Target>

@@ -7,6 +7,9 @@
 		<RootNamespace>xSdk.Demos</RootNamespace>
 		<BaseOutputPath>$(SolutionDir)dist\demos\$([System.IO.Directory]::GetParent('$(MSBuildProjectDirectory)').Name)</BaseOutputPath>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <SonarQubeExclude>true</SonarQubeExclude>
+        <IsPublishable>false</IsPublishable>
+        <IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 </Project>

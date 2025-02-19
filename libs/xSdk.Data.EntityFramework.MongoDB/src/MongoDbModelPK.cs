@@ -3,7 +3,7 @@ using xSdk.Data.Converters.Mapper;
 
 namespace xSdk.Data
 {
-    internal sealed class MongoDbModelPK : PrimaryKey<string>
+    public sealed class MongoDbModelPK : PrimaryKey<string>
     {
         private object syncObject = new();
 

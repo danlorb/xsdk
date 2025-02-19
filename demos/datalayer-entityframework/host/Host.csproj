@@ -3,9 +3,6 @@
         <OutputType>Exe</OutputType>
         <!-- SonarQube needs this, do not change -->
         <ProjectGuid>d20ef0d4-f6ef-442a-a306-f998f6689130</ProjectGuid>
-        <SonarQubeExclude>true</SonarQubeExclude>
-        <IsPublishable>false</IsPublishable>
-        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>

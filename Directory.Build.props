@@ -1,56 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<PropertyGroup>
-		<Configuration>Debug</Configuration>
-		<!--<TargetFramework>net8.0</TargetFramework>-->
+    <PropertyGroup>
+        <Configuration>Debug</Configuration>
         <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
-		<RootNamespace>xSdk</RootNamespace>
-		<LangVersion>latest</LangVersion>
+        <RootNamespace>xSdk</RootNamespace>
+        <LangVersion>latest</LangVersion>
         <BaseOutputPath>$(SolutionDir)dist\$(MSBuildProjectName)</BaseOutputPath>
         <AssemblyName>$(MSBuildProjectName)</AssemblyName>
-		<RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
+        <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
         <RunSettingsFilePath>$(SolutionDir)xsdk.runsettings</RunSettingsFilePath>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
         <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-        <IsGitHub>false</IsGitHub>        
+        <IsTestProject Condition="'$(IsTestProject)' == ''">false</IsTestProject>
+        <IsGitHub Condition="'$(IsGitHub)' == ''" >false</IsGitHub>
+        <IsPluginProject Condition="'$(IsPluginProject)' == ''">false</IsPluginProject>
+        <IsApplicationProject Condition="'$(IsApplicationProject)' == ''">false</IsApplicationProject>
     </PropertyGroup>
 
-	<PropertyGroup>
-		<Authors>Roland Breitschaft</Authors>
-		<Company>itsolbre</Company>
-		<Copyright>Copyright (c)$([System.DateTime]::Now.ToString(yyyy)) ITSolBre</Copyright>
-		<PackageProjectUrl>https://git.x-breitschaft.de/global/xsdk</PackageProjectUrl>
-	</PropertyGroup>
+    <PropertyGroup>
+        <Authors>Roland Breitschaft</Authors>
+        <Company>itsolbre</Company>
+        <Copyright>Copyright (c)$([System.DateTime]::Now.ToString(yyyy)) ITSolBre</Copyright>
+        <PackageProjectUrl>https://git.x-breitschaft.de/global/xsdk</PackageProjectUrl>
+    </PropertyGroup>
 
-    <PropertyGroup Condition="'$(IsTestProject)' != 'true' AND '$(IsGitHub)' == 'true'">
-		<PackageProjectUrl>https://github.com/danlorb/xsdk</PackageProjectUrl>
-	</PropertyGroup>
+    <PropertyGroup Condition="'$(IsTestProject)' == 'false' AND '$(IsGitHub)' == 'true'">
+        <PackageProjectUrl>https://github.com/danlorb/xsdk</PackageProjectUrl>
+    </PropertyGroup>
 
     <!-- see https://github.com/dotnet/sourcelink -->
-    <PropertyGroup Condition="'$(IsTestProject)' != 'true'">        
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-		<IncludeSymbols>true</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PropertyGroup Condition="'$(IsTestProject)' == 'false'">
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     </PropertyGroup>
 
-    <ItemGroup Condition="'$(IsTestProject)' != 'true'">
+    <ItemGroup Condition="'$(IsTestProject)' == 'false'">
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>$(AssemblyName).Tests</_Parameter1>
         </AssemblyAttribute>
-	</ItemGroup>
+    </ItemGroup>
 
     <ItemGroup Condition="'$(GenerateEmbeddedFilesManifest)' == 'true'">
         <!-- Add specific settings for angular projects -->
-        <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.13" PrivateAssets="contentfiles;analyzers;build;compile" />
         <EmbeddedResource Include="wwwroot/**/*" />
         <EmbeddedResource Include="_files/**/*" />
         <Content Remove="wwwroot/**/*" />
