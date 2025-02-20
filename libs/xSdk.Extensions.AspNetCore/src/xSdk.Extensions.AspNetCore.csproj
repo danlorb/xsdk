@@ -25,8 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\xSdk.Extensions.CloudEvent\src\xSdk.Extensions.CloudEvent.csproj" />
-        <ProjectReference Include="..\..\xSdk\src\xSdk.csproj" />
+      <ProjectReference Include="..\..\xSdk.Extensions.CloudEvent\src\xSdk.Extensions.CloudEvent.csproj" />
     </ItemGroup>
 
 </Project>

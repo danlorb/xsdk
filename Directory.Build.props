@@ -12,7 +12,6 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RunSettingsFilePath>$(SolutionDir)xsdk.runsettings</RunSettingsFilePath>
-        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
         <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <IsTestProject Condition="'$(IsTestProject)' == ''">false</IsTestProject>
