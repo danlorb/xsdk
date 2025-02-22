@@ -20,7 +20,7 @@
         <PackageVersion Include="Asp.Versioning.Mvc" Version="8.1.0" />
         <PackageVersion Include="AspNetCore.Authentication.ApiKey" Version="8.0.1" />
         <PackageVersion Include="AutoMapper" Version="14.0.0" />
-        <PackageVersion Include="Bogus" Version="35.6.1" />
+        <PackageVersion Include="Bogus" Version="35.6.2" />
         <PackageVersion Include="CloudNative.CloudEvents" Version="2.8.0" />
         <PackageVersion Include="CloudNative.CloudEvents.AspNetCore" Version="2.8.0" />
         <PackageVersion Include="CloudNative.CloudEvents.SystemTextJson" Version="2.8.0" />
