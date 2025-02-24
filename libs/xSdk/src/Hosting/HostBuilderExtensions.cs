@@ -1,4 +1,3 @@
-using System.Reflection;
 using Microsoft.Extensions.Hosting;
 using xSdk.Extensions.Plugin;
 using xSdk.Extensions.Variable;
@@ -7,51 +6,25 @@ namespace xSdk.Hosting
 {
     public static class HostBuilderExtensions
     {
-        public static IHostBuilder DisableHostServiceLoading(this IHostBuilder hostBuilder)
+        public static IHostBuilder EnablePlugin<TPlugin>(this IHostBuilder builder)
         {
-            // Disables ConfigureServices from local HostBuilder
-            // This is needed for WebHostBuilder to work probably
-            // If you dont do this, Web Controllers will not be registered
-            Host.HostServicesDisabled = true;
-
-            return hostBuilder;
-        }
-
-        public static IHostBuilder ConfigurePlugin<TPlugin>(this IHostBuilder builder)
-            where TPlugin : IPlugin => builder.AddPlugin<TPlugin>();
-
-        public static IHostBuilder AddPlugin(this IHostBuilder builder, Type pluginType)
-        {
-            SlimHost.Instance.PluginSystem.AddPlugin(pluginType);
+            SlimHostInternal.Instance.PluginSystem.AddPlugin<TPlugin>();
             return builder;
         }
 
-        public static IHostBuilder AddPlugin<TPlugin>(this IHostBuilder builder)
+        public static IHostBuilder EnablePlugin<TPlugin, TPluginBuilder>(this IHostBuilder builder)
             where TPlugin : IPlugin
+            where TPluginBuilder : IPluginBuilder
         {
-            SlimHost.Instance.PluginSystem.AddPlugin<TPlugin>();
-            return builder;
-        }
-
-        public static IHostBuilder AddPluginsFrom<TSource>(this IHostBuilder builder)
-        {
-            SlimHost.Instance.PluginSystem.AddPluginsFrom<TSource>();
-            return builder;
-        }
-
-        public static IHostBuilder AddPluginsFrom(
-            this IHostBuilder builder,
-            Assembly sourceAssembly
-        )
-        {
-            SlimHost.Instance.PluginSystem.AddPluginsFrom(sourceAssembly);
+            SlimHostInternal.Instance.PluginSystem.AddPlugin<TPlugin>();
+            SlimHostInternal.Instance.PluginSystem.AddPlugin<TPluginBuilder>();
             return builder;
         }
 
         public static IHostBuilder RegisterSetup<TSetup>(this IHostBuilder builder)
             where TSetup : class, ISetup, new()
         {
-            SlimHost.Instance.VariableSystem.RegisterSetup<TSetup>();
+            SlimHostInternal.Instance.VariableSystem.RegisterSetup<TSetup>();
             return builder;
         }
 
@@ -61,7 +34,7 @@ namespace xSdk.Hosting
         )
             where TSetup : class, ISetup, new()
         {
-            SlimHost.Instance.VariableSystem.RegisterSetup<TSetup>(configure);
+            SlimHostInternal.Instance.VariableSystem.RegisterSetup<TSetup>(configure);
             return builder;
         }
 
@@ -71,7 +44,7 @@ namespace xSdk.Hosting
         )
             where TSetup : class, ISetup, new()
         {
-            SlimHost.Instance.VariableSystem.RegisterSetup<TSetup>(implementation);
+            SlimHostInternal.Instance.VariableSystem.RegisterSetup<TSetup>(implementation);
             return builder;
         }
     }

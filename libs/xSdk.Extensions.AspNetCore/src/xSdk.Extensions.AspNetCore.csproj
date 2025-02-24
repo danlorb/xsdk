@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <!-- SonarQube needs this, do not change -->
@@ -16,8 +16,7 @@
         <PackageReference Include="AspNetCore.Authentication.ApiKey" PrivateAssets="contentfiles;analyzers;build;compile" />
         <PackageReference Include="CloudNative.CloudEvents.SystemTextJson" PrivateAssets="contentfiles;analyzers;build;compile" />
         <PackageReference Include="Hellang.Middleware.ProblemDetails" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="NWebsec.AspNetCore.Middleware" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="RiskFirst.Hateoas" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="NWebsec.AspNetCore.Middleware" PrivateAssets="contentfiles;analyzers;build;compile" />        
         <PackageReference Include="Swashbuckle.AspNetCore" PrivateAssets="contentfiles;analyzers;build;compile" />
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" PrivateAssets="contentfiles;analyzers;build;compile" />
         <PackageReference Include="Swashbuckle.AspNetCore.Filters" PrivateAssets="contentfiles;analyzers;build;compile" />
@@ -25,7 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\xSdk.Extensions.CloudEvent\src\xSdk.Extensions.CloudEvent.csproj" />
+      <ProjectReference Include="..\..\xSdk\src\xSdk.csproj" />
     </ItemGroup>
 
 </Project>

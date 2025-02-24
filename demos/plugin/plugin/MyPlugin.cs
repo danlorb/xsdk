@@ -4,9 +4,9 @@ using xSdk.Hosting;
 
 namespace xSdk.Demos
 {
-    public class MyPlugin : PluginBase, IServicesPluginConfig
+    public class MyPlugin : PluginBase
     {
-        public void ConfigureServices(IServiceCollection services)
+        public override void ConfigureServices(IServiceCollection services)
         {
             // Hier können weitere Services konfiguriert werden
 

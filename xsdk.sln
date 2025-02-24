@@ -83,9 +83,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xSdk.Tests", "libs\xSdk\tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xSdk.Extensions.AspNetCore", "libs\xSdk.Extensions.AspNetCore\src\xSdk.Extensions.AspNetCore.csproj", "{1646EA9A-3D43-40E1-95C8-E749BDD5CA87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xSdk.Extensions.Command", "libs\xSdk.Extensions.Command\src\xSdk.Extensions.Command.csproj", "{8BBA78AF-1095-4CB6-A6A4-4166036E426A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xSdk.Extensions.Commands", "libs\xSdk.Extensions.Commands\src\xSdk.Extensions.Commands.csproj", "{8BBA78AF-1095-4CB6-A6A4-4166036E426A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xSdk.Extensions.CloudEvent", "libs\xSdk.Extensions.CloudEvent\src\xSdk.Extensions.CloudEvent.csproj", "{4D32F769-9038-4364-9396-8616B8E6FD47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xSdk.Extensions.CloudEvents", "libs\xSdk.Extensions.CloudEvents\src\xSdk.Extensions.CloudEvents.csproj", "{4D32F769-9038-4364-9396-8616B8E6FD47}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xSdk.Plugin", "libs\xSdk.Plugin\src\xSdk.Plugin.csproj", "{3AEC1FCB-5EA9-4F74-B2A1-8A0C9A7B6102}"
 EndProject
@@ -100,6 +100,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xSdk.Data.NoSql.Tests", "libs\xSdk.Data.NoSql\tests\xSdk.Data.NoSql.Tests.csproj", "{B12125E6-3AE4-46E0-8E80-9E2A6439FB4D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xSdk.Data.FlatFile.Tests", "libs\xSdk.Data.FlatFile\tests\xSdk.Data.FlatFile.Tests.csproj", "{EEB4F941-0640-4251-A8D7-47113148D15C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xSdk.Extensions.AspNetCore.Links", "libs\xSdk.Extensions.AspNetCore.Links\src\xSdk.Extensions.AspNetCore.Links.csproj", "{E3AD9B58-D573-4AF6-A484-D3F2E6C32AAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -215,6 +217,10 @@ Global
 		{EEB4F941-0640-4251-A8D7-47113148D15C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEB4F941-0640-4251-A8D7-47113148D15C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEB4F941-0640-4251-A8D7-47113148D15C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3AD9B58-D573-4AF6-A484-D3F2E6C32AAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3AD9B58-D573-4AF6-A484-D3F2E6C32AAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3AD9B58-D573-4AF6-A484-D3F2E6C32AAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3AD9B58-D573-4AF6-A484-D3F2E6C32AAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -261,6 +267,7 @@ Global
 		{6D18A43A-CDB5-47D9-8A1A-683036BAEF8B} = {FF388FAE-081B-4CE1-9E5A-68EE75EA1CBC}
 		{B12125E6-3AE4-46E0-8E80-9E2A6439FB4D} = {6FE5E729-2235-4E27-93C4-202875459083}
 		{EEB4F941-0640-4251-A8D7-47113148D15C} = {6FE5E729-2235-4E27-93C4-202875459083}
+		{E3AD9B58-D573-4AF6-A484-D3F2E6C32AAC} = {FF388FAE-081B-4CE1-9E5A-68EE75EA1CBC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {616C08C6-30E9-451B-898B-4DBD57867C0A}

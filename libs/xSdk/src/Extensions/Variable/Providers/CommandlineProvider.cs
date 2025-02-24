@@ -1,4 +1,4 @@
-using xSdk.Extensions.Command;
+using xSdk.Extensions.Commands;
 
 namespace xSdk.Extensions.Variable.Providers
 {

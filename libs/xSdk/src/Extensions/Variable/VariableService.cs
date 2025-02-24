@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Configuration;
-using xSdk.Extensions.Command;
+using xSdk.Extensions.Commands;
 using xSdk.Hosting;
 using xSdk.Shared;
 
@@ -31,7 +31,7 @@ namespace xSdk.Extensions.Variable
                         result.AddOrNew(variable.Name, value);
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
                     // Nothing to tell
                 }
@@ -77,42 +77,5 @@ namespace xSdk.Extensions.Variable
                 }
             );
         }
-
-        //internal void AddCommandlineVariables()
-        //{
-        //    var args = CommandlineParser.Parse().Arguments;
-        //    Parallel.ForEach(args, arg => {
-
-        //        if (arg.StartsWith("-") || arg.StartsWith("--"))
-        //        {
-        //            var value = CommandlineParser.Parse().ReadPattern(arg);
-        //            if (!string.IsNullOrEmpty(value))
-        //            {
-        //                var name = arg;
-        //                if (name.StartsWith("--"))
-        //                {
-        //                    name = name.Substring(2);
-        //                }
-
-        //                if (name.StartsWith("-"))
-        //                {
-        //                    name = name.Substring(1);
-        //                }
-
-        //                var valueType = TypeConverter.GetValueType(value);
-        //                if (valueType != null)
-        //                {
-        //                    var variable = Variable
-        //                        .Create(name, valueType)
-        //                        .Hide()
-        //                        .Protect();
-
-        //                    variable.SetPrefix(SlimHost.Instance.AppPrefix);
-        //                    NewVariable(variable);
-        //                }
-        //            }
-        //        }
-        //    });
-        //}
     }
 }

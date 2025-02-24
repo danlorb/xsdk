@@ -6,6 +6,8 @@ namespace xSdk.Extensions.Plugin
 
         Version? Version { get; }
 
+        bool IsEnabled { get; }
+
         //string? Description { get; }
 
         //string? ProductVersion { get; }

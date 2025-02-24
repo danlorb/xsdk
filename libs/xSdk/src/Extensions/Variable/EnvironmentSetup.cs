@@ -1,4 +1,4 @@
-using xSdk.Extensions.Command;
+using xSdk.Extensions.Commands;
 using xSdk.Extensions.Variable.Attributes;
 
 namespace xSdk.Extensions.Variable

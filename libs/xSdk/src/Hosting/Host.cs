@@ -23,17 +23,13 @@ namespace xSdk.Hosting
             string? appPrefix
         )
         {
-            var boot = SlimHost.Initialize(args, appName, appCompany, appPrefix);
+            var boot = SlimHostInternal.Initialize(args, appName, appCompany, appPrefix);
 
             var builder = new HostBuilder()
                 .ConfigureHostConfiguration(HostConfigurationManager.LoadHostConfiguration)
                 .ConfigureAppConfiguration(HostConfigurationManager.LoadAppConfiguration)
-                .ConfigureServices(
-                    (context, services) =>
-                    {
-                        ConfigureHostServices(context, services);
-                    }
-                );
+                .ConfigureServices(ConfigureHostServices)
+                .ConfigureServices(ConfigureHostServicesWithContext);
 
             // Shutdown the logger
             AppDomain.CurrentDomain.ProcessExit += (sender, args) =>

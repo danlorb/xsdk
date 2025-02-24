@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
-using xSdk.Demos.Configs;
+using xSdk.Demos.Builders;
 using xSdk.Extensions.Web;
 
 namespace xSdk.Demos.Controllers
@@ -46,7 +46,7 @@ namespace xSdk.Demos.Controllers
 
         [HttpGet("read")]
         [MapToApiVersion("1")]
-        [Authorize(Policy = AuthenticationConfig.Policy_OnlyRead)]
+        [Authorize(Policy = AuthenticationPluginBuilder.Policy_OnlyRead)]
         [SwaggerOperation(
             Summary = "Loads data for readonly users",
             Description = "Requires authentication",
@@ -58,8 +58,6 @@ namespace xSdk.Demos.Controllers
             try
             {
                 logger.LogDebug("Demostrate Read");
-
-                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
 
                 await Task.Yield();
 
@@ -80,7 +78,7 @@ namespace xSdk.Demos.Controllers
 
         [HttpGet("write")]
         [MapToApiVersion("1")]
-        [Authorize(Policy = AuthenticationConfig.Policy_ReadAndWrite)]
+        [Authorize(Policy = AuthenticationPluginBuilder.Policy_ReadAndWrite)]
         [SwaggerOperation(
             Summary = "Writes data",
             Description = "Requires authentication",

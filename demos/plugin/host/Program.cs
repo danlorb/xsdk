@@ -9,7 +9,7 @@ const string APP_PREFIX = "pl";
 
 var host = xSdk.Hosting.Host
     .CreateBuilder(args, APP_NAME, APP_COMPANY, APP_PREFIX)
-    .AddPlugin<MyPlugin>()
+    .EnablePlugin<MyPlugin>()
     .Build();
 
 var logger = LogManager.GetCurrentClassLogger();

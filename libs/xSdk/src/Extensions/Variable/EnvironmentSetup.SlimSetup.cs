@@ -11,7 +11,7 @@
 //        {
 //            var setup = new EnvironmentSetup();
 //            setup.IsSlimMode = true;
-//            setup.Initialize();
+//            setup.InitializePlugin();
 //            return setup;
 //        }
 

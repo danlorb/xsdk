@@ -9,7 +9,7 @@ namespace xSdk.Data
 {
     public sealed class KeyValuePK : PrimaryKey<string>
     {
-        private object syncObject = new();
+        private readonly object syncObject = new();
 
         public KeyValuePK()
             : base(string.Empty) { }
@@ -23,8 +23,6 @@ namespace xSdk.Data
             {
                 return (TType)value;
             }
-
-            return default;
         }
     }
 }

@@ -31,7 +31,7 @@ namespace xSdk.Hosting
             string? appPrefix
         )
         {
-            var boot = SlimHost.InitializeTestHost(args, appName, appCompany, appPrefix);
+            var boot = SlimHostInternal.InitializeTestHost(args, appName, appCompany, appPrefix);
 
             var builder = new HostBuilder();
 

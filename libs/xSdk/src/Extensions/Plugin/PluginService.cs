@@ -2,103 +2,41 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Weikio.PluginFramework.Catalogs;
 using xSdk.Extensions.IO;
+using xSdk.Hosting;
+using xSdk.Shared;
 
 namespace xSdk.Extensions.Plugin
 {
     internal class PluginService(IFileSystemService fsService, ILogger<PluginService> logger)
         : IPluginService
     {
-        private CompositePluginCatalog aggregateCatalog = new();
+        private CompositePluginCatalog aggregateCatalog;
+        private readonly Dictionary<Type, TypePluginCatalog> typePluginCatalogs = new();
+        private bool isTypePluginCatalogsStale = false;
 
-        private List<IPlugin> _plugins = new List<IPlugin>();
+        private readonly Dictionary<Assembly, AssemblyPluginCatalog> assemblyPluginCatalogs = new();
+        private bool isAssemblyPluginCatalogsStale = false;
 
-        internal void Initialize(PluginBuilder? builder)
-        {
-            if (builder == null)
-            {
-                return;
-            }
+        private readonly List<object> _plugins = new();
 
-            var machineCatalog = CatalogHelper.CreateFolderPluginCatalog(
-                fsService,
-                FileSystemContext.Machine,
-                "/plugins"
-            );
-            var userCatalog = CatalogHelper.CreateFolderPluginCatalog(
-                fsService,
-                FileSystemContext.User,
-                "/plugins"
-            );
-            var localCatalog = CatalogHelper.CreateFolderPluginCatalog(
-                fsService,
-                FileSystemContext.Local,
-                "/plugins"
-            );
-
-            if (machineCatalog != null)
-            {
-                aggregateCatalog.AddCatalog(machineCatalog);
-            }
-
-            if (userCatalog != null)
-            {
-                aggregateCatalog.AddCatalog(userCatalog);
-            }
-
-            if (localCatalog != null)
-            {
-                aggregateCatalog.AddCatalog(localCatalog);
-            }
-
-            foreach (var catalog in builder._catalogs)
-            {
-                aggregateCatalog.AddCatalog(catalog);
-            }
-        }
-
-        public async Task<TPlugin?> GetPluginAsync<TPlugin>(CancellationToken token = default)
-            where TPlugin : IPlugin
-        {
-            var result = await GetPluginsAsync<TPlugin>(token);
-
-            return result.FirstOrDefault();
-        }
+        public Task<TPlugin?> GetPluginAsync<TPlugin>(CancellationToken token = default) =>
+            GetPluginsAsync<TPlugin>(token).ContinueWith(task => task.Result.FirstOrDefault());
 
         public async Task<IList<TPlugin>> GetPluginsAsync<TPlugin>(
             CancellationToken token = default
         )
-            where TPlugin : IPlugin
         {
-            if (!TryGetLoadedPlugins(out List<TPlugin> result))
+            if (!TryGetLoadedPlugins(_plugins, out List<TPlugin> result))
             {
-                await aggregateCatalog.Initialize();
-
-                var abstractPlugins = aggregateCatalog.GetPlugins().Where(x => x != null);
-
-                foreach (var abstractPlugin in abstractPlugins)
+                var abstractPlugins = await LoadPluginsAsync();
+                foreach (var item in abstractPlugins)
                 {
-                    try
+                    if (item.Item1 is TPlugin concretePlugin)
                     {
-                        var concretePlugin = Activator.CreateInstance(abstractPlugin);
-                        if (concretePlugin is PluginBase pluginInstance)
-                        {
-                            pluginInstance.Initialize(abstractPlugin);
-                        }
+                        InitializePlugin(concretePlugin, item.Item2);
 
-                        if (concretePlugin is TPlugin typedPlugin)
-                        {
-                            result.Add(typedPlugin);
-                            _plugins.Add(typedPlugin);
-                        }
-                    }
-                    catch (MissingMethodException mme)
-                    {
-                        // Ignore this type of Exception, because this Exception is thrown
-                        // if a class does not have a default constructor.
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, "Failed to create plugin instance");
+                        result.Add(concretePlugin);
+                        _plugins.Add(concretePlugin);
                     }
                 }
             }
@@ -106,23 +44,98 @@ namespace xSdk.Extensions.Plugin
             return result;
         }
 
+        public Task EnablePluginAsync<TPlugin>(CancellationToken token = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DisablePluginAsync<TPlugin>(CancellationToken token = default)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task AddPluginAsync(Type pluginType, CancellationToken token = default)
         {
-            aggregateCatalog.AddCatalog(CatalogHelper.CreateTypeCatalog(pluginType));
+            typePluginCatalogs.AddOrNew(pluginType, CatalogHelper.CreateTypeCatalog(pluginType));
+            isTypePluginCatalogsStale = true;
+
             return Task.CompletedTask;
         }
 
         public Task AddPluginsFromAsync(Assembly sourceAssembly, CancellationToken token = default)
         {
-            aggregateCatalog.AddCatalog(CatalogHelper.CreateAssemblyCatalog(sourceAssembly));
+            assemblyPluginCatalogs.AddOrNew(
+                sourceAssembly,
+                CatalogHelper.CreateAssemblyCatalog(sourceAssembly)
+            );
+            isAssemblyPluginCatalogsStale = true;
+
             return Task.CompletedTask;
         }
 
-        private bool TryGetLoadedPlugins<TPlugin>(out List<TPlugin> plugins)
-            where TPlugin : IPlugin
+        public Task RemovePluginAsync(Type pluginType, CancellationToken token = default)
+        {
+            if (typePluginCatalogs.ContainsKey(pluginType))
+            {
+                isTypePluginCatalogsStale = true;
+                typePluginCatalogs.Remove(pluginType);
+            }
+            return Task.CompletedTask;
+        }
+
+        public Task RemovePluginsFromAsync(
+            Assembly sourceAssembly,
+            CancellationToken token = default
+        )
+        {
+            if (assemblyPluginCatalogs.ContainsKey(sourceAssembly))
+            {
+                isAssemblyPluginCatalogsStale = true;
+                assemblyPluginCatalogs.Remove(sourceAssembly);
+            }
+            return Task.CompletedTask;
+        }
+
+        private async Task<
+            List<Tuple<object?, Weikio.PluginFramework.Abstractions.Plugin>>
+        > LoadPluginsAsync()
+        {
+            List<Tuple<object?, Weikio.PluginFramework.Abstractions.Plugin>> plugins = new();
+
+            var catalog = await InitialzeCatalogsAsync();
+
+            var abstractPlugins = catalog.GetPlugins().Where(x => x != null);
+            foreach (var abstractPlugin in abstractPlugins)
+            {
+                try
+                {
+                    Tuple<object?, Weikio.PluginFramework.Abstractions.Plugin> item = new(
+                        Activator.CreateInstance(abstractPlugin),
+                        abstractPlugin
+                    );
+                    plugins.Add(item);
+                }
+                catch (MissingMethodException mme)
+                {
+                    // Ignore this type of Exception, because this Exception is thrown
+                    // if a class does not have a default constructor.
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Failed to create plugin instance");
+                }
+            }
+
+            return plugins;
+        }
+
+        private bool TryGetLoadedPlugins<TPlugin>(
+            IEnumerable<object> source,
+            out List<TPlugin> plugins
+        )
         {
             plugins = new List<TPlugin>();
-            var result = _plugins.Where(x => x.GetType().IsAssignableTo(typeof(TPlugin)));
+            var result = source.Where(x => x.GetType().IsAssignableTo(typeof(TPlugin)));
 
             if (result != null && result.Any())
             {
@@ -131,6 +144,84 @@ namespace xSdk.Extensions.Plugin
             }
 
             return false;
+        }
+
+        private async Task<CompositePluginCatalog> InitialzeCatalogsAsync()
+        {
+            if (
+                isTypePluginCatalogsStale
+                || isAssemblyPluginCatalogsStale
+                || aggregateCatalog == null
+            )
+            {
+                aggregateCatalog = new CompositePluginCatalog();
+
+                var machineCatalog = CatalogHelper.CreateFolderPluginCatalog(
+                    fsService,
+                    FileSystemContext.Machine,
+                    "/pluginBuilders"
+                );
+                var userCatalog = CatalogHelper.CreateFolderPluginCatalog(
+                    fsService,
+                    FileSystemContext.User,
+                    "/pluginBuilders"
+                );
+                var localCatalog = CatalogHelper.CreateFolderPluginCatalog(
+                    fsService,
+                    FileSystemContext.Local,
+                    "/pluginBuilders"
+                );
+
+                if (machineCatalog != null)
+                {
+                    aggregateCatalog.AddCatalog(machineCatalog);
+                }
+
+                if (userCatalog != null)
+                {
+                    aggregateCatalog.AddCatalog(userCatalog);
+                }
+
+                if (localCatalog != null)
+                {
+                    aggregateCatalog.AddCatalog(localCatalog);
+                }
+
+                foreach (var kvp in typePluginCatalogs)
+                {
+                    aggregateCatalog.AddCatalog(kvp.Value);
+                }
+
+                foreach (var kvp in assemblyPluginCatalogs)
+                {
+                    aggregateCatalog.AddCatalog(kvp.Value);
+                }
+            }
+
+            await aggregateCatalog.Initialize();
+
+            isTypePluginCatalogsStale = false;
+            isAssemblyPluginCatalogsStale = false;
+
+            return aggregateCatalog;
+        }
+
+        private void InitializePlugin(
+            object concretePlugin,
+            Weikio.PluginFramework.Abstractions.Plugin? abstractPlugin
+        )
+        {
+            if (abstractPlugin != null && concretePlugin is PluginBase basePlugin)
+            {
+                logger.LogInformation(
+                    "Initializing plugin {0} v{1}",
+                    abstractPlugin.Name,
+                    abstractPlugin.Version
+                );
+
+                basePlugin.Name = abstractPlugin.Name;
+                basePlugin.Version = abstractPlugin.Version;
+            }
         }
     }
 }

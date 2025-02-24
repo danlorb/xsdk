@@ -1,6 +1,6 @@
-using Microsoft.Extensions.DependencyInjection;
 using xSdk.Extensions.Plugin;
 using xSdk.Hosting;
+using xSdk.Plugins.Compression;
 
 namespace xSdk.Extensions.Compression
 {

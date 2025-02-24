@@ -15,7 +15,7 @@ namespace xSdk.Data
             var entity = FakeGenerator.Generate<TestEntityFakes, TestEntity>();
 
             Assert.NotNull(entity);
-            Assert.NotNull(entity.Id);
+            Assert.True(entity.Id != Guid.Empty);
             Assert.NotNull(entity.Name);
             Assert.True(entity.Age > 0);
         }

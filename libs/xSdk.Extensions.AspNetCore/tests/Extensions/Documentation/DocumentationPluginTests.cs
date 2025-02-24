@@ -1,14 +1,14 @@
 using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using xSdk.Extensions.Documentation.Fakes;
 using xSdk.Extensions.Plugin;
 using xSdk.Hosting;
+using xSdk.Plugins.Documentation;
 
 namespace xSdk.Extensions.Documentation
 {
     public class DocumentationPluginTests : IClassFixture<TestHostFixture>
     {
-        private IPluginService service;
+        private readonly IPluginService service;
 
         public DocumentationPluginTests(TestHostFixture fixture)
         {
@@ -16,7 +16,7 @@ namespace xSdk.Extensions.Documentation
                 .ConfigureServices(services => services.AddPluginServices())
                 .ConfigurePlugin(builder =>
                 {
-                    builder.AddPlugin<DocumentationPluginFake>().EnableDocumentation();
+                    builder.EnableDocumentation<DocumentationPluginBuilderFake>();
                 })
                 .GetRequiredService<IPluginService>();
         }
@@ -32,20 +32,20 @@ namespace xSdk.Extensions.Documentation
         [Fact]
         public void GetPluginConfigurations()
         {
-            var plugins = service.GetPlugins<IDocumentationPluginConfig>();
+            var plugins = service.GetPlugins<IDocumentationPluginBuilder>();
 
             Assert.NotNull(plugins);
-            Assert.Equal(1, plugins.Count());
+            Assert.Single(plugins);
         }
 
         [Fact]
         public void InvokePluginConfiguration()
         {
             var services = new ServiceCollection();
-            service.Invoke<IServicesPluginConfig>(x => x.ConfigureServices(services));
+            service.Invoke<WebHostPluginBase>(x => x.ConfigureServices(null, services));
 
             Assert.NotNull(services);
-            Assert.True(services.Count() > 0);
+            Assert.True(services.Count > 0);
         }
     }
 }

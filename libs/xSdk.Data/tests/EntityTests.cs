@@ -19,7 +19,7 @@ namespace xSdk.Data
             var entity = new TestEntity { Age = 42, Name = "John Doe" };
 
             Assert.NotNull(entity);
-            Assert.NotNull(entity.Id);
+            Assert.True(entity.Id != Guid.Empty);
             Assert.IsType<Guid>(entity.PrimaryKey.GetValue());
         }
     }
