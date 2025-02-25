@@ -10,10 +10,7 @@ namespace xSdk.Plugins.WebSecurity
 {
     public class WebSecurityPlugin : WebHostPluginBase
     {
-        public override void ConfigureServices(
-            WebHostBuilderContext context,
-            IServiceCollection services
-        )
+        public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
         {
             var securitySetup = SlimHost.Instance.VariableSystem.GetSetup<WebSecuritySetup>();
 
@@ -53,13 +50,7 @@ namespace xSdk.Plugins.WebSecurity
             }
 
             Logger.Debug("Enable Cookie Policy");
-            app.UseCookiePolicy(
-                new CookiePolicyOptions
-                {
-                    MinimumSameSitePolicy = SameSiteMode.Lax,
-                    Secure = CookieSecurePolicy.Always,
-                }
-            );
+            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax, Secure = CookieSecurePolicy.Always });
 
             Build(app);
 
@@ -73,10 +64,7 @@ namespace xSdk.Plugins.WebSecurity
 
         private static void PreBuild(IApplicationBuilder app)
         {
-            var fordwardedHeaderOptions = new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.All,
-            };
+            var fordwardedHeaderOptions = new ForwardedHeadersOptions { ForwardedHeaders = ForwardedHeaders.All };
             fordwardedHeaderOptions.KnownNetworks.Clear();
             fordwardedHeaderOptions.KnownProxies.Clear();
             app.UseForwardedHeaders(fordwardedHeaderOptions);
@@ -171,10 +159,7 @@ namespace xSdk.Plugins.WebSecurity
             IEnumerable<string> additionalOrigins = new List<string>();
             if (!string.IsNullOrEmpty(securitySetup.Origins))
             {
-                var splittedOrigins = securitySetup.Origins.Split(
-                    ",",
-                    StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries
-                );
+                var splittedOrigins = securitySetup.Origins.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                 additionalOrigins = new List<string>(splittedOrigins);
             }
 

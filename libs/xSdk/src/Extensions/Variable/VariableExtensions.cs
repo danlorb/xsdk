@@ -10,10 +10,7 @@ namespace xSdk.Extensions.Variable
             {
                 if (!string.IsNullOrEmpty(prefix))
                 {
-                    casted.Prefix = prefix
-                        .Replace("setup", "", StringComparison.InvariantCultureIgnoreCase)
-                        .Trim()
-                        .ToLower();
+                    casted.Prefix = prefix.Replace("setup", "", StringComparison.InvariantCultureIgnoreCase).Trim().ToLower();
                 }
             }
 
@@ -30,10 +27,7 @@ namespace xSdk.Extensions.Variable
             return variable;
         }
 
-        internal static IVariable SetTelemetryResourceValueDelegate(
-            this IVariable variable,
-            Func<object> resourceDelegate
-        )
+        internal static IVariable SetTelemetryResourceValueDelegate(this IVariable variable, Func<object> resourceDelegate)
         {
             if (variable.TryCast(out Variable casted))
             {

@@ -81,9 +81,7 @@ namespace xSdk.Shared
                 }
                 else
                 {
-                    items.Add(
-                        x.Replace(" ", "_").Replace("\\", ".").Replace("/", ".").Replace("-", "_")
-                    );
+                    items.Add(x.Replace(" ", "_").Replace("\\", ".").Replace("/", ".").Replace("-", "_"));
                 }
             });
 

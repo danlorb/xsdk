@@ -13,12 +13,7 @@ namespace xSdk.Data
 
         protected string Context { get; private set; }
 
-        internal void BuildInternal(
-            Faker<TEntity> builder,
-            string context,
-            bool repeatableData,
-            bool strictMode
-        )
+        internal void BuildInternal(Faker<TEntity> builder, string context, bool repeatableData, bool strictMode)
         {
             RepeatableData = repeatableData;
             StrictMode = strictMode;
@@ -31,28 +26,15 @@ namespace xSdk.Data
 
         protected TFakeEntity Generate<TFake, TFakeEntity>()
             where TFake : Fakes<TFakeEntity>, new()
-            where TFakeEntity : class, IEntity =>
-            FakeGenerator.Generate<TFake, TFakeEntity>(Context, RepeatableData, StrictMode);
+            where TFakeEntity : class, IEntity => FakeGenerator.Generate<TFake, TFakeEntity>(Context, RepeatableData, StrictMode);
 
         protected IEnumerable<TFakeEntity> GenerateList<TFake, TFakeEntity>()
             where TFake : Fakes<TFakeEntity>, new()
-            where TFakeEntity : class, IEntity =>
-            FakeGenerator.GenerateList<TFake, TFakeEntity>(
-                new Random().Next(1, 10),
-                Context,
-                RepeatableData,
-                StrictMode
-            );
+            where TFakeEntity : class, IEntity => FakeGenerator.GenerateList<TFake, TFakeEntity>(new Random().Next(1, 10), Context, RepeatableData, StrictMode);
 
         protected IEnumerable<TFakeEntity> GenerateList<TFake, TFakeEntity>(int count)
             where TFake : Fakes<TFakeEntity>, new()
-            where TFakeEntity : class, IEntity =>
-            FakeGenerator.GenerateList<TFake, TFakeEntity>(
-                count,
-                Context,
-                RepeatableData,
-                StrictMode
-            );
+            where TFakeEntity : class, IEntity => FakeGenerator.GenerateList<TFake, TFakeEntity>(count, Context, RepeatableData, StrictMode);
 
         protected bool IsContext(string context)
         {

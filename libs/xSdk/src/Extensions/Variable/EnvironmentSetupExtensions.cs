@@ -8,8 +8,7 @@ namespace xSdk.Extensions.Variable
 {
     public static class EnvironmentSetupExtensions
     {
-        internal static SemVer GetVersion(Type requestedType) =>
-            new SemVer(requestedType.Assembly.GetName().Version.ToString());
+        internal static SemVer GetVersion(Type requestedType) => new SemVer(requestedType.Assembly.GetName().Version.ToString());
 
         internal static string DetectProcessArchitecture(this EnvironmentSetup setup)
         {
@@ -71,10 +70,7 @@ namespace xSdk.Extensions.Variable
             throw new SdkException("Could not determine current os platform");
         }
 
-        internal static TValue? ReadCommandlineValue<TValue>(
-            this EnvironmentSetup setup,
-            string pattern
-        )
+        internal static TValue? ReadCommandlineValue<TValue>(this EnvironmentSetup setup, string pattern)
         {
             var result = string.Empty;
 
@@ -94,9 +90,7 @@ namespace xSdk.Extensions.Variable
 
         internal static string DetermineContentRoot(this EnvironmentSetup setup)
         {
-            var contentRoot = setup.ReadCommandlineValue<string>(
-                DefaultCommandSettings.Definitions.ContentRoot.Name
-            );
+            var contentRoot = setup.ReadCommandlineValue<string>(DefaultCommandSettings.Definitions.ContentRoot.Name);
             if (string.IsNullOrEmpty(contentRoot))
             {
                 contentRoot = Environment.CurrentDirectory;

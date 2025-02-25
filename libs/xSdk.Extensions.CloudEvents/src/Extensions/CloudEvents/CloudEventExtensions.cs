@@ -7,12 +7,7 @@ namespace xSdk.Extensions.CloudEvents
 {
     public static class CloudEventExtensions
     {
-        public static CloudEvent AddAttribute<TValue>(
-            this CloudEvent cloudEvent,
-            string name,
-            CloudEventAttributeType type,
-            TValue value
-        )
+        public static CloudEvent AddAttribute<TValue>(this CloudEvent cloudEvent, string name, CloudEventAttributeType type, TValue value)
         {
             var attr = CloudEventFactory.CreateAttribute(name, type);
             cloudEvent[attr] = value;
@@ -38,9 +33,7 @@ namespace xSdk.Extensions.CloudEvents
             var attributes = cloudEvent.GetPopulatedAttributes();
             var cleanedName = StringHelper.RemoveSpecialChars(name);
 
-            var kvp = attributes.SingleOrDefault(x =>
-                string.Compare(x.Key.Name, cleanedName, true) == 0
-            );
+            var kvp = attributes.SingleOrDefault(x => string.Compare(x.Key.Name, cleanedName, true) == 0);
 
             try
             {
@@ -54,10 +47,7 @@ namespace xSdk.Extensions.CloudEvents
 
         public static string GetScope(this CloudEvent cloudEvent)
         {
-            var scope = cloudEvent.Source.OriginalString.Replace(
-                CloudEventFactory.SourceBaseUrl,
-                ""
-            );
+            var scope = cloudEvent.Source.OriginalString.Replace(CloudEventFactory.SourceBaseUrl, "");
 
             if (scope.StartsWith("/"))
                 scope = scope.Substring(1);
@@ -84,10 +74,7 @@ namespace xSdk.Extensions.CloudEvents
             return;
         }
 
-        internal static CloudEvent EnrichAttributes(
-            this CloudEvent cloudEvent,
-            IEnumerable<CloudEventAttribute> attributes
-        )
+        internal static CloudEvent EnrichAttributes(this CloudEvent cloudEvent, IEnumerable<CloudEventAttribute> attributes)
         {
             var extensions = CloudEventFactory.MergeAttributes(attributes);
             foreach (var extension in extensions)
@@ -137,8 +124,7 @@ namespace xSdk.Extensions.CloudEvents
             return default;
         }
 
-        public static Type GetDataObjectType(this CloudEvent cloudEvent) =>
-            cloudEvent.GetDataObjectType(null);
+        public static Type GetDataObjectType(this CloudEvent cloudEvent) => cloudEvent.GetDataObjectType(null);
 
         private static Type GetDataObjectType(this CloudEvent cloudEvent, Type dataType)
         {
@@ -167,18 +153,12 @@ namespace xSdk.Extensions.CloudEvents
             else if (element.ValueKind == JsonValueKind.String)
                 jsonAsString = element.GetString();
             else
-                throw new SdkException(
-                    "CloudEvent has a Json Value as DataObject, because no Conversion exists"
-                );
+                throw new SdkException("CloudEvent has a Json Value as DataObject, because no Conversion exists");
 
             if (!string.IsNullOrEmpty(jsonAsString))
             {
                 if (JsonHelper.IsJson(jsonAsString))
-                    result = JsonSerializer.Deserialize(
-                        jsonAsString,
-                        dataType,
-                        JsonHelper.GetSerializerOptions()
-                    );
+                    result = JsonSerializer.Deserialize(jsonAsString, dataType, JsonHelper.GetSerializerOptions());
                 else
                     throw new SdkException("CloudEvent has a unknown Json Format as DataObject");
             }
@@ -209,10 +189,7 @@ namespace xSdk.Extensions.CloudEvents
 
             var assemblyName = dataType.Assembly.GetName().Name;
 
-            return new Uri(
-                $"{schemeBaseUrl}/{assemblyName}?type={dataType.FullName}".ToLower(),
-                UriKind.Absolute
-            );
+            return new Uri($"{schemeBaseUrl}/{assemblyName}?type={dataType.FullName}".ToLower(), UriKind.Absolute);
         }
 
         private static Type ParseDataObjectSchemeUrl(string dataSchemeUrl, string scope)

@@ -13,10 +13,7 @@ namespace xSdk.Plugins.Authentication
 {
     internal sealed class AuthenticationPlugin : WebHostPluginBase
     {
-        public override void ConfigureServices(
-            WebHostBuilderContext context,
-            IServiceCollection services
-        )
+        public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
         {
             var apiKeySetup = SlimHost.Instance.VariableSystem.GetSetup<ApiKeySetup>();
             var envSetup = SlimHost.Instance.VariableSystem.GetSetup<EnvironmentSetup>();
@@ -29,35 +26,25 @@ namespace xSdk.Plugins.Authentication
                     _.DefaultChallengeScheme = AuthenticationDefaults.MulitAuth.Scheme;
                 })
                 // Add Policy Scheme to decide which Auth should used
-                .AddPolicyScheme(
-                    AuthenticationDefaults.MulitAuth.Scheme,
-                    AuthenticationDefaults.MulitAuth.Scheme,
-                    EnableMultiAuth
-                );
+                .AddPolicyScheme(AuthenticationDefaults.MulitAuth.Scheme, AuthenticationDefaults.MulitAuth.Scheme, EnableMultiAuth);
 
             // API Key Auth is always needed for the default Multi Auth Scheme
             authBuilder.AddApiKeyAuth();
-            SlimHost.Instance.PluginSystem.Invoke<IAuthenticationPluginBuilder>(x =>
-                x.ConfigureAuthentication(authBuilder)
-            );
+            SlimHost.Instance.PluginSystem.Invoke<IAuthenticationPluginBuilder>(x => x.ConfigureAuthentication(authBuilder));
 
             // Add Client defined Policies
             services.AddAuthorization(_ =>
             {
                 // For all Pages/Controllers a.s.o with a Authorize Attribute, but without any Policy
                 // e.g. [Authorize]. This Policy will not applied if you use [Authorize Policy= "..."]
-                _.DefaultPolicy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
+                _.DefaultPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 
                 // For all Pages/Controllers a.s.o without a [Authorize] Attribute
                 //_.FallbackPolicy = new AuthorizationPolicyBuilder()
                 //    .RequireAuthenticatedUser()
                 //    .Build();
 
-                SlimHost.Instance.PluginSystem.Invoke<IAuthenticationPluginBuilder>(x =>
-                    x.ConfigureAuthorization(_)
-                );
+                SlimHost.Instance.PluginSystem.Invoke<IAuthenticationPluginBuilder>(x => x.ConfigureAuthorization(_));
             });
         }
 
@@ -76,20 +63,14 @@ namespace xSdk.Plugins.Authentication
                 TryRetrieveAuthenticationScheme(context, out scheme);
                 if (!string.IsNullOrEmpty(scheme))
                 {
-                    Logger.Trace(
-                        $"Found the correct authentication for incomming request: {scheme}"
-                    );
+                    Logger.Trace($"Found the correct authentication for incomming request: {scheme}");
                     return scheme;
                 }
 
                 string? authorizationHeader = context.Request.Headers[HeaderNames.Authorization];
                 if (!string.IsNullOrEmpty(authorizationHeader))
                 {
-                    if (
-                        authorizationHeader.StartsWith(
-                            AuthenticationDefaults.ApiKeyAuth.InAuthorizationHeader.Header
-                        )
-                    )
+                    if (authorizationHeader.StartsWith(AuthenticationDefaults.ApiKeyAuth.InAuthorizationHeader.Header))
                     {
                         Logger.Trace("API Key Auth is requested");
                         return AuthenticationDefaults.ApiKeyAuth.InAuthorizationHeader.Scheme;
@@ -105,9 +86,7 @@ namespace xSdk.Plugins.Authentication
         private void TryRetrieveAuthenticationScheme(HttpContext context, out string? scheme)
         {
             string? result = null;
-            SlimHost.Instance.PluginSystem.Invoke<IAuthenticationPluginBuilder>(x =>
-                x.TryRetrieveAuthenticationScheme(context, out result)
-            );
+            SlimHost.Instance.PluginSystem.Invoke<IAuthenticationPluginBuilder>(x => x.TryRetrieveAuthenticationScheme(context, out result));
 
             scheme = result;
         }

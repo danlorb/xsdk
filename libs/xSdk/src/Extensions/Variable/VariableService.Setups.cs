@@ -5,8 +5,7 @@ namespace xSdk.Extensions.Variable
 {
     internal partial class VariableService
     {
-        private ConcurrentDictionary<Type, ISetup> _setups =
-            new ConcurrentDictionary<Type, ISetup>();
+        private ConcurrentDictionary<Type, ISetup> _setups = new ConcurrentDictionary<Type, ISetup>();
         private List<VariableRegistration> Registrations = new();
 
         public IVariableService RegisterSetup<TSetup>()
@@ -68,9 +67,7 @@ namespace xSdk.Extensions.Variable
                 }
             }
 
-            throw new KeyNotFoundException(
-                string.Format("GetSetup '{0}' could not found", setupType)
-            );
+            throw new KeyNotFoundException(string.Format("GetSetup '{0}' could not found", setupType));
         }
 
         private void AddSetup(VariableRegistration registration)

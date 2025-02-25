@@ -57,12 +57,7 @@ namespace xSdk.Extensions.Variable
             set => this.SetValue(Definitions.AppPrefix.Name, value);
         }
 
-        [Variable(
-            name: Definitions.AppVersion.Name,
-            helpText: Definitions.AppVersion.HelpText,
-            resourceNames: new[] { "app.version" },
-            hidden: true
-        )]
+        [Variable(name: Definitions.AppVersion.Name, helpText: Definitions.AppVersion.HelpText, resourceNames: new[] { "app.version" }, hidden: true)]
         public string AppVersion
         {
             get => this.ReadValue<string>(Definitions.AppVersion.Name);
@@ -123,22 +118,10 @@ namespace xSdk.Extensions.Variable
         {
             var result = string.IsNullOrEmpty(ServiceName);
 
-            this.ValidateMember(
-                x => string.IsNullOrEmpty(x.ServiceName),
-                "Unique Service Name is missing"
-            );
-            this.ValidateMember(
-                x => string.IsNullOrEmpty(x.ServiceNamespace),
-                "Unique Service Namespace is missing"
-            );
-            this.ValidateMember(
-                x => string.IsNullOrEmpty(x.ServiceVersion),
-                "Unique Service Version is missing"
-            );
-            this.ValidateMember(
-                x => string.IsNullOrEmpty(x.ServiceFullName),
-                "Unique Service Fullname is missing"
-            );
+            this.ValidateMember(x => string.IsNullOrEmpty(x.ServiceName), "Unique Service Name is missing");
+            this.ValidateMember(x => string.IsNullOrEmpty(x.ServiceNamespace), "Unique Service Namespace is missing");
+            this.ValidateMember(x => string.IsNullOrEmpty(x.ServiceVersion), "Unique Service Version is missing");
+            this.ValidateMember(x => string.IsNullOrEmpty(x.ServiceFullName), "Unique Service Fullname is missing");
         }
 
         protected override void Initialize()

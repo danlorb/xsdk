@@ -59,11 +59,12 @@ namespace xSdk.Demos.Hosting
                 var sampleRepo = dbFactory.CreateRepository<ISampleRepository>();
 
                 // Create some Sample Entities
-                var samples = new SampleEntity[] {
-                        new SampleEntity { Name = "Customer 1", Age = 10 },
-                        new SampleEntity { Name = "Customer 2", Age = 10 },
-                        new SampleEntity { Name = "Customer 3", Age = 10 }
-                    };
+                var samples = new SampleEntity[]
+                {
+                    new SampleEntity { Name = "Customer 1", Age = 10 },
+                    new SampleEntity { Name = "Customer 2", Age = 10 },
+                    new SampleEntity { Name = "Customer 3", Age = 10 },
+                };
 
                 // Add this Samples to Database
                 await sampleRepo.AddSamplesAsync(samples);

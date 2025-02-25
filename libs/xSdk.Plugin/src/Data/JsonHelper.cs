@@ -57,10 +57,7 @@ namespace xSdk.Data
                 var incomeAsJson = JObject.Parse(income);
                 var outcomeAsJson = JObject.Parse(outcome);
 
-                var mergeSettings = new JsonMergeSettings
-                {
-                    MergeArrayHandling = MergeArrayHandling.Union,
-                };
+                var mergeSettings = new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Union };
 
                 result.Merge(incomeAsJson, mergeSettings);
                 result.Merge(outcomeAsJson, mergeSettings);
@@ -73,8 +70,7 @@ namespace xSdk.Data
             return result.ToString(Newtonsoft.Json.Formatting.None);
         }
 
-        public static System.Text.Json.JsonSerializerOptions GetSerializerOptions() =>
-            GetSerializerOptions(false);
+        public static System.Text.Json.JsonSerializerOptions GetSerializerOptions() => GetSerializerOptions(false);
 
         public static System.Text.Json.JsonSerializerOptions GetSerializerOptions(bool compact)
         {
@@ -84,24 +80,15 @@ namespace xSdk.Data
             return ConfigureSerializerOptions(options, compact);
         }
 
-        public static JsonSerializerOptions ConfigureSerializerOptions(
-            this System.Text.Json.JsonSerializerOptions setup
-        ) => ConfigureSerializerOptions(setup, false);
+        public static JsonSerializerOptions ConfigureSerializerOptions(this System.Text.Json.JsonSerializerOptions setup) =>
+            ConfigureSerializerOptions(setup, false);
 
-        public static JsonSerializerOptions ConfigureSerializerOptions(
-            this System.Text.Json.JsonSerializerOptions setup,
-            bool compact
-        )
+        public static JsonSerializerOptions ConfigureSerializerOptions(this System.Text.Json.JsonSerializerOptions setup, bool compact)
         {
             logger.Trace("Create new Json Serializer Options");
 
             setup.AllowTrailingCommas = true;
-            setup.DefaultIgnoreCondition = System
-                .Text
-                .Json
-                .Serialization
-                .JsonIgnoreCondition
-                .WhenWritingNull;
+            setup.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
             setup.IgnoreReadOnlyFields = false;
             setup.IgnoreReadOnlyProperties = false;
             setup.IncludeFields = false;
@@ -125,11 +112,7 @@ namespace xSdk.Data
 
         public static System.Text.Json.JsonDocumentOptions GetDocumentOptions()
         {
-            var options = new System.Text.Json.JsonDocumentOptions
-            {
-                AllowTrailingCommas = true,
-                CommentHandling = System.Text.Json.JsonCommentHandling.Skip,
-            };
+            var options = new System.Text.Json.JsonDocumentOptions { AllowTrailingCommas = true, CommentHandling = System.Text.Json.JsonCommentHandling.Skip };
 
             return options;
         }

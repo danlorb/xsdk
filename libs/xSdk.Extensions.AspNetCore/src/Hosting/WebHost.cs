@@ -10,21 +10,13 @@ namespace xSdk.Hosting
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static IHostBuilder CreateBuilder(string[] args) =>
-            CreateBuilder(args, default, default, default);
+        public static IHostBuilder CreateBuilder(string[] args) => CreateBuilder(args, default, default, default);
 
-        public static IHostBuilder CreateBuilder(string[] args, string appName) =>
-            CreateBuilder(args, appName, default, default);
+        public static IHostBuilder CreateBuilder(string[] args, string appName) => CreateBuilder(args, appName, default, default);
 
-        public static IHostBuilder CreateBuilder(string[] args, string appName, string appPrefix) =>
-            CreateBuilder(args, appName, default, appPrefix);
+        public static IHostBuilder CreateBuilder(string[] args, string appName, string appPrefix) => CreateBuilder(args, appName, default, appPrefix);
 
-        public static IHostBuilder CreateBuilder(
-            string[] args,
-            string? appName,
-            string? appCompany,
-            string? appPrefix
-        )
+        public static IHostBuilder CreateBuilder(string[] args, string? appName, string? appCompany, string? appPrefix)
         {
             var builder = xSdk
                 .Hosting.Host.CreateBuilder(args, appName, appCompany, appPrefix)
@@ -41,10 +33,7 @@ namespace xSdk.Hosting
                         // Set the Environment
                         .UseEnvironment(stage.ToString())
                         // Enable detailed Errors if in Development Mode
-                        .UseSetting(
-                            WebHostDefaults.DetailedErrorsKey,
-                            (stage == Stage.Development).ToString()
-                        )
+                        .UseSetting(WebHostDefaults.DetailedErrorsKey, (stage == Stage.Development).ToString())
                         // Configure Services
                         .ConfigureServices(ConfigureWebHostServicesWithContext)
                         // Load Middlewares

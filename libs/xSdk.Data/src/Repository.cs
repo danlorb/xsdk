@@ -52,9 +52,7 @@ namespace xSdk.Data
             get
             {
                 if (_database == null)
-                    throw new SdkException(
-                        "Repository was not initialzed with the Datalayer Factory. So no Database is loaded."
-                    );
+                    throw new SdkException("Repository was not initialzed with the Datalayer Factory. So no Database is loaded.");
 
                 return _database;
             }
@@ -94,10 +92,7 @@ namespace xSdk.Data
         private string GetTableNameFromType(Type type)
         {
             string name = default;
-            if (
-                Attribute.GetCustomAttribute(type, typeof(TableAttribute))
-                is TableAttribute attribute
-            )
+            if (Attribute.GetCustomAttribute(type, typeof(TableAttribute)) is TableAttribute attribute)
                 name = attribute.Name;
 
             return name;
@@ -109,78 +104,46 @@ namespace xSdk.Data
 
         public abstract Task<bool> InsertAsync(TEntity entity, CancellationToken token = default);
 
-        public virtual int Insert(IEnumerable<TEntity> entities) =>
-            InsertAsync(entities).GetAwaiter().GetResult();
+        public virtual int Insert(IEnumerable<TEntity> entities) => InsertAsync(entities).GetAwaiter().GetResult();
 
-        public abstract Task<int> InsertAsync(
-            IEnumerable<TEntity> entities,
-            CancellationToken token = default
-        );
+        public abstract Task<int> InsertAsync(IEnumerable<TEntity> entities, CancellationToken token = default);
 
-        public virtual bool Remove(IPrimaryKey primaryKey) =>
-            RemoveAsync(primaryKey).GetAwaiter().GetResult();
+        public virtual bool Remove(IPrimaryKey primaryKey) => RemoveAsync(primaryKey).GetAwaiter().GetResult();
 
-        public abstract Task<bool> RemoveAsync(
-            IPrimaryKey primaryKey,
-            CancellationToken token = default
-        );
+        public abstract Task<bool> RemoveAsync(IPrimaryKey primaryKey, CancellationToken token = default);
 
-        public int Remove(IEnumerable<IPrimaryKey> primaryKeys) =>
-            RemoveAsync(primaryKeys).GetAwaiter().GetResult();
+        public int Remove(IEnumerable<IPrimaryKey> primaryKeys) => RemoveAsync(primaryKeys).GetAwaiter().GetResult();
 
-        public abstract Task<int> RemoveAsync(
-            IEnumerable<IPrimaryKey> primaryKeys,
-            CancellationToken token = default
-        );
+        public abstract Task<int> RemoveAsync(IEnumerable<IPrimaryKey> primaryKeys, CancellationToken token = default);
 
         public virtual bool Remove(TEntity entity) => RemoveAsync(entity).GetAwaiter().GetResult();
 
         public abstract Task<bool> RemoveAsync(TEntity entity, CancellationToken token = default);
 
-        public virtual int Remove(IEnumerable<TEntity> entities) =>
-            RemoveAsync(entities).GetAwaiter().GetResult();
+        public virtual int Remove(IEnumerable<TEntity> entities) => RemoveAsync(entities).GetAwaiter().GetResult();
 
-        public abstract Task<int> RemoveAsync(
-            IEnumerable<TEntity> entities,
-            CancellationToken token = default
-        );
+        public abstract Task<int> RemoveAsync(IEnumerable<TEntity> entities, CancellationToken token = default);
 
-        public virtual TEntity? Select(IPrimaryKey primaryKey) =>
-            SelectAsync(primaryKey).GetAwaiter().GetResult();
+        public virtual TEntity? Select(IPrimaryKey primaryKey) => SelectAsync(primaryKey).GetAwaiter().GetResult();
 
-        public abstract Task<TEntity?> SelectAsync(
-            IPrimaryKey primaryKey,
-            CancellationToken token = default
-        );
+        public abstract Task<TEntity?> SelectAsync(IPrimaryKey primaryKey, CancellationToken token = default);
 
-        public virtual IEnumerable<TEntity> SelectList() =>
-            SelectListAsync().GetAwaiter().GetResult();
+        public virtual IEnumerable<TEntity> SelectList() => SelectListAsync().GetAwaiter().GetResult();
 
-        public abstract Task<IEnumerable<TEntity>> SelectListAsync(
-            CancellationToken token = default
-        );
+        public abstract Task<IEnumerable<TEntity>> SelectListAsync(CancellationToken token = default);
 
-        public virtual bool Update(IPrimaryKey primaryKey, TEntity entity) =>
-            UpdateAsync(primaryKey, entity).GetAwaiter().GetResult();
+        public virtual bool Update(IPrimaryKey primaryKey, TEntity entity) => UpdateAsync(primaryKey, entity).GetAwaiter().GetResult();
 
-        public abstract Task<bool> UpdateAsync(
-            IPrimaryKey primaryKey,
-            TEntity entity,
-            CancellationToken token = default
-        );
+        public abstract Task<bool> UpdateAsync(IPrimaryKey primaryKey, TEntity entity, CancellationToken token = default);
 
         public virtual bool Upsert(TEntity entity) => UpsertAsync(entity).GetAwaiter().GetResult();
 
         public abstract Task<bool> UpsertAsync(TEntity entity, CancellationToken token = default);
 
-        protected virtual Task<IEnumerable<TEntity>> CreateFakesAsync(
-            CancellationToken token = default
-        ) => Task.FromResult<IEnumerable<TEntity>>(new List<TEntity>());
+        protected virtual Task<IEnumerable<TEntity>> CreateFakesAsync(CancellationToken token = default) =>
+            Task.FromResult<IEnumerable<TEntity>>(new List<TEntity>());
 
-        protected Task<TResult> ExecuteAsDemoIfEnabledAsync<TResult>(
-            Func<Repository<TEntity>, Task<TResult>> concreteCall,
-            CancellationToken token = default
-        )
+        protected Task<TResult> ExecuteAsDemoIfEnabledAsync<TResult>(Func<Repository<TEntity>, Task<TResult>> concreteCall, CancellationToken token = default)
         {
             if (IsDemoMode)
             {

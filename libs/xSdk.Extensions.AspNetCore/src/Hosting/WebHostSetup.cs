@@ -29,11 +29,7 @@ namespace xSdk.Hosting
             set => SetValue(Definitions.Http.Name, value);
         }
 
-        [Variable(
-            name: Definitions.Grpc.Name,
-            template: Definitions.Grpc.Template,
-            helpText: Definitions.Grpc.HelpText
-        )]
+        [Variable(name: Definitions.Grpc.Name, template: Definitions.Grpc.Template, helpText: Definitions.Grpc.HelpText)]
         public int Grpc
         {
             get => ReadValue<int>(Definitions.Grpc.Name);
@@ -52,33 +48,21 @@ namespace xSdk.Hosting
             set => SetValue(Definitions.Https.Name, value);
         }
 
-        [Variable(
-            name: Definitions.TlsCertFile.Name,
-            template: Definitions.TlsCertFile.Template,
-            helpText: Definitions.TlsCertFile.HelpText
-        )]
+        [Variable(name: Definitions.TlsCertFile.Name, template: Definitions.TlsCertFile.Template, helpText: Definitions.TlsCertFile.HelpText)]
         public string TlsCertFile
         {
             get => ReadValue<string>(Definitions.TlsCertFile.Name);
             set => SetValue(Definitions.TlsCertFile.Name, value);
         }
 
-        [Variable(
-            name: Definitions.TlsKeyFile.Name,
-            template: Definitions.TlsKeyFile.Template,
-            helpText: Definitions.TlsKeyFile.HelpText
-        )]
+        [Variable(name: Definitions.TlsKeyFile.Name, template: Definitions.TlsKeyFile.Template, helpText: Definitions.TlsKeyFile.HelpText)]
         public string TlsKeyFile
         {
             get => ReadValue<string>(Definitions.TlsKeyFile.Name);
             set => SetValue(Definitions.TlsKeyFile.Name, value);
         }
 
-        [Variable(
-            name: Definitions.AllowSystemPorts.Name,
-            template: Definitions.AllowSystemPorts.Template,
-            helpText: Definitions.AllowSystemPorts.HelpText
-        )]
+        [Variable(name: Definitions.AllowSystemPorts.Name, template: Definitions.AllowSystemPorts.Template, helpText: Definitions.AllowSystemPorts.HelpText)]
         public bool AllowSystemPorts
         {
             get => ReadValue<bool>(Definitions.AllowSystemPorts.Name);
@@ -104,8 +88,7 @@ namespace xSdk.Hosting
             {
                 public const string Name = "bind";
                 public const string Template = "--bind <host>";
-                public const string HelpText =
-                    "Starts as Server and binds to given host. Default is 'localhost'"; // DevSkim: ignore DS162092
+                public const string HelpText = "Starts as Server and binds to given host. Default is 'localhost'"; // DevSkim: ignore DS162092
                 public const string DefaultValue = "localhost"; // DevSkim: ignore DS162092
             }
 
@@ -113,8 +96,7 @@ namespace xSdk.Hosting
             {
                 public const string Name = "http";
                 public const string Template = "--http <port>";
-                public const string HelpText =
-                    "Starts as Server to listen for Http Traffic on given Port";
+                public const string HelpText = "Starts as Server to listen for Http Traffic on given Port";
                 public const int DefaultValue = 8080;
             }
 
@@ -122,8 +104,7 @@ namespace xSdk.Hosting
             {
                 public const string Name = "https";
                 public const string Template = "--https <port>";
-                public const string HelpText =
-                    "Starts as Server to listen for Https Traffic on given Port";
+                public const string HelpText = "Starts as Server to listen for Https Traffic on given Port";
                 public const int DefaultValue = 8081;
             }
 
@@ -131,24 +112,21 @@ namespace xSdk.Hosting
             {
                 public const string Name = "grpc";
                 public const string Template = "--grpc <port>";
-                public const string HelpText =
-                    "Starts as Server to listen for Grpc Traffic on given Port";
+                public const string HelpText = "Starts as Server to listen for Grpc Traffic on given Port";
             }
 
             public static class TlsCertFile
             {
                 public const string Name = "tls-cert-file";
                 public const string Template = "--tls-cert-file <file>";
-                public const string HelpText =
-                    "Specifies the path to the certificate for TLS. It requires a PEM-encoded file";
+                public const string HelpText = "Specifies the path to the certificate for TLS. It requires a PEM-encoded file";
             }
 
             public static class TlsKeyFile
             {
                 public const string Name = "tls-key-file";
                 public const string Template = "--tls-key-file <file>";
-                public const string HelpText =
-                    "Specifies the path to the private key for the certificate. It requires a PEM-encoded file";
+                public const string HelpText = "Specifies the path to the private key for the certificate. It requires a PEM-encoded file";
             }
 
             public static class AllowSystemPorts

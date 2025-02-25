@@ -11,8 +11,7 @@ namespace xSdk.Controllers
     [ApiVersion(1)]
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
-    public class VariableController(IVariableService variableSvc, ILogger<HealthController> logger)
-        : ControllerBase
+    public class VariableController(IVariableService variableSvc, ILogger<HealthController> logger) : ControllerBase
     {
         /// <summary>
         /// Gets all configured variables
@@ -23,9 +22,7 @@ namespace xSdk.Controllers
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IDictionary<string, object>>> GetVariables(
-            CancellationToken token = default
-        )
+        public async Task<ActionResult<IDictionary<string, object>>> GetVariables(CancellationToken token = default)
         {
             try
             {
@@ -67,9 +64,7 @@ namespace xSdk.Controllers
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IDictionary<string, object>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IDictionary<string, object>>> GetResourceNames(
-            CancellationToken token = default
-        )
+        public async Task<ActionResult<IDictionary<string, object>>> GetResourceNames(CancellationToken token = default)
         {
             try
             {
@@ -97,9 +92,7 @@ namespace xSdk.Controllers
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IDictionary<string, object>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IDictionary<string, object>>> GetValues(
-            CancellationToken token = default
-        )
+        public async Task<ActionResult<IDictionary<string, object>>> GetValues(CancellationToken token = default)
         {
             try
             {

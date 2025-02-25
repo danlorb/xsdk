@@ -8,9 +8,7 @@ namespace xSdk.Extensions.Variable
         [Fact]
         public void LoadServiceWithVariables()
         {
-            var service = fixture.GetService<IVariableService>(services =>
-                services.AddVariableServices()
-            );
+            var service = fixture.GetService<IVariableService>(services => services.AddVariableServices());
 
             service.RegisterSetup<EnvironmentSetup>();
 
@@ -21,9 +19,7 @@ namespace xSdk.Extensions.Variable
         [Fact]
         public void LoadEnvironemtVariablesWithNoValidationErrors()
         {
-            var service = fixture.GetService<IVariableService>(services =>
-                services.AddVariableServices()
-            );
+            var service = fixture.GetService<IVariableService>(services => services.AddVariableServices());
 
             Assert.NotNull(service);
             service.RegisterSetup<SetupWithNoPrefix>();

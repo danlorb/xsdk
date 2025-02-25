@@ -16,11 +16,7 @@ namespace xSdk.Extensions.Links
             this.Context = context;
         }
 
-        public LinkTransformationException(
-            string message,
-            Exception innerException,
-            LinkTransformationContext context
-        )
+        public LinkTransformationException(string message, Exception innerException, LinkTransformationContext context)
             : base(message, innerException)
         {
             this.Context = context;

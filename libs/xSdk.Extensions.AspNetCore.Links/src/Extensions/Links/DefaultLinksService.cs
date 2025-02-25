@@ -75,9 +75,7 @@ namespace xSdk.Extensions.Links
             }
 
             // look for policies defined on the type
-            var typeAttributes = typeof(TResource)
-                .GetTypeInfo()
-                .GetCustomAttributes<LinksAttribute>(true);
+            var typeAttributes = typeof(TResource).GetTypeInfo().GetCustomAttributes<LinksAttribute>(true);
             if (typeAttributes.Any())
             {
                 foreach (var policyName in typeAttributes.Select(a => a.Policy))
@@ -120,20 +118,13 @@ namespace xSdk.Extensions.Links
             await this.AddLinksAsync(linkContainer, policy);
         }
 
-        public async Task AddLinksAsync<TResource>(
-            TResource linkContainer,
-            IEnumerable<ILinksRequirement> requirements
-        )
+        public async Task AddLinksAsync<TResource>(TResource linkContainer, IEnumerable<ILinksRequirement> requirements)
             where TResource : ILinkContainer
         {
             if (requirements == null)
                 throw new ArgumentNullException(nameof(requirements));
 
-            logger.LogInformation(
-                "Applying links to {ResourceType} using requirements {Requirements}",
-                typeof(TResource).FullName,
-                requirements
-            );
+            logger.LogInformation("Applying links to {ResourceType} using requirements {Requirements}", typeof(TResource).FullName, requirements);
 
             var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
@@ -150,12 +141,7 @@ namespace xSdk.Extensions.Links
                 }
                 catch (Exception ex)
                 {
-                    logger.LogWarning(
-                        "Unhandled exception in {Handler}. Exception: {Exception}. Context: {Context}",
-                        handler,
-                        ex,
-                        ctx
-                    );
+                    logger.LogWarning("Unhandled exception in {Handler}. Exception: {Exception}. Context: {Context}", handler, ex, ctx);
                 }
             }
             if (!ctx.IsSuccess())
@@ -169,11 +155,7 @@ namespace xSdk.Extensions.Links
             evaluator.BuildLinks(ctx.Links, linkContainer);
             sw.Stop();
 
-            logger.LogInformation(
-                "Applied links to {ResourceType} in {ElapsedMilliseconds}ms",
-                typeof(TResource).FullName,
-                sw.ElapsedMilliseconds
-            );
+            logger.LogInformation("Applied links to {ResourceType} in {ElapsedMilliseconds}ms", typeof(TResource).FullName, sw.ElapsedMilliseconds);
         }
     }
 }

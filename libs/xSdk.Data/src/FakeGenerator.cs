@@ -9,125 +9,52 @@ namespace xSdk.Data
         private static Dictionary<string, object> _fakers;
         private static int GlobalCount = new Random().Next(1, 10);
 
-        public static TEntity Generate<TFake, TEntity>(
-            bool repeatableData = false,
-            bool strictMode = false
-        )
+        public static TEntity Generate<TFake, TEntity>(bool repeatableData = false, bool strictMode = false)
             where TFake : Fakes<TEntity>, new()
-            where TEntity : class, IEntity =>
-            GenerateAsync<TFake, TEntity>(DefaultContext, repeatableData, strictMode)
-                .GetAwaiter()
-                .GetResult();
+            where TEntity : class, IEntity => GenerateAsync<TFake, TEntity>(DefaultContext, repeatableData, strictMode).GetAwaiter().GetResult();
 
-        public static TEntity Generate<TFake, TEntity>(
-            string context,
-            bool repeatableData = false,
-            bool strictMode = false
-        )
+        public static TEntity Generate<TFake, TEntity>(string context, bool repeatableData = false, bool strictMode = false)
             where TFake : Fakes<TEntity>, new()
-            where TEntity : class, IEntity =>
-            GenerateAsync<TFake, TEntity>(context, repeatableData, strictMode)
-                .GetAwaiter()
-                .GetResult();
+            where TEntity : class, IEntity => GenerateAsync<TFake, TEntity>(context, repeatableData, strictMode).GetAwaiter().GetResult();
 
-        public static IEnumerable<TEntity> GenerateList<TFake, TEntity>(
-            bool repeatableData = false,
-            bool strictMode = false
-        )
+        public static IEnumerable<TEntity> GenerateList<TFake, TEntity>(bool repeatableData = false, bool strictMode = false)
             where TFake : Fakes<TEntity>, new()
             where TEntity : class, IEntity =>
-            GenerateListAsync<TFake, TEntity>(
-                    GlobalCount,
-                    DefaultContext,
-                    repeatableData,
-                    strictMode
-                )
-                .GetAwaiter()
-                .GetResult();
+            GenerateListAsync<TFake, TEntity>(GlobalCount, DefaultContext, repeatableData, strictMode).GetAwaiter().GetResult();
 
-        public static IEnumerable<TEntity> GenerateList<TFake, TEntity>(
-            string context,
-            bool repeatableData = false,
-            bool strictMode = false
-        )
+        public static IEnumerable<TEntity> GenerateList<TFake, TEntity>(string context, bool repeatableData = false, bool strictMode = false)
             where TFake : Fakes<TEntity>, new()
-            where TEntity : class, IEntity =>
-            GenerateListAsync<TFake, TEntity>(GlobalCount, context, repeatableData, strictMode)
-                .GetAwaiter()
-                .GetResult();
+            where TEntity : class, IEntity => GenerateListAsync<TFake, TEntity>(GlobalCount, context, repeatableData, strictMode).GetAwaiter().GetResult();
 
-        public static IEnumerable<TEntity> GenerateList<TFake, TEntity>(
-            int count,
-            bool repeatableData = false,
-            bool strictMode = false
-        )
+        public static IEnumerable<TEntity> GenerateList<TFake, TEntity>(int count, bool repeatableData = false, bool strictMode = false)
             where TFake : Fakes<TEntity>, new()
-            where TEntity : class, IEntity =>
-            GenerateListAsync<TFake, TEntity>(count, DefaultContext, repeatableData, strictMode)
-                .GetAwaiter()
-                .GetResult();
+            where TEntity : class, IEntity => GenerateListAsync<TFake, TEntity>(count, DefaultContext, repeatableData, strictMode).GetAwaiter().GetResult();
 
-        public static IEnumerable<TEntity> GenerateList<TFake, TEntity>(
-            int count,
-            string context,
-            bool repeatableData = false,
-            bool strictMode = false
-        )
+        public static IEnumerable<TEntity> GenerateList<TFake, TEntity>(int count, string context, bool repeatableData = false, bool strictMode = false)
             where TFake : Fakes<TEntity>, new()
-            where TEntity : class, IEntity =>
-            GenerateListAsync<TFake, TEntity>(count, context, repeatableData, strictMode)
-                .GetAwaiter()
-                .GetResult();
+            where TEntity : class, IEntity => GenerateListAsync<TFake, TEntity>(count, context, repeatableData, strictMode).GetAwaiter().GetResult();
 
-        public static Task<TEntity> GenerateAsync<TFake, TEntity>(
-            bool repeatableData = false,
-            bool strictMode = false
-        )
+        public static Task<TEntity> GenerateAsync<TFake, TEntity>(bool repeatableData = false, bool strictMode = false)
             where TFake : Fakes<TEntity>, new()
             where TEntity : class, IEntity =>
-            GenerateListAsync<TFake, TEntity>(1, DefaultContext, repeatableData, strictMode)
-                .ContinueWith(task => task.Result.SingleOrDefault());
+            GenerateListAsync<TFake, TEntity>(1, DefaultContext, repeatableData, strictMode).ContinueWith(task => task.Result.SingleOrDefault());
 
-        public static Task<TEntity> GenerateAsync<TFake, TEntity>(
-            string context,
-            bool repeatableData = false,
-            bool strictMode = false
-        )
+        public static Task<TEntity> GenerateAsync<TFake, TEntity>(string context, bool repeatableData = false, bool strictMode = false)
             where TFake : Fakes<TEntity>, new()
             where TEntity : class, IEntity =>
-            GenerateListAsync<TFake, TEntity>(1, context, repeatableData, strictMode)
-                .ContinueWith(task => task.Result.SingleOrDefault());
+            GenerateListAsync<TFake, TEntity>(1, context, repeatableData, strictMode).ContinueWith(task => task.Result.SingleOrDefault());
 
-        public static Task<IEnumerable<TEntity>> GenerateListAsync<TFake, TEntity>(
-            bool repeatableData = false,
-            bool strictMode = false
-        )
+        public static Task<IEnumerable<TEntity>> GenerateListAsync<TFake, TEntity>(bool repeatableData = false, bool strictMode = false)
             where TFake : Fakes<TEntity>, new()
-            where TEntity : class, IEntity =>
-            GenerateListAsync<TFake, TEntity>(
-                GlobalCount,
-                DefaultContext,
-                repeatableData,
-                strictMode
-            );
+            where TEntity : class, IEntity => GenerateListAsync<TFake, TEntity>(GlobalCount, DefaultContext, repeatableData, strictMode);
 
-        public static Task<IEnumerable<TEntity>> GenerateListAsync<TFake, TEntity>(
-            int count,
-            bool repeatableData = false,
-            bool strictMode = false
-        )
+        public static Task<IEnumerable<TEntity>> GenerateListAsync<TFake, TEntity>(int count, bool repeatableData = false, bool strictMode = false)
             where TFake : Fakes<TEntity>, new()
-            where TEntity : class, IEntity =>
-            GenerateListAsync<TFake, TEntity>(count, DefaultContext, repeatableData, strictMode);
+            where TEntity : class, IEntity => GenerateListAsync<TFake, TEntity>(count, DefaultContext, repeatableData, strictMode);
 
-        public static Task<IEnumerable<TEntity>> GenerateListAsync<TFake, TEntity>(
-            string context,
-            bool repeatableData = false,
-            bool strictMode = false
-        )
+        public static Task<IEnumerable<TEntity>> GenerateListAsync<TFake, TEntity>(string context, bool repeatableData = false, bool strictMode = false)
             where TFake : Fakes<TEntity>, new()
-            where TEntity : class, IEntity =>
-            GenerateListAsync<TFake, TEntity>(GlobalCount, context, repeatableData, strictMode);
+            where TEntity : class, IEntity => GenerateListAsync<TFake, TEntity>(GlobalCount, context, repeatableData, strictMode);
 
         public static Task<IEnumerable<TEntity>> GenerateListAsync<TFake, TEntity>(
             int count,
@@ -160,11 +87,7 @@ namespace xSdk.Data
             return Task.FromResult<IEnumerable<TEntity>>(new List<TEntity>());
         }
 
-        private static object InitFaker<TFake, TEntity>(
-            string context,
-            bool repeatableData,
-            bool strictMode
-        )
+        private static object InitFaker<TFake, TEntity>(string context, bool repeatableData, bool strictMode)
             where TFake : Fakes<TEntity>, new()
             where TEntity : class, IEntity
         {

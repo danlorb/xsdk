@@ -22,10 +22,7 @@ namespace xSdk.Plugins.WebApi
             return InputFormatterResult.Success(data);
         }
 
-        public override async Task<InputFormatterResult> ReadRequestBodyAsync(
-            InputFormatterContext context,
-            Encoding encoding
-        )
+        public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
         {
             string data = await ReadInternalAsync(context);
 

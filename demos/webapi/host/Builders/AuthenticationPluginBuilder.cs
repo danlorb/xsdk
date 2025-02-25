@@ -14,21 +14,27 @@ namespace xSdk.Demos.Builders
 
         public void ConfigureAuthentication(AuthenticationBuilder builder)
         {
-            builder.AddApiKeyRepository<ApiKeyRepository>();            
+            builder.AddApiKeyRepository<ApiKeyRepository>();
         }
 
         public void ConfigureAuthorization(AuthorizationOptions options)
         {
             // Configure here your Policies which will used in your Controller
-            options.AddPolicy(Policy_ReadAndWrite, policy =>
-            {
-                policy.RequireClaim(MyClaimTypes.MyTableA.Permission, MyClaimValues.Permissions.Write);
-            });
+            options.AddPolicy(
+                Policy_ReadAndWrite,
+                policy =>
+                {
+                    policy.RequireClaim(MyClaimTypes.MyTableA.Permission, MyClaimValues.Permissions.Write);
+                }
+            );
 
-            options.AddPolicy(Policy_OnlyRead, policy =>
-            {
-                policy.RequireClaim(MyClaimTypes.MyTableA.Permission, MyClaimValues.Permissions.Read);                
-            });
+            options.AddPolicy(
+                Policy_OnlyRead,
+                policy =>
+                {
+                    policy.RequireClaim(MyClaimTypes.MyTableA.Permission, MyClaimValues.Permissions.Read);
+                }
+            );
         }
 
         public void TryRetrieveAuthenticationScheme(HttpContext context, out string? scheme)

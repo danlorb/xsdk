@@ -9,11 +9,7 @@ namespace xSdk.Data.Converters.Json
 {
     public sealed class ClaimsConverter : JsonConverter<IEnumerable<Claim>>
     {
-        public override IEnumerable<Claim> Read(
-            ref Utf8JsonReader reader,
-            Type typeToConvert,
-            JsonSerializerOptions options
-        )
+        public override IEnumerable<Claim> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var result = new List<Claim>();
 
@@ -50,11 +46,7 @@ namespace xSdk.Data.Converters.Json
             return result;
         }
 
-        public override void Write(
-            Utf8JsonWriter writer,
-            IEnumerable<Claim> value,
-            JsonSerializerOptions options
-        )
+        public override void Write(Utf8JsonWriter writer, IEnumerable<Claim> value, JsonSerializerOptions options)
         {
             writer.WriteStartArray();
             foreach (var item in value)
@@ -84,32 +76,16 @@ namespace xSdk.Data.Converters.Json
             if (string.IsNullOrEmpty(value))
                 return null;
 
-            if (
-                string.IsNullOrEmpty(valueType)
-                && string.IsNullOrEmpty(issuer)
-                && string.IsNullOrEmpty(originalIssuer)
-            )
+            if (string.IsNullOrEmpty(valueType) && string.IsNullOrEmpty(issuer) && string.IsNullOrEmpty(originalIssuer))
                 return new Claim(type, value);
 
-            if (
-                !string.IsNullOrEmpty(valueType)
-                && string.IsNullOrEmpty(issuer)
-                && string.IsNullOrEmpty(originalIssuer)
-            )
+            if (!string.IsNullOrEmpty(valueType) && string.IsNullOrEmpty(issuer) && string.IsNullOrEmpty(originalIssuer))
                 return new Claim(type, value, valueType);
 
-            if (
-                !string.IsNullOrEmpty(valueType)
-                && !string.IsNullOrEmpty(issuer)
-                && string.IsNullOrEmpty(originalIssuer)
-            )
+            if (!string.IsNullOrEmpty(valueType) && !string.IsNullOrEmpty(issuer) && string.IsNullOrEmpty(originalIssuer))
                 return new Claim(type, value, valueType, issuer);
 
-            if (
-                !string.IsNullOrEmpty(valueType)
-                && !string.IsNullOrEmpty(issuer)
-                && !string.IsNullOrEmpty(originalIssuer)
-            )
+            if (!string.IsNullOrEmpty(valueType) && !string.IsNullOrEmpty(issuer) && !string.IsNullOrEmpty(originalIssuer))
                 return new Claim(type, value, valueType, issuer, originalIssuer);
 
             return null;

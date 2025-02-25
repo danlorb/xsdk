@@ -6,9 +6,7 @@ namespace xSdk.Extensions.Variable.Commands
     internal class ListCommandSettings : CommandSettings
     {
         [CommandOption("-f|--format <FORMAT>")]
-        [Description(
-            "Formats the Output (default Name, Template, Protected, Prefix, Defined, Value)"
-        )]
+        [Description("Formats the Output (default Name, Template, Protected, Prefix, Defined, Value)")]
         [DefaultValue("Name, Template, Protected, Prefix, Defined, Value")]
         public string FormatString { get; set; }
 

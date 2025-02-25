@@ -40,10 +40,7 @@ namespace xSdk.Data.Annotations
 
         internal bool IsStringValue() => _currentType == typeof(string);
 
-        protected override ValidationResult IsValid(
-            object value,
-            ValidationContext validationContext
-        )
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             // TRICKY: This will only used to convert the correct Value to Destination Type
             var property = validationContext.ObjectType.GetProperty(validationContext.MemberName);

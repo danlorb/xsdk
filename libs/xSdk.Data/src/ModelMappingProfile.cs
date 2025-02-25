@@ -9,9 +9,7 @@ namespace xSdk.Data
 
         public ModelMappingProfile()
         {
-            this.CreateMap<TModel, TModel>()
-                .ForMember(x => x.Id, opts => opts.Ignore())
-                .ForMember(x => x.PrimaryKey, opts => opts.Ignore());
+            this.CreateMap<TModel, TModel>().ForMember(x => x.Id, opts => opts.Ignore()).ForMember(x => x.PrimaryKey, opts => opts.Ignore());
         }
     }
 }

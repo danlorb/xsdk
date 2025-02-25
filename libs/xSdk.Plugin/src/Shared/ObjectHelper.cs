@@ -42,11 +42,7 @@ namespace xSdk.Shared
             return hash;
         }
 
-        public static bool Equals<TType>(
-            object source,
-            object dest,
-            Func<TType, TType, bool> compare
-        )
+        public static bool Equals<TType>(object source, object dest, Func<TType, TType, bool> compare)
         {
             try
             {

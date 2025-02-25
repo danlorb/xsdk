@@ -21,9 +21,7 @@ namespace xSdk.Hosting
 
             builder.AddEnvironmentVariables(prefix: "DOTNET_");
             builder.AddEnvironmentVariables(prefix: "ASPNET_");
-            builder.AddEnvironmentVariables(
-                prefix: $"{SlimHost.Instance.AppPrefix.ToUpperInvariant()}_"
-            );
+            builder.AddEnvironmentVariables(prefix: $"{SlimHost.Instance.AppPrefix.ToUpperInvariant()}_");
         }
 
         internal static void LoadAppConfiguration(IConfigurationBuilder builder)
@@ -31,18 +29,12 @@ namespace xSdk.Hosting
             LoadAppConfiguration(null, builder);
         }
 
-        public static void LoadAppConfiguration(
-            HostBuilderContext? context,
-            IConfigurationBuilder builder
-        )
+        public static void LoadAppConfiguration(HostBuilderContext? context, IConfigurationBuilder builder)
         {
             logger.Info("Try to load Application Configuration");
 
             var fileSystemService = new FileSystemService();
-            var root = fileSystemService
-                .RequestFileSystemAsync(FileSystemContext.Machine)
-                .GetAwaiter()
-                .GetResult();
+            var root = fileSystemService.RequestFileSystemAsync(FileSystemContext.Machine).GetAwaiter().GetResult();
 
             var configFolder = FileSystemHelper.CreateSpecificDataFolder(root, "/config");
 
@@ -51,10 +43,7 @@ namespace xSdk.Hosting
 
             if (context != null)
             {
-                configFile = GetConfigFile(
-                    configFolder,
-                    context.HostingEnvironment.EnvironmentName
-                );
+                configFile = GetConfigFile(configFolder, context.HostingEnvironment.EnvironmentName);
                 LoadConfigurationFile(builder, configFile, true);
             }
 
@@ -68,11 +57,7 @@ namespace xSdk.Hosting
             }
         }
 
-        private static void LoadConfigurationFile(
-            IConfigurationBuilder builder,
-            string? file,
-            bool reloadOnChange = false
-        )
+        private static void LoadConfigurationFile(IConfigurationBuilder builder, string? file, bool reloadOnChange = false)
         {
             if (!string.IsNullOrEmpty(file) && File.Exists(file))
             {
@@ -97,11 +82,7 @@ namespace xSdk.Hosting
                 logPostFix = $" for Environment '{envName}'";
             }
 
-            logger.Info(
-                "Try to determine configuration file in folder '{0}'{1}",
-                configFolder,
-                logPostFix
-            );
+            logger.Info("Try to determine configuration file in folder '{0}'{1}", configFolder, logPostFix);
             var configFile = Path.Combine(configFolder, configFileName);
 
             if (!File.Exists(configFile))
@@ -109,11 +90,7 @@ namespace xSdk.Hosting
                 logger.Trace("Configuration file could not found!");
                 configFolder = FileSystemHelper.GetExecutingFolder();
 
-                logger.Info(
-                    "Last try! Try to load configuration file from Visual Studio project folder '{0}'{1}",
-                    configFolder,
-                    logPostFix
-                );
+                logger.Info("Last try! Try to load configuration file from Visual Studio project folder '{0}'{1}", configFolder, logPostFix);
                 configFile = Path.Combine(configFolder, configFileName);
             }
 

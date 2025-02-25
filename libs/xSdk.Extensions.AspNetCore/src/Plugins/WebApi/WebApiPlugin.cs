@@ -15,10 +15,9 @@ namespace xSdk.Plugins.WebApi
 {
     public class WebApiPlugin : WebHostPluginBase
     {
-        public override void ConfigureServices(
-            WebHostBuilderContext context,
-            IServiceCollection services
-        )
+        protected override int Order => 50;
+
+        public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
         {
             Logger.Trace("Load Setups for Web Host Builder");
             services
@@ -27,17 +26,11 @@ namespace xSdk.Plugins.WebApi
                 // Add Problem Details Services
                 .AddProblemDetails(_ =>
                 {
-                    var currentStage = SlimHost
-                        .Instance.VariableSystem.GetSetup<EnvironmentSetup>()
-                        .Stage;
+                    var currentStage = SlimHost.Instance.VariableSystem.GetSetup<EnvironmentSetup>().Stage;
 
                     _.IncludeExceptionDetails = (ctx, ex) =>
                     {
-                        if (
-                            Debugger.IsAttached
-                            || currentStage == Stage.Development
-                            || currentStage == Stage.Integration
-                        )
+                        if (Debugger.IsAttached || currentStage == Stage.Development || currentStage == Stage.Integration)
                             return true;
 
                         return false;
@@ -59,9 +52,8 @@ namespace xSdk.Plugins.WebApi
                 .AddControllers(_ =>
                 {
                     _.InputFormatters.Add(new PlainTextFormatter());
-                    SlimHost.Instance.PluginSystem.Invoke<IWebApiPluginBuilder>(x =>
-                        x.ConfigureMvc(_)
-                    );
+
+                    SlimHost.Instance.PluginSystem.Invoke<IWebApiPluginBuilder>(x => x.ConfigureMvc(_));
                 })
                 // Configure Json
                 .AddJsonOptions(_ =>
@@ -70,29 +62,50 @@ namespace xSdk.Plugins.WebApi
                 });
 
             // Enable Versioning
-            services.AddApiVersioning(_ =>
-            {
-                // Add the headers "api-supported-versions" and "api-deprecated-versions"
-                // This is better for discoverability
-                _.ReportApiVersions = true;
+            services
+                .AddApiVersioning(_ =>
+                {
+                    // Add the headers "api-supported-versions" and "api-deprecated-versions"
+                    // This is better for discoverability
+                    _.ReportApiVersions = true;
 
-                // AssumeDefaultVersionWhenUnspecified should only be enabled when supporting legacy services that did not previously
-                // support API versioning. Forcing existing clients to specify an explicit API version for an
-                // existing service introduces a breaking change. Conceptually, clients in this situation are
-                // bound to some API version of a service, but they don't know what it is and never explicit request it.
-                _.AssumeDefaultVersionWhenUnspecified = true;
-                _.DefaultApiVersion = new ApiVersion(1, 0);
+                    // AssumeDefaultVersionWhenUnspecified should only be enabled when supporting legacy services that did not previously
+                    // support API versioning. Forcing existing clients to specify an explicit API version for an
+                    // existing service introduces a breaking change. Conceptually, clients in this situation are
+                    // bound to some API version of a service, but they don't know what it is and never explicit request it.
+                    _.AssumeDefaultVersionWhenUnspecified = true;
+                    _.DefaultApiVersion = new ApiVersion(1, 0);
 
-                // Defines how an API version is read from the current HTTP request
-                _.ApiVersionReader = ApiVersionReader.Combine(
-                    new QueryStringApiVersionReader("api-version"),
-                    new HeaderApiVersionReader("api-version")
-                );
-            });
+                    // Defines how an API version is read from the current HTTP request
+                    _.ApiVersionReader = ApiVersionReader.Combine(
+                        new UrlSegmentApiVersionReader(),
+                        new QueryStringApiVersionReader("api-version"),
+                        new HeaderApiVersionReader("X-API-Version"),
+                        new MediaTypeApiVersionReader("version")
+                    );
+                })
+                .AddMvc();
 
+            // Enable Endpoints for API Explorer
             services.AddEndpointsApiExplorer();
 
             LoadApplicationParts(mvcBuilder);
+        }
+
+        public override void ConfigureDefaults(WebHostBuilderContext context, IApplicationBuilder app)
+        {
+            Logger.Debug("Load Environtment Setup");
+            var envSetup = app.ApplicationServices.GetRequiredService<IVariableService>().GetSetup<IEnvironmentSetup>();
+
+            if (envSetup != null && envSetup.Stage == Stage.Development)
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            Logger.Debug("Enable HTTPS Redirection");
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
         }
 
         public override void Configure(WebHostBuilderContext context, IApplicationBuilder app)

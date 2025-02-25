@@ -8,9 +8,7 @@ namespace xSdk.Extensions.Variable
         [Fact]
         public void RegisterVariableProvider()
         {
-            var service = fixture.GetService<IVariableService>(services =>
-                services.AddVariableServices()
-            );
+            var service = fixture.GetService<IVariableService>(services => services.AddVariableServices());
 
             var ex = Record.Exception(() => service.RegisterProvider(typeof(TestVariableProvider)));
 

@@ -58,16 +58,14 @@ namespace xSdk.Extensions.Variable
             {
                 public const string Name = "service-name";
                 public const string Template = "--service-name <name>";
-                public const string HelpText =
-                    "Service name to identify the application in MaaS environments";
+                public const string HelpText = "Service name to identify the application in MaaS environments";
             }
 
             public static class ServiceNamespace
             {
                 public const string Name = "service-namespace";
                 public const string Template = "--service-namespace <namespace>";
-                public const string HelpText =
-                    "Service namespace to identify the application in MaaS environments";
+                public const string HelpText = "Service namespace to identify the application in MaaS environments";
                 public const string DefaultValue = "xSdk";
             }
 
@@ -75,15 +73,13 @@ namespace xSdk.Extensions.Variable
             {
                 public const string Name = "service-version";
                 public const string Template = "--service-version <version>";
-                public const string HelpText =
-                    "Service version to identify the application in MaaS environments";
+                public const string HelpText = "Service version to identify the application in MaaS environments";
             }
 
             public static class ServiceFullName
             {
                 public const string Name = "service-fullname";
-                public const string HelpText =
-                    "Fullname for the service identify the application in MaaS environments";
+                public const string HelpText = "Fullname for the service identify the application in MaaS environments";
             }
 
             public static class MachineName

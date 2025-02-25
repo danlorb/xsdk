@@ -7,8 +7,7 @@ namespace xSdk.Extensions.Variable
     internal partial class VariableService
     {
         private Dictionary<string, VariableProvider> _systemProviders;
-        private Dictionary<string, VariableProvider> _registeredProviders =
-            new Dictionary<string, VariableProvider>();
+        private Dictionary<string, VariableProvider> _registeredProviders = new Dictionary<string, VariableProvider>();
 
         public void RegisterProvider(Type providerType)
         {
@@ -64,12 +63,7 @@ namespace xSdk.Extensions.Variable
         {
             if (ExistsVariable(name))
             {
-                var tmpValue = ReadVariableValueInternal<TType>(
-                    name,
-                    false,
-                    false,
-                    out bool valueFound
-                );
+                var tmpValue = ReadVariableValueInternal<TType>(name, false, false, out bool valueFound);
                 if (valueFound)
                 {
                     value = tmpValue;
@@ -100,18 +94,10 @@ namespace xSdk.Extensions.Variable
             }
         }
 
-        private TType ReadVariableValueInternal<TType>(
-            string name,
-            bool shouldThrowIfNotFound,
-            bool saveVariable
-        ) => ReadVariableValueInternal<TType>(name, shouldThrowIfNotFound, saveVariable, out _);
+        private TType ReadVariableValueInternal<TType>(string name, bool shouldThrowIfNotFound, bool saveVariable) =>
+            ReadVariableValueInternal<TType>(name, shouldThrowIfNotFound, saveVariable, out _);
 
-        private TType ReadVariableValueInternal<TType>(
-            string name,
-            bool shouldThrowIfNotFound,
-            bool saveVariable,
-            out bool valueFound
-        )
+        private TType ReadVariableValueInternal<TType>(string name, bool shouldThrowIfNotFound, bool saveVariable, out bool valueFound)
         {
             valueFound = true;
 
@@ -122,26 +108,18 @@ namespace xSdk.Extensions.Variable
                 if (!Providers[nameof(MemoryProvider)].TryReadVariable(variable, out TType value))
                 {
                     // then read from Commandline
-                    if (
-                        !Providers[nameof(CommandlineProvider)].TryReadVariable(variable, out value)
-                    )
+                    if (!Providers[nameof(CommandlineProvider)].TryReadVariable(variable, out value))
                     {
                         // then from System Environment
                         if (!Providers[nameof(SystemProvider)].TryReadVariable(variable, out value))
                         {
                             // then from File
-                            if (
-                                !Providers[nameof(FileProvider)]
-                                    .TryReadVariable(variable, out value)
-                            )
+                            if (!Providers[nameof(FileProvider)].TryReadVariable(variable, out value))
                             {
                                 const string optionsProviderKey = nameof(OptionProvider);
                                 if (Providers.ContainsKey(optionsProviderKey))
                                 {
-                                    if (
-                                        !Providers[optionsProviderKey]
-                                            .TryReadVariable(variable, out value)
-                                    )
+                                    if (!Providers[optionsProviderKey].TryReadVariable(variable, out value))
                                     {
                                         // Last Chance, try to load the Fallback
                                         if (!Fallback(variable, shouldThrowIfNotFound, out value))
@@ -200,11 +178,7 @@ namespace xSdk.Extensions.Variable
             return default;
         }
 
-        private bool Fallback<TType>(
-            IVariable variable,
-            bool shouldThrowIfNotFound,
-            out TType value
-        )
+        private bool Fallback<TType>(IVariable variable, bool shouldThrowIfNotFound, out TType value)
         {
             // Before we use the Fallback Trial, we try to load from registered providers
             if (TryLoadFromRegisteredProviders(variable, out value))
@@ -217,9 +191,7 @@ namespace xSdk.Extensions.Variable
             {
                 if (shouldThrowIfNotFound)
                 {
-                    throw new SdkException(
-                        $"Automation variable '{variable.Name}' could not found/loaded."
-                    );
+                    throw new SdkException($"Automation variable '{variable.Name}' could not found/loaded.");
                 }
 
                 return false;

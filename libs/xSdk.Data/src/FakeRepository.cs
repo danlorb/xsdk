@@ -9,9 +9,7 @@ namespace xSdk.Data
 
         internal FakeRepository(IEnumerable<TEntity> values)
         {
-            _dbValues =
-                new Collection<TEntity>(values.ToList())
-                ?? throw new ArgumentNullException(nameof(values));
+            _dbValues = new Collection<TEntity>(values.ToList()) ?? throw new ArgumentNullException(nameof(values));
         }
 
         public override Task<bool> InsertAsync(TEntity entity, CancellationToken token = default)
@@ -20,20 +18,14 @@ namespace xSdk.Data
             return Task.FromResult(true);
         }
 
-        public override Task<int> InsertAsync(
-            IEnumerable<TEntity> entities,
-            CancellationToken token = default
-        )
+        public override Task<int> InsertAsync(IEnumerable<TEntity> entities, CancellationToken token = default)
         {
             _dbValues = _dbValues.Concat(entities).ToList();
 
             return Task.FromResult(entities.Count());
         }
 
-        public override Task<bool> RemoveAsync(
-            IPrimaryKey primaryKey,
-            CancellationToken token = default
-        )
+        public override Task<bool> RemoveAsync(IPrimaryKey primaryKey, CancellationToken token = default)
         {
             _dbValues = _dbValues.Where(x => x.PrimaryKey != primaryKey).ToList();
 
@@ -47,10 +39,7 @@ namespace xSdk.Data
             return Task.FromResult(true);
         }
 
-        public override Task<int> RemoveAsync(
-            IEnumerable<TEntity> entities,
-            CancellationToken token = default
-        )
+        public override Task<int> RemoveAsync(IEnumerable<TEntity> entities, CancellationToken token = default)
         {
             foreach (var entity in entities)
                 Remove(entity);
@@ -58,10 +47,7 @@ namespace xSdk.Data
             return Task.FromResult(entities.Count());
         }
 
-        public override Task<int> RemoveAsync(
-            IEnumerable<IPrimaryKey> primaryKeys,
-            CancellationToken token = default
-        )
+        public override Task<int> RemoveAsync(IEnumerable<IPrimaryKey> primaryKeys, CancellationToken token = default)
         {
             foreach (var primaryKey in primaryKeys)
                 Remove(primaryKey);
@@ -69,26 +55,17 @@ namespace xSdk.Data
             return Task.FromResult(primaryKeys.Count());
         }
 
-        public override Task<TEntity?> SelectAsync(
-            IPrimaryKey primaryKey,
-            CancellationToken token = default
-        )
+        public override Task<TEntity?> SelectAsync(IPrimaryKey primaryKey, CancellationToken token = default)
         {
             return Task.FromResult(_dbValues.SingleOrDefault(x => x.PrimaryKey == primaryKey));
         }
 
-        public override Task<IEnumerable<TEntity>> SelectListAsync(
-            CancellationToken token = default
-        )
+        public override Task<IEnumerable<TEntity>> SelectListAsync(CancellationToken token = default)
         {
             return Task.FromResult<IEnumerable<TEntity>>(_dbValues);
         }
 
-        public override Task<bool> UpdateAsync(
-            IPrimaryKey primaryKey,
-            TEntity entity,
-            CancellationToken token = default
-        )
+        public override Task<bool> UpdateAsync(IPrimaryKey primaryKey, TEntity entity, CancellationToken token = default)
         {
             Remove(primaryKey);
             Insert(entity);

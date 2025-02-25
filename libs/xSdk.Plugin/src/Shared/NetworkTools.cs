@@ -77,10 +77,7 @@ namespace xSdk.Shared
         {
             return NetworkInterface
                 .GetAllNetworkInterfaces()
-                .Where(x =>
-                    x.OperationalStatus == OperationalStatus.Up
-                    && x.NetworkInterfaceType != NetworkInterfaceType.Loopback
-                )
+                .Where(x => x.OperationalStatus == OperationalStatus.Up && x.NetworkInterfaceType != NetworkInterfaceType.Loopback)
                 .Select(x => x.GetPhysicalAddress().ToString())
                 .FirstOrDefault();
         }

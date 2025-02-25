@@ -6,11 +6,7 @@ namespace xSdk.Data.Converters.Json
 {
     public sealed class VersionConverter : JsonConverter<Version>
     {
-        public override Version Read(
-            ref Utf8JsonReader reader,
-            Type typeToConvert,
-            JsonSerializerOptions options
-        )
+        public override Version Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             Version result = default;
             if (reader.TokenType == JsonTokenType.String)
@@ -24,11 +20,7 @@ namespace xSdk.Data.Converters.Json
             return result;
         }
 
-        public override void Write(
-            Utf8JsonWriter writer,
-            Version value,
-            JsonSerializerOptions options
-        )
+        public override void Write(Utf8JsonWriter writer, Version value, JsonSerializerOptions options)
         {
             writer.WriteStringValue(value.ToString());
         }

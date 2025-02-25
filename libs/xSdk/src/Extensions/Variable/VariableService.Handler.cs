@@ -6,8 +6,7 @@ namespace xSdk.Extensions.Variable
 {
     internal partial class VariableService
     {
-        public ConcurrentBag<IVariable> Variables { get; private set; } =
-            new ConcurrentBag<IVariable>();
+        public ConcurrentBag<IVariable> Variables { get; private set; } = new ConcurrentBag<IVariable>();
 
         internal IVariable LoadVariable(string name) => LoadVariableInternal(name);
 
@@ -23,9 +22,7 @@ namespace xSdk.Extensions.Variable
                 }
                 else
                 {
-                    throw new SdkException(
-                        $"Value for variable '{name}' could not setted, because variable is write protected"
-                    );
+                    throw new SdkException($"Value for variable '{name}' could not setted, because variable is write protected");
                 }
             }
         }
@@ -43,20 +40,13 @@ namespace xSdk.Extensions.Variable
             }
         }
 
-        public void NewVariable(IVariable variable) =>
-            NewVariable<object>(variable, default, false);
+        public void NewVariable(IVariable variable) => NewVariable<object>(variable, default, false);
 
-        public void NewVariable(IVariable variable, bool throwIfAlreadyExists) =>
-            NewVariable<object>(variable, default, throwIfAlreadyExists);
+        public void NewVariable(IVariable variable, bool throwIfAlreadyExists) => NewVariable<object>(variable, default, throwIfAlreadyExists);
 
-        public void NewVariable<TValueType>(IVariable variable, TValueType value) =>
-            NewVariable<TValueType>(variable, value, false);
+        public void NewVariable<TValueType>(IVariable variable, TValueType value) => NewVariable<TValueType>(variable, value, false);
 
-        public void NewVariable<TValueType>(
-            IVariable variable,
-            TValueType value,
-            bool throwIfAlreadyExists
-        )
+        public void NewVariable<TValueType>(IVariable variable, TValueType value, bool throwIfAlreadyExists)
         {
             AddVariableInternal(variable, throwIfAlreadyExists);
             if (value != null)
@@ -65,17 +55,11 @@ namespace xSdk.Extensions.Variable
             }
         }
 
-        private void ReplaceVariable(Variable variable) =>
-            ReplaceVariable<object>(variable, null, false);
+        private void ReplaceVariable(Variable variable) => ReplaceVariable<object>(variable, null, false);
 
-        private void ReplaceVariable(Variable variable, bool ignoreWriteProtection) =>
-            ReplaceVariable<object>(variable, null, ignoreWriteProtection);
+        private void ReplaceVariable(Variable variable, bool ignoreWriteProtection) => ReplaceVariable<object>(variable, null, ignoreWriteProtection);
 
-        private void ReplaceVariable<TValueType>(
-            Variable variable,
-            TValueType value,
-            bool ignoreWriteProtection
-        )
+        private void ReplaceVariable<TValueType>(Variable variable, TValueType value, bool ignoreWriteProtection)
         {
             // Replace a existing Variable
             var item = LoadVariableInternal(variable?.Name);
@@ -95,16 +79,12 @@ namespace xSdk.Extensions.Variable
                 }
                 else
                 {
-                    throw new SdkException(
-                        $"Variable '{variable.Name}' could not replaced, because variable is write protected"
-                    );
+                    throw new SdkException($"Variable '{variable.Name}' could not replaced, because variable is write protected");
                 }
             }
             else
             {
-                throw new SdkException(
-                    $"Variable '{variable.Name}' could not replaced, because it does not exist"
-                );
+                throw new SdkException($"Variable '{variable.Name}' could not replaced, because it does not exist");
             }
         }
 
@@ -116,10 +96,7 @@ namespace xSdk.Extensions.Variable
                 return variable;
             }
 
-            return Variable.Create<TType>(
-                name,
-                v => v.SetHelpText("This is a dynamic generated Variable")
-            );
+            return Variable.Create<TType>(name, v => v.SetHelpText("This is a dynamic generated Variable"));
         }
 
         private IVariable LoadVariableInternal(string name)
@@ -156,9 +133,7 @@ namespace xSdk.Extensions.Variable
             {
                 if (throwIfAlreadyExists)
                 {
-                    throw new SdkException(
-                        $"Variable '{variable.Name}' could not added, because its already exists"
-                    );
+                    throw new SdkException($"Variable '{variable.Name}' could not added, because its already exists");
                 }
             }
         }

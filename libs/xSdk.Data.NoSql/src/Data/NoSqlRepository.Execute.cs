@@ -74,10 +74,7 @@ namespace xSdk.Data
                 var name = this.GetTableName();
                 var openedDatabase = this.Database.Open<LiteDatabase>();
 
-                var bsonArgs = parameters.ToDictionary(
-                    x => x.Key,
-                    y => BsonValueConverter.Convert(y.Value)
-                );
+                var bsonArgs = parameters.ToDictionary(x => x.Key, y => BsonValueConverter.Convert(y.Value));
                 var bsonDoc = new BsonDocument(bsonArgs);
                 result = openedDatabase.Execute(command, bsonDoc);
             }

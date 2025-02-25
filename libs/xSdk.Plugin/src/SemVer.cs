@@ -49,16 +49,12 @@ namespace xSdk
             this._versionObject = new SemanticVersioning.Version(_version);
         }
 
-        private SemVer(
-            SemanticVersioning.Version versionObject,
-            SemanticVersioning.Range rangeObject
-        )
+        private SemVer(SemanticVersioning.Version versionObject, SemanticVersioning.Range rangeObject)
         {
             this._version = versionObject.ToString();
             this._range = rangeObject.ToString();
 
-            this._versionObject =
-                versionObject ?? throw new ArgumentNullException(nameof(versionObject));
+            this._versionObject = versionObject ?? throw new ArgumentNullException(nameof(versionObject));
             this._rangeObject = rangeObject ?? throw new ArgumentNullException(nameof(rangeObject));
         }
 
@@ -215,8 +211,7 @@ namespace xSdk
 
         public static bool operator <=(SemVer left, SemVer right) => !(left <= right);
 
-        public static bool HasRangeStrings(string value) =>
-            (value.IndexOf("~") > -1 || value.IndexOf("^") > -1 || value.IndexOf(".x") > -1);
+        public static bool HasRangeStrings(string value) => (value.IndexOf("~") > -1 || value.IndexOf("^") > -1 || value.IndexOf(".x") > -1);
 
         private static string ReplaceRangeStrings(string value)
         {

@@ -25,9 +25,7 @@ namespace xSdk.Extensions.Links
         public IEnumerable<TAttribute> GetAttributes<TAttribute>()
             where TAttribute : Attribute
         {
-            return methodInfo
-                .GetCustomAttributes<TAttribute>()
-                .Union(ControllerType.GetTypeInfo().GetCustomAttributes<TAttribute>());
+            return methodInfo.GetCustomAttributes<TAttribute>().Union(ControllerType.GetTypeInfo().GetCustomAttributes<TAttribute>());
         }
     }
 }

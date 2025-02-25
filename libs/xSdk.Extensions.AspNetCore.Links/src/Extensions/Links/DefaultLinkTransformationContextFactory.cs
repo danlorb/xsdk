@@ -15,11 +15,7 @@ namespace xSdk.Extensions.Links
         private readonly ILoggerFactory loggerFactory;
         private readonly LinkGenerator generator;
 
-        public DefaultLinkTransformationContextFactory(
-            IActionContextAccessor actionAccessor,
-            ILoggerFactory loggerFactory,
-            LinkGenerator generator
-        )
+        public DefaultLinkTransformationContextFactory(IActionContextAccessor actionAccessor, ILoggerFactory loggerFactory, LinkGenerator generator)
         {
             this.actionAccessor = actionAccessor;
             this.loggerFactory = loggerFactory;

@@ -131,10 +131,7 @@ namespace xSdk.Extensions.Commands
                     input = input.Replace("'", "");
                 }
 
-                var splittedCommandline = input.Split(
-                    new char[] { ' ' },
-                    StringSplitOptions.RemoveEmptyEntries
-                );
+                var splittedCommandline = input.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 if (splittedCommandline.Length == 1)
                 {
                     if (string.Compare(input, Assembly.GetEntryAssembly()?.Location, true) == 0)
@@ -147,10 +144,7 @@ namespace xSdk.Extensions.Commands
                 var currentValue = string.Empty;
                 foreach (var splitValue in splittedCommandline)
                 {
-                    if (
-                        (splitValue.StartsWith('-') || splitValue.StartsWith("--"))
-                        && !TestOptionIsNumeric(splitValue)
-                    )
+                    if ((splitValue.StartsWith('-') || splitValue.StartsWith("--")) && !TestOptionIsNumeric(splitValue))
                     {
                         if (!string.IsNullOrEmpty(currentValue))
                         {
@@ -285,20 +279,14 @@ namespace xSdk.Extensions.Commands
 
                 if (equalStart > -1)
                 {
-                    var splittedOptions = value.Split(
-                        new char[] { '=' },
-                        StringSplitOptions.RemoveEmptyEntries
-                    );
+                    var splittedOptions = value.Split(new char[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
                     option = splittedOptions[0].Trim();
                     optionValue = splittedOptions[1].Trim();
                 }
 
                 if (colonStart > -1 && colonStart < equalStart)
                 {
-                    var splittedOptions = value.Split(
-                        new char[] { ':' },
-                        StringSplitOptions.RemoveEmptyEntries
-                    );
+                    var splittedOptions = value.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
                     option = splittedOptions[0].Trim();
                     optionValue = splittedOptions[1].Trim();
                 }
@@ -340,9 +328,7 @@ namespace xSdk.Extensions.Commands
             // Remove not needed Commandline Params
             if (ContainsPattern(pattern))
             {
-                var template = Arguments.SingleOrDefault(x =>
-                    x.IndexOf(pattern, StringComparison.InvariantCultureIgnoreCase) > -1
-                );
+                var template = Arguments.SingleOrDefault(x => x.IndexOf(pattern, StringComparison.InvariantCultureIgnoreCase) > -1);
                 if (!string.IsNullOrEmpty(template))
                 {
                     var value = ReadPattern(pattern);

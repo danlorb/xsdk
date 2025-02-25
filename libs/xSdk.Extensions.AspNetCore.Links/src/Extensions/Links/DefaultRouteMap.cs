@@ -17,14 +17,9 @@ namespace xSdk.Extensions.Links
     {
         private readonly IActionContextAccessor contextAccessor;
         private readonly ILogger<DefaultRouteMap> logger;
-        private IDictionary<string, RouteInfo> RouteMap { get; } =
-            new Dictionary<string, RouteInfo>();
+        private IDictionary<string, RouteInfo> RouteMap { get; } = new Dictionary<string, RouteInfo>();
 
-        public DefaultRouteMap(
-            IActionContextAccessor contextAccessor,
-            ILogger<DefaultRouteMap> logger,
-            IAssemblyLoader assemblyLoader
-        )
+        public DefaultRouteMap(IActionContextAccessor contextAccessor, ILogger<DefaultRouteMap> logger, IAssemblyLoader assemblyLoader)
         {
             if (assemblyLoader == null)
             {
@@ -38,8 +33,7 @@ namespace xSdk.Extensions.Links
 
             foreach (var asm in assemblies)
             {
-                var controllers = asm.GetTypes()
-                    .Where(type => typeof(ControllerBase).IsAssignableFrom(type));
+                var controllers = asm.GetTypes().Where(type => typeof(ControllerBase).IsAssignableFrom(type));
 
                 var controllerMethods = controllers.SelectMany(c =>
                     c.GetMethods(BindingFlags.Public | BindingFlags.Instance)
@@ -56,18 +50,10 @@ namespace xSdk.Extensions.Links
                         )
                 );
 
-                foreach (
-                    var attr in controllerMethods.Where(a =>
-                        !String.IsNullOrWhiteSpace(a.HttpAttribute.Name)
-                    )
-                )
+                foreach (var attr in controllerMethods.Where(a => !String.IsNullOrWhiteSpace(a.HttpAttribute.Name)))
                 {
                     var method = ParseMethod(attr.HttpAttribute.HttpMethods);
-                    RouteMap[attr.HttpAttribute.Name] = new RouteInfo(
-                        attr.HttpAttribute.Name,
-                        method,
-                        new ReflectionControllerMethodInfo(attr.Method)
-                    );
+                    RouteMap[attr.HttpAttribute.Name] = new RouteInfo(attr.HttpAttribute.Name, method, new ReflectionControllerMethodInfo(attr.Method));
                 }
             }
         }
@@ -83,21 +69,14 @@ namespace xSdk.Extensions.Links
 
         public RouteInfo GetCurrentRoute()
         {
-            var action =
-                this.contextAccessor?.ActionContext?.ActionDescriptor as ControllerActionDescriptor;
+            var action = this.contextAccessor?.ActionContext?.ActionDescriptor as ControllerActionDescriptor;
             if (action == null)
                 throw new InvalidOperationException($"Invalid action descriptor in route map");
             var attr = action.EndpointMetadata.OfType<HttpMethodAttribute>().FirstOrDefault();
             if (attr == null)
-                throw new InvalidOperationException(
-                    $"Unable to get HttpMethodAttribute in route map"
-                );
+                throw new InvalidOperationException($"Unable to get HttpMethodAttribute in route map");
             var method = ParseMethod(attr.HttpMethods);
-            return new RouteInfo(
-                attr.Name,
-                method,
-                new ReflectionControllerMethodInfo(action.MethodInfo)
-            );
+            return new RouteInfo(attr.Name, method, new ReflectionControllerMethodInfo(action.MethodInfo));
         }
 
         private HttpMethod ParseMethod(IEnumerable<string> methods)

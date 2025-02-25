@@ -7,11 +7,7 @@ namespace xSdk.Data.Converters.Json
 {
     public sealed class SemVerConverter : JsonConverter<SemVer>
     {
-        public override SemVer Read(
-            ref Utf8JsonReader reader,
-            Type typeToConvert,
-            JsonSerializerOptions options
-        )
+        public override SemVer Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var value = reader.GetString();
 
@@ -28,11 +24,7 @@ namespace xSdk.Data.Converters.Json
             }
         }
 
-        public override void Write(
-            Utf8JsonWriter writer,
-            SemVer value,
-            JsonSerializerOptions options
-        )
+        public override void Write(Utf8JsonWriter writer, SemVer value, JsonSerializerOptions options)
         {
             var tmp = $"{value.Version};{value.Range}";
             writer.WriteBase64StringValue(Encoding.UTF8.GetBytes(tmp));

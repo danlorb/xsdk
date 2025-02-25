@@ -13,15 +13,13 @@ namespace xSdk.Plugins.Authentication
             internal static class InHeader
             {
                 internal const string Header = "X-API-KEY";
-                internal const string Scheme =
-                    $"{ApiKeyDefaults.AuthenticationScheme}InHeaderScheme";
+                internal const string Scheme = $"{ApiKeyDefaults.AuthenticationScheme}InHeaderScheme";
             }
 
             internal static class InAuthorizationHeader
             {
                 internal const string Header = "ApiKey";
-                internal const string Scheme =
-                    $"{ApiKeyDefaults.AuthenticationScheme}InAuthorizationHeaderScheme";
+                internal const string Scheme = $"{ApiKeyDefaults.AuthenticationScheme}InAuthorizationHeaderScheme";
             }
         }
 

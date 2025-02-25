@@ -6,28 +6,20 @@ namespace xSdk.Extensions.Variable
     {
         public IDictionary<string, object> BuildResources()
         {
-            var variablesWithAttributes = Variables
-                .Cast<Variable>()
-                .Where(x => x.Attribute != null);
+            var variablesWithAttributes = Variables.Cast<Variable>().Where(x => x.Attribute != null);
 
             Dictionary<string, object> resources = new Dictionary<string, object>();
             foreach (var variable in variablesWithAttributes)
             {
                 var value = ReadVariableValueInternal<object>(variable.Name, false, false);
-                if (
-                    (value == null || TypeConverter.IsEmpty(value, variable.ValueType))
-                    && variable.TelemetryResourceValue != null
-                )
+                if ((value == null || TypeConverter.IsEmpty(value, variable.ValueType)) && variable.TelemetryResourceValue != null)
                 {
                     value = variable.TelemetryResourceValue();
                 }
 
                 if (value != null && !TypeConverter.IsEmpty(value, variable.ValueType))
                 {
-                    if (
-                        variable.Attribute.ResourceNames != null
-                        && variable.Attribute.ResourceNames.Any()
-                    )
+                    if (variable.Attribute.ResourceNames != null && variable.Attribute.ResourceNames.Any())
                     {
                         foreach (var resourceName in variable.Attribute.ResourceNames)
                         {

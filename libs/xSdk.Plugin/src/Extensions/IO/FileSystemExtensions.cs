@@ -5,8 +5,7 @@ namespace xSdk.Extensions.IO
 {
     public static class FileSystemExtensions
     {
-        public static string GetFullPath(this IFileSystem fileSystem) =>
-            fileSystem.GetFullPath("/");
+        public static string GetFullPath(this IFileSystem fileSystem) => fileSystem.GetFullPath("/");
 
         public static string GetFullPath(this IFileSystem fileSystem, UPath path)
         {

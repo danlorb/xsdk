@@ -10,8 +10,7 @@ namespace xSdk.Extensions.Links
     public class LinkConditionBuilder<TResource>
     {
         private bool requiresRouteAuthorization = false;
-        private List<IAuthorizationRequirement> authRequirements =
-            new List<IAuthorizationRequirement>();
+        private List<IAuthorizationRequirement> authRequirements = new List<IAuthorizationRequirement>();
         private List<string> authPolicyNames = new List<string>();
         private IList<Func<TResource, bool>> assertions = new List<Func<TResource, bool>>();
 
@@ -23,9 +22,7 @@ namespace xSdk.Extensions.Links
             return this;
         }
 
-        public LinkConditionBuilder<TResource> Authorize(
-            params IAuthorizationRequirement[] requirements
-        )
+        public LinkConditionBuilder<TResource> Authorize(params IAuthorizationRequirement[] requirements)
         {
             authRequirements.AddRange(requirements);
             return this;
@@ -51,12 +48,7 @@ namespace xSdk.Extensions.Links
 
         public LinkCondition<TResource> Build()
         {
-            return new LinkCondition<TResource>(
-                this.requiresRouteAuthorization,
-                this.assertions,
-                this.authRequirements,
-                this.authPolicyNames
-            );
+            return new LinkCondition<TResource>(this.requiresRouteAuthorization, this.assertions, this.authRequirements, this.authPolicyNames);
         }
     }
 }

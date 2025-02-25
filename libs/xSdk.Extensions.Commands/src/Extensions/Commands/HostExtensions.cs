@@ -9,8 +9,7 @@ namespace xSdk.Extensions.Commands
     {
         internal static Action<IReplBuilder> ReplBuilderDelegate { get; set; }
 
-        public static int RunConsole(this IHost host, string[] args) =>
-            host.RunConsoleAsync(args).GetAwaiter().GetResult();
+        public static int RunConsole(this IHost host, string[] args) => host.RunConsoleAsync(args).GetAwaiter().GetResult();
 
         public static async Task<int> RunConsoleAsync(this IHost host, string[] args)
         {
@@ -31,9 +30,7 @@ namespace xSdk.Extensions.Commands
             var replArgs = args;
             var defaultArgs = CommandlineParser.Parse(args).BackupDefaultArgs();
             var replBuilder = new ReplBuilder();
-            var isReplConsole = CommandlineParser
-                .Parse()
-                .ContainsPattern(ConsoleCommand.Definitions.Name);
+            var isReplConsole = CommandlineParser.Parse().ContainsPattern(ConsoleCommand.Definitions.Name);
 
             if (isReplConsole && ReplBuilderDelegate != null)
             {
@@ -48,12 +45,7 @@ namespace xSdk.Extensions.Commands
                     System.Console.Write(replBuilder.PromptFactory());
                     var input = System.Console.ReadLine();
 
-                    if (
-                        CommandlineParser
-                            .Parse(input)
-                            .AddDefaultArgs(defaultArgs)
-                            .ContainsPattern(ExitCommand.Definitions.Name)
-                    )
+                    if (CommandlineParser.Parse(input).AddDefaultArgs(defaultArgs).ContainsPattern(ExitCommand.Definitions.Name))
                     {
                         isReplConsole = false;
                     }

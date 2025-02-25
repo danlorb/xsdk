@@ -1,5 +1,5 @@
-using MongoDB.Bson;
 using System.ComponentModel.DataAnnotations.Schema;
+using MongoDB.Bson;
 using xSdk.Data;
 
 namespace xSdk.Demos.Data

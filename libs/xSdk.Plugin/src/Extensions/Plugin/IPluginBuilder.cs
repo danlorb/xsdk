@@ -1,4 +1,4 @@
 namespace xSdk.Extensions.Plugin
 {
-    public interface IPluginBuilder { }
+    public interface IPluginBuilder : IPluginDescription { }
 }

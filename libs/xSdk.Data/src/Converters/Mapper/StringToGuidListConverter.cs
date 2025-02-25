@@ -11,9 +11,7 @@ namespace xSdk.Data.Converters.Mapper
         {
             if (!string.IsNullOrEmpty(sourceMember))
             {
-                return sourceMember
-                    .Split(",", StringSplitOptions.RemoveEmptyEntries)
-                    .Select(x => Guid.Parse(x));
+                return sourceMember.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => Guid.Parse(x));
             }
             return new List<Guid>();
         }

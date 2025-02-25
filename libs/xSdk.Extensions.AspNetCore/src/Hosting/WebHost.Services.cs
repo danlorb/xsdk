@@ -6,14 +6,9 @@ namespace xSdk.Hosting
 {
     public static partial class WebHost
     {
-        private static void ConfigureWebHostServicesWithContext(
-            WebHostBuilderContext context,
-            IServiceCollection services
-        )
+        private static void ConfigureWebHostServicesWithContext(WebHostBuilderContext context, IServiceCollection services)
         {
-            SlimHost.Instance.PluginSystem.Invoke<WebHostPluginBase>(x =>
-                x.ConfigureServices(context, services)
-            );
+            SlimHost.Instance.PluginSystem.Invoke<WebHostPluginBase>(x => x.ConfigureServices(context, services));
         }
     }
 }

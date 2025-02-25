@@ -9,11 +9,7 @@ namespace xSdk.Extensions.Plugin
 {
     internal static class CatalogHelper
     {
-        internal static FolderPluginCatalog? CreateFolderPluginCatalog(
-            IFileSystemService service,
-            FileSystemContext context,
-            string path
-        )
+        internal static FolderPluginCatalog? CreateFolderPluginCatalog(IFileSystemService service, FileSystemContext context, string path)
         {
             var root = service.RequestFileSystem(context);
             if (root != null && root.Data.DirectoryExists(path))
@@ -56,13 +52,7 @@ namespace xSdk.Extensions.Plugin
 
         private static TypeFinderOptions CreateTypeFinderOptions()
         {
-            return new TypeFinderOptions
-            {
-                TypeFinderCriterias = new List<TypeFinderCriteria>
-                {
-                    new TypeFinderCriteria { AssignableTo = typeof(IPlugin) },
-                },
-            };
+            return new TypeFinderOptions { TypeFinderCriterias = new List<TypeFinderCriteria> { new TypeFinderCriteria { AssignableTo = typeof(IPlugin) } } };
         }
 
         private static PluginLoadContextOptions CreatePluginLoadContextOptions()

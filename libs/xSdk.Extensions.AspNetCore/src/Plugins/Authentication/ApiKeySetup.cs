@@ -20,11 +20,7 @@ namespace xSdk.Plugins.Authentication
 
         protected override void ValidateSetup()
         {
-            this.ValidateMember(
-                x => string.IsNullOrEmpty(x.Realm),
-                "Authentication realm is missing",
-                Definitions.Realm.Name
-            );
+            this.ValidateMember(x => string.IsNullOrEmpty(x.Realm), "Authentication realm is missing", Definitions.Realm.Name);
         }
 
         public static class Definitions

@@ -17,12 +17,7 @@ namespace xSdk.Data.Converters.Yaml
         {
             SemVer result = default;
 
-            var version = ValueDeserializer.DeserializeValue(
-                parser,
-                typeof(string),
-                new SerializerState(),
-                ValueDeserializer
-            );
+            var version = ValueDeserializer.DeserializeValue(parser, typeof(string), new SerializerState(), ValueDeserializer);
             if (version != null)
             {
                 result = new SemVer(version.ToString());
@@ -35,12 +30,7 @@ namespace xSdk.Data.Converters.Yaml
             throw new SdkException("Yaml Serializing is not implemented");
         }
 
-        public void WriteYaml(
-            IEmitter emitter,
-            object value,
-            Type type,
-            ObjectSerializer serializer
-        )
+        public void WriteYaml(IEmitter emitter, object value, Type type, ObjectSerializer serializer)
         {
             throw new NotImplementedException();
         }

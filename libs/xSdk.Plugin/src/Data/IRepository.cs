@@ -19,10 +19,7 @@ namespace xSdk.Data
 
         int Remove(IEnumerable<IPrimaryKey> primaryKeys);
 
-        Task<int> RemoveAsync(
-            IEnumerable<IPrimaryKey> primaryKeys,
-            CancellationToken token = default
-        );
+        Task<int> RemoveAsync(IEnumerable<IPrimaryKey> primaryKeys, CancellationToken token = default);
 
         bool Remove(TEntity entity);
 
@@ -42,11 +39,7 @@ namespace xSdk.Data
 
         bool Update(IPrimaryKey primaryKey, TEntity entity);
 
-        Task<bool> UpdateAsync(
-            IPrimaryKey primaryKey,
-            TEntity entity,
-            CancellationToken token = default
-        );
+        Task<bool> UpdateAsync(IPrimaryKey primaryKey, TEntity entity, CancellationToken token = default);
 
         bool Upsert(TEntity entity);
 

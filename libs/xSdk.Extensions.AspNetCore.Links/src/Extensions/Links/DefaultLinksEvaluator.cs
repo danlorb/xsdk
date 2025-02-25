@@ -12,10 +12,7 @@ namespace xSdk.Extensions.Links
         private readonly LinksOptions options;
         private readonly ILinkTransformationContextFactory contextFactory;
 
-        public DefaultLinksEvaluator(
-            IOptions<LinksOptions> options,
-            ILinkTransformationContextFactory contextFactory
-        )
+        public DefaultLinksEvaluator(IOptions<LinksOptions> options, ILinkTransformationContextFactory contextFactory)
         {
             this.options = options.Value;
             this.contextFactory = contextFactory;
@@ -40,11 +37,7 @@ namespace xSdk.Extensions.Links
                 }
                 catch (Exception ex)
                 {
-                    throw new LinkTransformationException(
-                        $"Unable to transform link {link.Id}",
-                        ex,
-                        context
-                    );
+                    throw new LinkTransformationException($"Unable to transform link {link.Id}", ex, context);
                 }
             }
         }

@@ -8,8 +8,7 @@ namespace xSdk.Extensions.Links
 {
     public class LinkTransformationBuilder
     {
-        private IList<Func<LinkTransformationContext, string>> Transformations { get; } =
-            new List<Func<LinkTransformationContext, string>>();
+        private IList<Func<LinkTransformationContext, string>> Transformations { get; } = new List<Func<LinkTransformationContext, string>>();
 
         public LinkTransformationBuilder Add(string value)
         {

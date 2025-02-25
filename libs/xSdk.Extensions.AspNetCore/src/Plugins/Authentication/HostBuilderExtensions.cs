@@ -12,9 +12,7 @@ namespace xSdk.Plugins.Authentication
             return hostBuilder;
         }
 
-        public static IHostBuilder EnableAuthentication<TPluginBuilder>(
-            this IHostBuilder hostBuilder
-        )
+        public static IHostBuilder EnableAuthentication<TPluginBuilder>(this IHostBuilder hostBuilder)
             where TPluginBuilder : IAuthenticationPluginBuilder
         {
             hostBuilder.EnableAuthentication().EnablePlugin<TPluginBuilder>();

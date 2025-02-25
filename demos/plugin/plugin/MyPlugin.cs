@@ -12,8 +12,7 @@ namespace xSdk.Demos
 
             // Wir fügen am besten einen Host hinzu, wenn dieser gestartet wird, dann ist das Framework komplett geladen
             Logger.Info("Add hosted Service");
-            services
-                .AddHostedService<PluginHost>();
+            services.AddHostedService<PluginHost>();
         }
     }
 }

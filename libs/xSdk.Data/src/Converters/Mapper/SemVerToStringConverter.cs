@@ -20,10 +20,7 @@ namespace xSdk.Data.Converters.Mapper
             }
             catch (Exception ex)
             {
-                logger.Error(
-                    ex,
-                    "Version could not converted. See further Log for further Details"
-                );
+                logger.Error(ex, "Version could not converted. See further Log for further Details");
                 if (ex.InnerException != null)
                     logger.Info(ex.InnerException.Message);
 

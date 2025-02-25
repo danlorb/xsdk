@@ -8,9 +8,6 @@ namespace xSdk.Extensions.Links
 {
     public interface ILinksHandlerContextFactory
     {
-        LinksHandlerContext CreateContext(
-            IEnumerable<ILinksRequirement> requirements,
-            object resource
-        );
+        LinksHandlerContext CreateContext(IEnumerable<ILinksRequirement> requirements, object resource);
     }
 }

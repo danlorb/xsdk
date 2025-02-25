@@ -27,12 +27,7 @@ namespace xSdk.Extensions.Variable.Providers
         }
 
         private string CreateFileName(IVariable variable) =>
-            Path.Combine(
-                GetDefaultProfilePath(),
-                SlimHost.Instance.AppPrefix.ToLower(),
-                "config",
-                $"{variable.Name}.env"
-            );
+            Path.Combine(GetDefaultProfilePath(), SlimHost.Instance.AppPrefix.ToLower(), "config", $"{variable.Name}.env");
 
         private static string GetDefaultProfilePath()
         {
@@ -40,15 +35,8 @@ namespace xSdk.Extensions.Variable.Providers
             var defaultProfileBase = "/etc/skel/.local/share";
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                var userProfileBase = Directory.GetParent(
-                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
-                );
-                defaultProfileBase = Path.Combine(
-                    userProfileBase.FullName,
-                    "Default",
-                    "AppData",
-                    "Local"
-                );
+                var userProfileBase = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+                defaultProfileBase = Path.Combine(userProfileBase.FullName, "Default", "AppData", "Local");
             }
 
             return defaultProfileBase;

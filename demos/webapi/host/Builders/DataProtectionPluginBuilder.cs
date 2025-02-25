@@ -6,9 +6,6 @@ namespace xSdk.Demos.Builders
 {
     internal class DataProtectionPluginBuilder : PluginBuilderBase, IDataProtectionPluginBuilder
     {
-        public void ConfigureDataProtection(IDataProtectionBuilder builder)
-        {
-
-        }
+        public void ConfigureDataProtection(IDataProtectionBuilder builder) { }
     }
 }

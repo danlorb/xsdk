@@ -18,12 +18,12 @@ const string APP_NAME = "webapi";
 const string APP_COMPANY = "xdemos";
 const string APP_PREFIX = "webapi";
 
-var host = xSdk.Hosting.WebHost
-    .CreateBuilder(args, APP_NAME, APP_COMPANY, APP_PREFIX)    
+var host = xSdk
+    .Hosting.WebHost.CreateBuilder(args, APP_NAME, APP_COMPANY, APP_PREFIX)
     .EnableWebApi()
     .EnableDocumentation<DocumentationPluginBuilder>()
     .EnableWebSecurity()
-    .EnableAuthentication<AuthenticationPluginBuilder>()
+    //.EnableAuthentication<AuthenticationPluginBuilder>()
     .EnableCompression()
     .EnableDataProtection<DataProtectionPluginBuilder>()
     .EnableLinks()

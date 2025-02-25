@@ -64,8 +64,7 @@ namespace xSdk.Extensions.CloudEvents
         /// <param name="type">Event Type for the Exception, e.g. blueprint.create.error</param>
         /// <param name="subject">A specific Subject to use. It could be tenant orientated Informations</param>
         /// <returns>A <see cref="CloudEvent"/></returns>
-        public static CloudEvent ToCloudEvent(this Exception ex, string scope) =>
-            ex.ToCloudEvent(scope, null, null);
+        public static CloudEvent ToCloudEvent(this Exception ex, string scope) => ex.ToCloudEvent(scope, null, null);
 
         /// <summary>
         /// Creates a <see cref="CloudEvent"/> Object from given Exception with a specific Scope/Category and Type
@@ -75,8 +74,7 @@ namespace xSdk.Extensions.CloudEvents
         /// <param name="type">Event Type for the Exception, e.g. blueprint.create.error</param>
         /// <param name="subject">A specific Subject to use. It could be tenant orientated Informations</param>
         /// <returns>A <see cref="CloudEvent"/></returns>
-        public static CloudEvent ToCloudEvent(this Exception ex, string scope, string type) =>
-            ex.ToCloudEvent(scope, type, null);
+        public static CloudEvent ToCloudEvent(this Exception ex, string scope, string type) => ex.ToCloudEvent(scope, type, null);
 
         /// <summary>
         /// Creates a <see cref="CloudEvent"/> Object from given Exception with a specific Scope/Category, Type and Subject
@@ -86,25 +84,13 @@ namespace xSdk.Extensions.CloudEvents
         /// <param name="type">Event Type for the Exception, e.g. blueprint.create.error</param>
         /// <param name="subject">A specific Subject to use. It could be tenant orientated Informations</param>
         /// <returns>A <see cref="CloudEvent"/></returns>
-        public static CloudEvent ToCloudEvent(
-            this Exception ex,
-            string scope,
-            string type,
-            string subject
-        )
+        public static CloudEvent ToCloudEvent(this Exception ex, string scope, string type, string subject)
         {
             if (string.IsNullOrEmpty(type))
                 type = "error";
 
             var (sourceBaseUrl, schemeBaseUrl) = CloudEventFactory.CreateBaseUrls(scope);
-            var cloudEvent = CloudEventFactory.CreateRawCloudEvent(
-                sourceBaseUrl,
-                scope,
-                type,
-                subject,
-                false,
-                null
-            );
+            var cloudEvent = CloudEventFactory.CreateRawCloudEvent(sourceBaseUrl, scope, type, subject, false, null);
 
             // The Data Object
             cloudEvent.SetDataObject(ex);

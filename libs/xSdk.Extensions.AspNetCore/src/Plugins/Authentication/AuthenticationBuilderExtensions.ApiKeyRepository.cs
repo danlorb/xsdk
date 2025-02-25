@@ -7,9 +7,7 @@ namespace xSdk.Plugins.Authentication
     {
         private static IApiKeyRepository? ApiKeyRepository = new DefaultApiKeyRepository();
 
-        public static AuthenticationBuilder AddApiKeyRepository<TRepository>(
-            this AuthenticationBuilder builder
-        )
+        public static AuthenticationBuilder AddApiKeyRepository<TRepository>(this AuthenticationBuilder builder)
             where TRepository : class, IApiKeyRepository, new()
         {
             ApiKeyRepository = new TRepository();

@@ -29,10 +29,7 @@ namespace xSdk.Extensions.CloudEvents
         }
 
         /// <inheritdoc />
-        public override async Task<InputFormatterResult> ReadRequestBodyAsync(
-            InputFormatterContext context,
-            Encoding encoding
-        )
+        public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
         {
             Validation.CheckNotNull(context, nameof(context));
             Validation.CheckNotNull(encoding, nameof(encoding));
@@ -51,7 +48,6 @@ namespace xSdk.Extensions.CloudEvents
         }
 
         /// <inheritdoc />
-        protected override bool CanReadType(Type type) =>
-            type == typeof(CloudEvent) && base.CanReadType(type);
+        protected override bool CanReadType(Type type) => type == typeof(CloudEvent) && base.CanReadType(type);
     }
 }

@@ -15,10 +15,7 @@ namespace xSdk.Data
             this._factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
-        protected override TConnection Open<TConnection>(
-            object connection,
-            Func<object> connectionStringBuilder
-        )
+        protected override TConnection Open<TConnection>(object connection, Func<object> connectionStringBuilder)
         {
             if (connection == null)
             {

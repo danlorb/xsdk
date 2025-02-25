@@ -25,9 +25,7 @@ namespace xSdk.Extensions.Links
             this.AuthorizationRequirements = new List<IAuthorizationRequirement>(
                 authorizationRequirements ?? Enumerable.Empty<IAuthorizationRequirement>()
             ).AsReadOnly();
-            this.AuthorizationPolicyNames = new List<string>(
-                authorizationPolicyNames ?? Enumerable.Empty<string>()
-            ).AsReadOnly();
+            this.AuthorizationPolicyNames = new List<string>(authorizationPolicyNames ?? Enumerable.Empty<string>()).AsReadOnly();
             this.RouteInfo = routeInfo;
             this.RouteValues = routeValues;
             this.Resource = resource;

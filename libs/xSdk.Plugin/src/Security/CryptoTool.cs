@@ -32,13 +32,7 @@ namespace xSdk.Security
                             byte[] iv = aes.IV;
                             fileStream.Write(iv, 0, iv.Length);
 
-                            using (
-                                CryptoStream cryptoStream = new(
-                                    fileStream,
-                                    aes.CreateEncryptor(),
-                                    CryptoStreamMode.Write
-                                )
-                            )
+                            using (CryptoStream cryptoStream = new(fileStream, aes.CreateEncryptor(), CryptoStreamMode.Write))
                             {
                                 // By default, the StreamWriter uses UTF-8 encoding.
                                 // To change the text encoding, pass the desired encoding as the second parameter.
@@ -86,13 +80,7 @@ namespace xSdk.Security
                                 numBytesToRead -= n;
                             }
 
-                            using (
-                                CryptoStream cryptoStream = new(
-                                    fileStream,
-                                    aes.CreateDecryptor(CreateKey(context), iv),
-                                    CryptoStreamMode.Read
-                                )
-                            )
+                            using (CryptoStream cryptoStream = new(fileStream, aes.CreateDecryptor(CreateKey(context), iv), CryptoStreamMode.Read))
                             {
                                 // By default, the StreamReader uses UTF-8 encoding.
                                 // To change the text encoding, pass the desired encoding as the second parameter.
@@ -100,13 +88,8 @@ namespace xSdk.Security
                                 using (StreamReader decryptReader = new(cryptoStream))
                                 {
                                     string decryptedMessage = decryptReader.ReadToEnd();
-                                    var dataAsJson = Encoding.UTF8.GetString(
-                                        Convert.FromBase64String(decryptedMessage)
-                                    );
-                                    result = JsonSerializer.Deserialize<TData>(
-                                        dataAsJson,
-                                        JsonHelper.GetSerializerOptions()
-                                    );
+                                    var dataAsJson = Encoding.UTF8.GetString(Convert.FromBase64String(decryptedMessage));
+                                    result = JsonSerializer.Deserialize<TData>(dataAsJson, JsonHelper.GetSerializerOptions());
                                 }
                             }
                         }
@@ -124,8 +107,7 @@ namespace xSdk.Security
 
         private static byte[] CreateKey(string context)
         {
-            var keyAsString =
-                $"#3,{context};1!{Environment.MachineName}#1,{context};2!{Environment.UserName}#2,{context};3!";
+            var keyAsString = $"#3,{context};1!{Environment.MachineName}#1,{context};2!{Environment.UserName}#2,{context};3!";
             var keyAsBytes = Encoding.UTF8.GetBytes(keyAsString);
 
             var hashedKey = SHA256.HashData(keyAsBytes);

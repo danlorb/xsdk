@@ -16,31 +16,13 @@ namespace xSdk.Extensions.Variable
         )]
         public string MachineName { get; private set; }
 
-        [Variable(
-            name: Definitions.Arch.Name,
-            helpText: Definitions.Arch.HelpText,
-            resourceNames: new[] { "host.arch" },
-            protect: true,
-            hidden: true
-        )]
+        [Variable(name: Definitions.Arch.Name, helpText: Definitions.Arch.HelpText, resourceNames: new[] { "host.arch" }, protect: true, hidden: true)]
         public string Arch { get; private set; }
 
-        [Variable(
-            name: Definitions.IPv4.Name,
-            helpText: Definitions.IPv4.HelpText,
-            resourceNames: new[] { "host.ip" },
-            protect: true,
-            hidden: true
-        )]
+        [Variable(name: Definitions.IPv4.Name, helpText: Definitions.IPv4.HelpText, resourceNames: new[] { "host.ip" }, protect: true, hidden: true)]
         public string IPv4 { get; private set; }
 
-        [Variable(
-            name: Definitions.Mac.Name,
-            helpText: Definitions.Mac.HelpText,
-            resourceNames: new[] { "host.mac" },
-            protect: true,
-            hidden: true
-        )]
+        [Variable(name: Definitions.Mac.Name, helpText: Definitions.Mac.HelpText, resourceNames: new[] { "host.mac" }, protect: true, hidden: true)]
         public string Mac { get; private set; }
 
         [Variable(
@@ -52,22 +34,10 @@ namespace xSdk.Extensions.Variable
         )]
         public string OsDescription { get; private set; }
 
-        [Variable(
-            name: Definitions.OsName.Name,
-            helpText: Definitions.OsName.HelpText,
-            resourceNames: new[] { "os.name" },
-            protect: true,
-            hidden: true
-        )]
+        [Variable(name: Definitions.OsName.Name, helpText: Definitions.OsName.HelpText, resourceNames: new[] { "os.name" }, protect: true, hidden: true)]
         public string OsName { get; private set; }
 
-        [Variable(
-            name: Definitions.OsType.Name,
-            helpText: Definitions.OsType.HelpText,
-            resourceNames: new[] { "os.type" },
-            protect: true,
-            hidden: true
-        )]
+        [Variable(name: Definitions.OsType.Name, helpText: Definitions.OsType.HelpText, resourceNames: new[] { "os.type" }, protect: true, hidden: true)]
         public string OsType { get; private set; }
 
         [Variable(
@@ -115,22 +85,10 @@ namespace xSdk.Extensions.Variable
         )]
         public string Commandline { get; private set; }
 
-        [Variable(
-            name: Definitions.Owner.Name,
-            helpText: Definitions.Owner.HelpText,
-            resourceNames: new[] { "process.owner" },
-            protect: true,
-            hidden: true
-        )]
+        [Variable(name: Definitions.Owner.Name, helpText: Definitions.Owner.HelpText, resourceNames: new[] { "process.owner" }, protect: true, hidden: true)]
         public string Owner { get; private set; }
 
-        [Variable(
-            name: Definitions.Pid.Name,
-            helpText: Definitions.Pid.HelpText,
-            resourceNames: new[] { "process.pid" },
-            protect: true,
-            hidden: true
-        )]
+        [Variable(name: Definitions.Pid.Name, helpText: Definitions.Pid.HelpText, resourceNames: new[] { "process.pid" }, protect: true, hidden: true)]
         public int Pid { get; private set; }
 
         public bool IsDotNetRunningInContainer { get; private set; }
@@ -138,19 +96,9 @@ namespace xSdk.Extensions.Variable
         private void InitializeSystem()
         {
             // see https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-environment-variables
-            if (
-                !EnvironmentTools.TryReadEnvironmentVariable(
-                    "DOTNET_RUNNING_IN_CONTAINER",
-                    out string isRunningInContainer
-                )
-            )
+            if (!EnvironmentTools.TryReadEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER", out string isRunningInContainer))
             {
-                if (
-                    EnvironmentTools.TryReadEnvironmentVariable(
-                        "DOTNET_RUNNING_IN_CONTAINERS",
-                        out isRunningInContainer
-                    )
-                )
+                if (EnvironmentTools.TryReadEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINERS", out isRunningInContainer))
                 {
                     IsDotNetRunningInContainer = Convert.ToBoolean(isRunningInContainer);
                 }

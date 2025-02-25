@@ -9,10 +9,7 @@ namespace xSdk.Extensions.Documentation.Fakes
 {
     internal class DocumentationPluginBuilderFake : PluginBuilderBase, IDocumentationPluginBuilder
     {
-        public void ConfigureApiDescriptions(OpenApiInfo info)
-        {
-            info.Title = "Sample API";
-        }
+        public void ConfigureApiDescriptions(Dictionary<string, OpenApiInfo> descriptions) { }
 
         public void ConfigureSwagger(SwaggerGenOptions options) { }
 

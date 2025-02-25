@@ -29,9 +29,7 @@ namespace xSdk.Extensions.Variable.Providers
                         var result = ReadValue(mainSection, variable);
                         if (result == null)
                         {
-                            var section = mainSection.GetSection(
-                                NormalizeName(variable.Prefix, sectionName, true)
-                            );
+                            var section = mainSection.GetSection(NormalizeName(variable.Prefix, sectionName, true));
                             if (section != null)
                             {
                                 result = ReadValue(section, variable);
@@ -69,9 +67,6 @@ namespace xSdk.Extensions.Variable.Providers
         }
 
         private object? ReadValue(IConfigurationSection section, IVariable variable) =>
-            section.GetValue(
-                variable.ValueType,
-                NormalizeName(variable.Prefix, variable.Name, false)
-            );
+            section.GetValue(variable.ValueType, NormalizeName(variable.Prefix, variable.Name, false));
     }
 }

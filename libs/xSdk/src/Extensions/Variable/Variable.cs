@@ -46,11 +46,9 @@ namespace xSdk.Extensions.Variable
 
         protected internal string KeyForSystem => CreateKey(false, true).Trim().ToUpperInvariant();
 
-        protected internal string KeyForFile =>
-            $"{KeyForSystem}{Globals.Constants.PREFIX_SEPERATOR}file".Trim().ToUpperInvariant();
+        protected internal string KeyForFile => $"{KeyForSystem}{Globals.Constants.PREFIX_SEPERATOR}file".Trim().ToUpperInvariant();
 
-        protected internal string KeyForCommandline =>
-            CreateKey(true, false).Trim().ToLowerInvariant();
+        protected internal string KeyForCommandline => CreateKey(true, false).Trim().ToLowerInvariant();
 
         public static Variable Create(string name, Type type) => Create(name, type, default);
 
@@ -81,11 +79,7 @@ namespace xSdk.Extensions.Variable
         public override string ToString() => CreateKey(false, false);
 
         public override bool Equals(object obj) =>
-            ObjectHelper.Equals<Variable>(
-                this,
-                obj,
-                (source, dest) => string.CompareOrdinal(source.ToString(), dest.ToString()) == 0
-            );
+            ObjectHelper.Equals<Variable>(this, obj, (source, dest) => string.CompareOrdinal(source.ToString(), dest.ToString()) == 0);
 
         internal string CreateKey(bool forCommandline, bool withApplicationPrefix)
         {
@@ -100,10 +94,7 @@ namespace xSdk.Extensions.Variable
             }
 
             var result = $"{prefix}{Globals.Constants.PREFIX_SEPERATOR}";
-            if (
-                !string.IsNullOrEmpty(result)
-                && result.StartsWith(Globals.Constants.PREFIX_SEPERATOR)
-            )
+            if (!string.IsNullOrEmpty(result) && result.StartsWith(Globals.Constants.PREFIX_SEPERATOR))
             {
                 result = result.Substring(Globals.Constants.PREFIX_SEPERATOR.Length);
             }

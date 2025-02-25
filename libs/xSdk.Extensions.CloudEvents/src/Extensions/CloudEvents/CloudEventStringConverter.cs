@@ -9,28 +9,17 @@ namespace xSdk.Extensions.CloudEvents
     {
         public static CloudEvent FromBase64(string raw) => FromBase64Internal(raw, null);
 
-        public static CloudEvent FromBase64(
-            string raw,
-            string extensionName,
-            CloudEventAttributeType extensionType
-        )
+        public static CloudEvent FromBase64(string raw, string extensionName, CloudEventAttributeType extensionType)
         {
             var attr = CloudEventFactory.CreateAttribute(extensionName, extensionType);
             return FromBase64(raw, attr);
         }
 
-        public static CloudEvent FromBase64(string raw, CloudEventAttribute extension) =>
-            FromBase64Internal(raw, new List<CloudEventAttribute> { extension });
+        public static CloudEvent FromBase64(string raw, CloudEventAttribute extension) => FromBase64Internal(raw, new List<CloudEventAttribute> { extension });
 
-        public static CloudEvent FromBase64(
-            string raw,
-            IEnumerable<CloudEventAttribute> extensions
-        ) => FromBase64Internal(raw, extensions);
+        public static CloudEvent FromBase64(string raw, IEnumerable<CloudEventAttribute> extensions) => FromBase64Internal(raw, extensions);
 
-        private static CloudEvent FromBase64Internal(
-            string raw,
-            IEnumerable<CloudEventAttribute> extensions
-        )
+        private static CloudEvent FromBase64Internal(string raw, IEnumerable<CloudEventAttribute> extensions)
         {
             if (Base64Helper.IsBase64(raw))
             {
@@ -45,28 +34,17 @@ namespace xSdk.Extensions.CloudEvents
 
         public static CloudEvent FromJson(string json) => FromJsonInternal(json, null);
 
-        public static CloudEvent FromJson(
-            string json,
-            string extensionName,
-            CloudEventAttributeType extensionType
-        )
+        public static CloudEvent FromJson(string json, string extensionName, CloudEventAttributeType extensionType)
         {
             var attr = CloudEventFactory.CreateAttribute(extensionName, extensionType);
             return FromJson(json, attr);
         }
 
-        public static CloudEvent FromJson(string json, CloudEventAttribute extension) =>
-            FromJsonInternal(json, new List<CloudEventAttribute> { extension });
+        public static CloudEvent FromJson(string json, CloudEventAttribute extension) => FromJsonInternal(json, new List<CloudEventAttribute> { extension });
 
-        public static CloudEvent FromJson(
-            string json,
-            IEnumerable<CloudEventAttribute> extensions
-        ) => FromJsonInternal(json, extensions);
+        public static CloudEvent FromJson(string json, IEnumerable<CloudEventAttribute> extensions) => FromJsonInternal(json, extensions);
 
-        private static CloudEvent FromJsonInternal(
-            string json,
-            IEnumerable<CloudEventAttribute> extensions
-        )
+        private static CloudEvent FromJsonInternal(string json, IEnumerable<CloudEventAttribute> extensions)
         {
             if (JsonHelper.IsJson(json))
             {

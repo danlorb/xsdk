@@ -48,10 +48,7 @@ namespace xSdk.Data
         protected PrimaryKey(object? initialValue)
             : base(initialValue) { }
 
-        public static bool operator ==(
-            PrimaryKey<TPrimaryKeyType> left,
-            PrimaryKey<TPrimaryKeyType> right
-        )
+        public static bool operator ==(PrimaryKey<TPrimaryKeyType> left, PrimaryKey<TPrimaryKeyType> right)
         {
             if (left is null)
             {
@@ -85,10 +82,7 @@ namespace xSdk.Data
             return leftValue.GetHashCode() == rightValue.GetHashCode();
         }
 
-        public static bool operator !=(
-            PrimaryKey<TPrimaryKeyType> left,
-            PrimaryKey<TPrimaryKeyType> right
-        ) => !(left == right);
+        public static bool operator !=(PrimaryKey<TPrimaryKeyType> left, PrimaryKey<TPrimaryKeyType> right) => !(left == right);
 
         public override int GetHashCode() => ObjectHelper.CreateAutomaticHashCode(this);
 

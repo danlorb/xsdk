@@ -7,9 +7,7 @@ namespace xSdk.Plugins.Documentation
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            var versionParameter = operation.Parameters.SingleOrDefault(p =>
-                string.Compare(p.Name, "version", true) == 0
-            );
+            var versionParameter = operation.Parameters.SingleOrDefault(p => string.Compare(p.Name, "version", true) == 0);
             if (versionParameter != null)
                 operation.Parameters.Remove(versionParameter);
         }

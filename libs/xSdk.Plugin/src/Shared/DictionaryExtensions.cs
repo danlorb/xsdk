@@ -4,11 +4,7 @@ namespace xSdk.Shared
 {
     public static class DictionaryExtensions
     {
-        public static void AddOrNew<TKey, TValue>(
-            this IDictionary<TKey, TValue> dictionary,
-            TKey key,
-            TValue value
-        )
+        public static void AddOrNew<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue value)
         {
             if (key != null)
             {
@@ -19,11 +15,7 @@ namespace xSdk.Shared
             }
         }
 
-        public static void AddOrNew<TValue>(
-            this IDictionary<string, string> dictionary,
-            string key,
-            TValue value
-        )
+        public static void AddOrNew<TValue>(this IDictionary<string, string> dictionary, string key, TValue value)
         {
             if (!string.IsNullOrEmpty(key))
             {
@@ -34,10 +26,7 @@ namespace xSdk.Shared
             }
         }
 
-        public static void AddOrNew<TKey, TValue>(
-            this IDictionary<TKey, TValue> dictionary,
-            KeyValuePair<TKey, TValue> item
-        )
+        public static void AddOrNew<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, KeyValuePair<TKey, TValue> item)
         {
             if (dictionary.ContainsKey(item.Key))
                 dictionary[item.Key] = item.Value;
@@ -45,10 +34,7 @@ namespace xSdk.Shared
                 dictionary.Add(item.Key, item.Value);
         }
 
-        public static TValue GetValue<TValue>(
-            this IDictionary<string, string> dictionary,
-            string key
-        )
+        public static TValue GetValue<TValue>(this IDictionary<string, string> dictionary, string key)
         {
             if (!string.IsNullOrEmpty(key))
             {

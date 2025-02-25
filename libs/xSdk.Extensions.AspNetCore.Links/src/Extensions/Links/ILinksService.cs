@@ -10,10 +10,7 @@ namespace xSdk.Extensions.Links
     {
         Task AddLinksAsync<TResource>(TResource linkContainer)
             where TResource : ILinkContainer;
-        Task AddLinksAsync<TResource>(
-            TResource linkContainer,
-            IEnumerable<ILinksRequirement> requirements
-        )
+        Task AddLinksAsync<TResource>(TResource linkContainer, IEnumerable<ILinksRequirement> requirements)
             where TResource : ILinkContainer;
         Task AddLinksAsync<TResource>(TResource linkContainer, string policyName)
             where TResource : ILinkContainer;

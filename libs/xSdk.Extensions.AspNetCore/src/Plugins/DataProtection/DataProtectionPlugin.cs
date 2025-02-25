@@ -20,9 +20,7 @@ namespace xSdk.Plugins.DataProtection
 
             IDataProtectionBuilder? builder = null;
             if (!string.IsNullOrEmpty(setup.ApplicationDiscriminator))
-                builder = services.AddDataProtection(_ =>
-                    _.ApplicationDiscriminator = setup.ApplicationDiscriminator
-                );
+                builder = services.AddDataProtection(_ => _.ApplicationDiscriminator = setup.ApplicationDiscriminator);
             else
                 builder = services.AddDataProtection();
 
@@ -37,11 +35,7 @@ namespace xSdk.Plugins.DataProtection
                 }
             }
 
-            if (
-                !SlimHost.Instance.PluginSystem.Invoke<IDataProtectionPluginBuilder>(x =>
-                    x.ConfigureDataProtection(builder)
-                )
-            )
+            if (!SlimHost.Instance.PluginSystem.Invoke<IDataProtectionPluginBuilder>(x => x.ConfigureDataProtection(builder)))
             {
                 var keysLocation = GetKeyFolder();
                 builder.PersistKeysToFileSystem(new DirectoryInfo(keysLocation));
@@ -70,10 +64,7 @@ namespace xSdk.Plugins.DataProtection
                 }
                 catch
                 {
-                    Logger.Warn(
-                        "KeyFolder '{0}' could not created. Create the Keyfolder in Users Home Profile.",
-                        keyFolder
-                    );
+                    Logger.Warn("KeyFolder '{0}' could not created. Create the Keyfolder in Users Home Profile.", keyFolder);
 
                     keyFolder = SlimHost.Instance.FileSystem.User.Data.GetFullPath("/keys");
                     if (!Directory.Exists(keyFolder))

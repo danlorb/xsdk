@@ -19,9 +19,7 @@ namespace xSdk.Shared
                 if (attrs.Length == 1)
                     return attrs.SingleOrDefault() as TAttribute;
                 else
-                    throw new SdkException(
-                        $"More than one Attribute of Type '{typeof(TAttribute)}' is given"
-                    );
+                    throw new SdkException($"More than one Attribute of Type '{typeof(TAttribute)}' is given");
             }
 
             return default;
@@ -42,9 +40,7 @@ namespace xSdk.Shared
                 if (attrs.Length == 1)
                     return attrs.SingleOrDefault() as TAttribute;
                 else
-                    throw new SdkException(
-                        $"More than one Attribute of Type '{typeof(TAttribute)}' is given"
-                    );
+                    throw new SdkException($"More than one Attribute of Type '{typeof(TAttribute)}' is given");
             }
 
             return default;

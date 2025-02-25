@@ -3,8 +3,7 @@ using xSdk.Shared;
 
 namespace xSdk.Data.Converters.Mapper
 {
-    public sealed class StringToStringDictionaryConverter
-        : IValueConverter<string, Dictionary<string, string>>
+    public sealed class StringToStringDictionaryConverter : IValueConverter<string, Dictionary<string, string>>
     {
         public Dictionary<string, string> Convert(string sourceMember, ResolutionContext context)
         {
@@ -17,10 +16,7 @@ namespace xSdk.Data.Converters.Mapper
                         var items = x.Split("=", StringSplitOptions.RemoveEmptyEntries);
 
                         if (items.Count() == 2)
-                            return new KeyValuePair<string, string>(
-                                items[0].Trim(),
-                                items[1].Trim()
-                            );
+                            return new KeyValuePair<string, string>(items[0].Trim(), items[1].Trim());
                         else
                             return new KeyValuePair<string, string>(items[0].Trim(), "");
                     });

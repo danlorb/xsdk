@@ -10,30 +10,15 @@ namespace xSdk.Hosting
     {
         private static ISlimHost host;
 
-        internal static ISlimHost Instance =>
-            host ?? throw new InvalidOperationException("SlimHost is not initialized");
+        internal static ISlimHost Instance => host ?? throw new InvalidOperationException("SlimHost is not initialized");
 
-        internal static ISlimHost Initialize(
-            string[] args,
-            string? appName,
-            string? appCompany,
-            string? appPrefix
-        ) => InitializeSlimHost(args, appName, appCompany, appPrefix, false);
+        internal static ISlimHost Initialize(string[] args, string? appName, string? appCompany, string? appPrefix) =>
+            InitializeSlimHost(args, appName, appCompany, appPrefix, false);
 
-        internal static ISlimHost InitializeTestHost(
-            string[] args,
-            string? appName,
-            string? appCompany,
-            string? appPrefix
-        ) => InitializeSlimHost(args, appName, appCompany, appPrefix, true);
+        internal static ISlimHost InitializeTestHost(string[] args, string? appName, string? appCompany, string? appPrefix) =>
+            InitializeSlimHost(args, appName, appCompany, appPrefix, true);
 
-        private static ISlimHost InitializeSlimHost(
-            string[] args,
-            string? appName,
-            string? appCompany,
-            string? appPrefix,
-            bool isTestHost
-        )
+        private static ISlimHost InitializeSlimHost(string[] args, string? appName, string? appCompany, string? appPrefix, bool isTestHost)
         {
             if (host == null)
             {
@@ -42,21 +27,14 @@ namespace xSdk.Hosting
                 var builder = SlimHostBuilder
                     .CreateBuilder<SlimHostInternal>()
                     .ValidateAppName(appName, EnvironmentSetup.Definitions.AppName.DefaultValue)
-                    .ValidateAppCompany(
-                        appCompany,
-                        EnvironmentSetup.Definitions.AppCompany.DefaultValue
-                    )
-                    .ValidateAppPrefix(
-                        appPrefix,
-                        EnvironmentSetup.Definitions.AppPrefix.DefaultValue
-                    );
+                    .ValidateAppCompany(appCompany, EnvironmentSetup.Definitions.AppCompany.DefaultValue)
+                    .ValidateAppPrefix(appPrefix, EnvironmentSetup.Definitions.AppPrefix.DefaultValue);
 
                 // Get soon as possible an instance of the host
                 host = builder.PreBuild();
 
                 // Letz continue with the configuration
-                IConfigurationBuilder configBuilder =
-                    new ConfigurationBuilder().AddInMemoryCollection();
+                IConfigurationBuilder configBuilder = new ConfigurationBuilder().AddInMemoryCollection();
 
                 if (!isTestHost)
                 {
@@ -65,20 +43,14 @@ namespace xSdk.Hosting
                 }
                 else
                 {
-                    configBuilder
-                        .SetBasePath(AppContext.BaseDirectory)
-                        .AddJsonFile("appsettings.tests.json", true, true);
+                    configBuilder.SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.tests.json", true, true);
                 }
                 var config = configBuilder.Build();
 
                 // Load all slim services
                 builder.ConfigureServices(services =>
                 {
-                    services
-                        .AddLogging(LoggingHelpers.ConfigureSlimLogging)
-                        .AddSlimPluginServices()
-                        .AddSlimFileServices()
-                        .AddSlimVariableServices(config);
+                    services.AddLogging(LoggingHelpers.ConfigureSlimLogging).AddSlimPluginServices().AddSlimFileServices().AddSlimVariableServices(config);
                 });
 
                 // Now get the real instance of the host

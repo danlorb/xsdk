@@ -2,20 +2,14 @@ namespace xSdk.Extensions.Links
 {
     public class LinksOptions
     {
-        private ILinkTransformation hrefTransformation = new LinkTransformationBuilder()
-            .AddProtocol()
-            .AddHost()
-            .AddRoutePath()
-            .Build();
+        private ILinkTransformation hrefTransformation = new LinkTransformationBuilder().AddProtocol().AddHost().AddRoutePath().Build();
         private ILinkTransformation relTransformation = new LinkTransformationBuilder()
             .Add(ctx => $"{ctx.LinkSpec.ControllerName}/{ctx.LinkSpec.RouteName}")
             .Build();
-        public ILinksPolicy DefaultPolicy { get; set; } =
-            new LinksPolicyBuilder<ILinkContainer>().RequireSelfLink().Build();
+        public ILinksPolicy DefaultPolicy { get; set; } = new LinksPolicyBuilder<ILinkContainer>().RequireSelfLink().Build();
         public ILinkTransformation HrefTransformation => hrefTransformation;
         public ILinkTransformation RelTransformation => relTransformation;
-        private IDictionary<string, ILinksPolicy> PolicyMap { get; } =
-            new Dictionary<string, ILinksPolicy>();
+        private IDictionary<string, ILinksPolicy> PolicyMap { get; } = new Dictionary<string, ILinksPolicy>();
 
         public void AddPolicy<TResource>(Action<LinksPolicyBuilder<TResource>> configurePolicy) //where TResource : class
         {
@@ -39,10 +33,7 @@ namespace xSdk.Extensions.Links
             PolicyMap[policyName] = policy;
         }
 
-        public void AddPolicy<TResource>(
-            string name,
-            Action<LinksPolicyBuilder<TResource>> configurePolicy
-        ) //where TResource : class
+        public void AddPolicy<TResource>(string name, Action<LinksPolicyBuilder<TResource>> configurePolicy) //where TResource : class
         {
             if (configurePolicy == null)
                 throw new ArgumentNullException(nameof(configurePolicy));
@@ -53,9 +44,7 @@ namespace xSdk.Extensions.Links
             AddPolicy<TResource>(name, builder.Build());
         }
 
-        public void ConfigureHrefTransformation(
-            Action<LinkTransformationBuilder> configureTransform
-        )
+        public void ConfigureHrefTransformation(Action<LinkTransformationBuilder> configureTransform)
         {
             var builder = new LinkTransformationBuilder();
             configureTransform(builder);

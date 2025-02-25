@@ -20,29 +20,19 @@ namespace xSdk.Extensions.IO
 
         internal FileSystemService() { }
 
-        public IFileSystemResult Local =>
-            RequestFileSystemAsync(FileSystemContext.Local).GetAwaiter().GetResult();
+        public IFileSystemResult Local => RequestFileSystemAsync(FileSystemContext.Local).GetAwaiter().GetResult();
 
-        public IFileSystemResult User =>
-            RequestFileSystemAsync(FileSystemContext.User).GetAwaiter().GetResult();
+        public IFileSystemResult User => RequestFileSystemAsync(FileSystemContext.User).GetAwaiter().GetResult();
 
-        public IFileSystemResult Machine =>
-            RequestFileSystemAsync(FileSystemContext.Machine).GetAwaiter().GetResult();
+        public IFileSystemResult Machine => RequestFileSystemAsync(FileSystemContext.Machine).GetAwaiter().GetResult();
 
-        public Task<IFileSystemResult> RequestFileSystemAsync(
-            FileSystemContext context = FileSystemContext.None,
-            CancellationToken token = default
-        )
+        public Task<IFileSystemResult> RequestFileSystemAsync(FileSystemContext context = FileSystemContext.None, CancellationToken token = default)
         {
             var rootFolders = CreateRootFolders();
 
             logger.Info("Request filesystem for context '{0}'", context);
 
-            InternalFileSystemResult result = new()
-            {
-                App = new PhysicalFileSystem(),
-                Data = new PhysicalFileSystem(),
-            };
+            InternalFileSystemResult result = new() { App = new PhysicalFileSystem(), Data = new PhysicalFileSystem() };
 
             IFileSystem rootFileSystem = new PhysicalFileSystem();
             if (context == FileSystemContext.Machine)
@@ -85,13 +75,9 @@ namespace xSdk.Extensions.IO
                 result = new RootFolders
                 {
                     Machine = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
-                    User = Environment.GetFolderPath(
-                        Environment.SpecialFolder.LocalApplicationData
-                    ),
+                    User = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
 
-                    MachineData = Environment.GetFolderPath(
-                        Environment.SpecialFolder.CommonApplicationData
-                    ),
+                    MachineData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                     UserData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 };
             }
@@ -133,10 +119,7 @@ namespace xSdk.Extensions.IO
             }
 
             var specificPath = (UPath)$"{companyName}/{appName}".ToLower();
-            result.Machine = CreateFolder(
-                result.Machine / specificPath,
-                SecurityContext.IsSuperUser()
-            );
+            result.Machine = CreateFolder(result.Machine / specificPath, SecurityContext.IsSuperUser());
             result.User = CreateFolder(result.User / specificPath);
             result.Local = CreateFolder(result.Local);
 
@@ -188,21 +171,13 @@ namespace xSdk.Extensions.IO
             }
             else if (Directory.Exists(realFallbackPath))
             {
-                logger.Warn(
-                    "Path '{0}' does not exist. Use fallback path '{1}'",
-                    realPath,
-                    realFallbackPath
-                );
+                logger.Warn("Path '{0}' does not exist. Use fallback path '{1}'", realPath, realFallbackPath);
                 return fallback;
             }
             else
             {
                 throw new SdkException(
-                    string.Format(
-                        "Real path '{0}' and fallback path '{1}' does not exist or could not created",
-                        realPath,
-                        realFallbackPath
-                    )
+                    string.Format("Real path '{0}' and fallback path '{1}' does not exist or could not created", realPath, realFallbackPath)
                 );
             }
         }

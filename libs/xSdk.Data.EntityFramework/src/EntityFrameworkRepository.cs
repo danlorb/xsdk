@@ -8,8 +8,7 @@ namespace xSdk.Data
         where TDbContext : DbContext
         where TEntity : class, IEntity
     {
-        protected override EntityFrameworkDatabase<TDbContext> Database =>
-            base.Database as EntityFrameworkDatabase<TDbContext>;
+        protected override EntityFrameworkDatabase<TDbContext> Database => base.Database as EntityFrameworkDatabase<TDbContext>;
 
         public override Task<bool> InsertAsync(TEntity entity, CancellationToken token = default) =>
             ExecuteInternalAsync(
@@ -22,10 +21,7 @@ namespace xSdk.Data
                 token
             );
 
-        public override Task<int> InsertAsync(
-            IEnumerable<TEntity> entities,
-            CancellationToken token = default
-        ) =>
+        public override Task<int> InsertAsync(IEnumerable<TEntity> entities, CancellationToken token = default) =>
             ExecuteInternalAsync(
                 async (dbContext) =>
                 {
@@ -37,32 +33,22 @@ namespace xSdk.Data
                 token
             );
 
-        public override Task<int> RemoveAsync(
-            IEnumerable<IPrimaryKey> primaryKeys,
-            CancellationToken token = default
-        )
+        public override Task<int> RemoveAsync(IEnumerable<IPrimaryKey> primaryKeys, CancellationToken token = default)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<bool> RemoveAsync(
-            IPrimaryKey primaryKey,
-            CancellationToken token = default
-        ) =>
+        public override Task<bool> RemoveAsync(IPrimaryKey primaryKey, CancellationToken token = default) =>
             ExecuteInternalAsync(
                 (dbContext) =>
                 {
                     var primaryKeyValue = primaryKey.GetValue();
-                    var trackedItem = dbContext
-                        .Set<TEntity>()
-                        .SingleOrDefault(x => x.Id == primaryKeyValue);
+                    var trackedItem = dbContext.Set<TEntity>().SingleOrDefault(x => x.Id == primaryKeyValue);
 
                     if (trackedItem != null)
                     {
                         dbContext.Remove(trackedItem);
-                        return dbContext
-                            .SaveChangesAsync(token)
-                            .ContinueWith(task => task.Result > 0);
+                        return dbContext.SaveChangesAsync(token).ContinueWith(task => task.Result > 0);
                     }
                     return Task.FromResult(false);
                 },
@@ -81,10 +67,7 @@ namespace xSdk.Data
                 token
             );
 
-        public override Task<int> RemoveAsync(
-            IEnumerable<TEntity> entities,
-            CancellationToken token = default
-        ) =>
+        public override Task<int> RemoveAsync(IEnumerable<TEntity> entities, CancellationToken token = default) =>
             ExecuteInternalAsync(
                 (dbContext) =>
                 {
@@ -95,35 +78,21 @@ namespace xSdk.Data
                 token
             );
 
-        public override Task<TEntity?> SelectAsync(
-            IPrimaryKey primaryKey,
-            CancellationToken token = default
-        ) =>
+        public override Task<TEntity?> SelectAsync(IPrimaryKey primaryKey, CancellationToken token = default) =>
             ExecuteInternalAsync(
                 (dbContext) =>
                 {
                     var primaryKeyValue = primaryKey.GetValue();
-                    return dbContext
-                        .Set<TEntity>()
-                        .SingleOrDefaultAsync(x => x.Id == primaryKeyValue, token);
+                    return dbContext.Set<TEntity>().SingleOrDefaultAsync(x => x.Id == primaryKeyValue, token);
                 },
                 false,
                 token
             );
 
-        protected Task<TEntity?> SelectAsync(
-            Expression<Func<TEntity, bool>> filter,
-            CancellationToken token = default
-        ) =>
-            ExecuteInternalAsync(
-                dbContext => dbContext.Set<TEntity>().SingleOrDefaultAsync(filter),
-                false,
-                token
-            );
+        protected Task<TEntity?> SelectAsync(Expression<Func<TEntity, bool>> filter, CancellationToken token = default) =>
+            ExecuteInternalAsync(dbContext => dbContext.Set<TEntity>().SingleOrDefaultAsync(filter), false, token);
 
-        public override Task<IEnumerable<TEntity>> SelectListAsync(
-            CancellationToken token = default
-        ) =>
+        public override Task<IEnumerable<TEntity>> SelectListAsync(CancellationToken token = default) =>
             ExecuteInternalAsync(
                 async (dbContext) =>
                 {
@@ -138,38 +107,21 @@ namespace xSdk.Data
                 token
             );
 
-        protected Task<IEnumerable<TEntity>> SelectListAsync(
-            Expression<Func<TEntity, bool>> filter,
-            CancellationToken token = default
-        ) =>
-            ExecuteInternalAsync(
-                dbContext =>
-                    dbContext.Set<TEntity>().Where(filter).ToListAsync()
-                    as Task<IEnumerable<TEntity>>,
-                false,
-                token
-            );
+        protected Task<IEnumerable<TEntity>> SelectListAsync(Expression<Func<TEntity, bool>> filter, CancellationToken token = default) =>
+            ExecuteInternalAsync(dbContext => dbContext.Set<TEntity>().Where(filter).ToListAsync() as Task<IEnumerable<TEntity>>, false, token);
 
-        public override Task<bool> UpdateAsync(
-            IPrimaryKey primaryKey,
-            TEntity entity,
-            CancellationToken token = default
-        ) =>
+        public override Task<bool> UpdateAsync(IPrimaryKey primaryKey, TEntity entity, CancellationToken token = default) =>
             ExecuteInternalAsync(
                 async (dbContext) =>
                 {
                     var primaryKeyValue = primaryKey.GetValue();
-                    var trackedItem = await dbContext
-                        .Set<TEntity>()
-                        .SingleOrDefaultAsync(x => x.Id == primaryKeyValue, token);
+                    var trackedItem = await dbContext.Set<TEntity>().SingleOrDefaultAsync(x => x.Id == primaryKeyValue, token);
 
                     if (trackedItem != null)
                     {
                         trackedItem = entity.CopyToEntity(trackedItem);
                         dbContext.Update(trackedItem);
-                        return await dbContext
-                            .SaveChangesAsync(token)
-                            .ContinueWith(task => task.Result > 0, token);
+                        return await dbContext.SaveChangesAsync(token).ContinueWith(task => task.Result > 0, token);
                     }
                     else
                     {
@@ -185,9 +137,7 @@ namespace xSdk.Data
                 async (dbContext) =>
                 {
                     var primaryKeyValue = entity.PrimaryKey.GetValue();
-                    var trackedItem = await dbContext
-                        .Set<TEntity>()
-                        .SingleOrDefaultAsync(x => x.Id == primaryKeyValue, token);
+                    var trackedItem = await dbContext.Set<TEntity>().SingleOrDefaultAsync(x => x.Id == primaryKeyValue, token);
 
                     if (trackedItem == null)
                         await dbContext.AddAsync(entity);
@@ -197,19 +147,13 @@ namespace xSdk.Data
                         dbContext.Update(trackedItem);
                     }
 
-                    return await dbContext
-                        .SaveChangesAsync(token)
-                        .ContinueWith(task => task.Result > 0, token);
+                    return await dbContext.SaveChangesAsync(token).ContinueWith(task => task.Result > 0, token);
                 },
                 true,
                 token
             );
 
-        private async Task<TResult> ExecuteInternalAsync<TResult>(
-            Func<TDbContext, Task<TResult>> func,
-            bool withTransaction,
-            CancellationToken token
-        )
+        private async Task<TResult> ExecuteInternalAsync<TResult>(Func<TDbContext, Task<TResult>> func, bool withTransaction, CancellationToken token)
         {
             TResult result = default;
             IDbContextTransaction transaction = null;
@@ -243,10 +187,7 @@ namespace xSdk.Data
                 if (shouldUseTransaction && transaction != null)
                 {
                     await transaction.RollbackAsync();
-                    throw new SdkException(
-                        "A Error occurred while Operation with Transaction will executed",
-                        ex
-                    );
+                    throw new SdkException("A Error occurred while Operation with Transaction will executed", ex);
                 }
                 else
                     throw new SdkException("A Error occured while a Operation will executed", ex);

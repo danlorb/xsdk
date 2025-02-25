@@ -14,16 +14,10 @@ namespace xSdk.Shared
         {
             var certs = new List<X509Certificate>();
 
-            var splittedCertStrings = certificates.Split(
-                "-----END CERTIFICATE-----",
-                StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries
-            );
+            var splittedCertStrings = certificates.Split("-----END CERTIFICATE-----", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
             foreach (var certString in splittedCertStrings)
             {
-                var item = certString
-                    .Replace("-----BEGIN CERTIFICATE-----", null)
-                    .Replace("-----END CERTIFICATE-----", null)
-                    .Trim();
+                var item = certString.Replace("-----BEGIN CERTIFICATE-----", null).Replace("-----END CERTIFICATE-----", null).Trim();
 
                 var cert = new X509Certificate2(Encoding.ASCII.GetBytes(item));
                 certs.Add(cert);
@@ -32,12 +26,7 @@ namespace xSdk.Shared
             return certs;
         }
 
-        public static bool ValidateServerCallbacks(
-            object sender,
-            X509Certificate? certificate,
-            X509Chain? chain,
-            SslPolicyErrors sslPolicyErrors
-        )
+        public static bool ValidateServerCallbacks(object sender, X509Certificate? certificate, X509Chain? chain, SslPolicyErrors sslPolicyErrors)
         {
             if (sslPolicyErrors == SslPolicyErrors.RemoteCertificateChainErrors)
             {

@@ -11,8 +11,7 @@ namespace xSdk.Extensions.Variable.Commands
                 x =>
                 {
                     x.SetDescription("Helps to show current configured application variables");
-                    x.AddCommand<ListCommand>(ListCommand.Definitions.Name)
-                        .WithExample("variable", "list", "--show-help");
+                    x.AddCommand<ListCommand>(ListCommand.Definitions.Name).WithExample("variable", "list", "--show-help");
                 }
             );
 

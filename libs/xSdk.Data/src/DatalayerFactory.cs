@@ -36,28 +36,19 @@ namespace xSdk.Data
                 throw new SdkException("No Database Setup found.");
 
             if (string.IsNullOrEmpty(name) && setups.Count() > 1)
-                throw new SdkException(
-                    "More than one Database configured. Please specify the Datalayer or Database Name to create a Repository"
-                );
+                throw new SdkException("More than one Database configured. Please specify the Datalayer or Database Name to create a Repository");
 
-            if (
-                !string.IsNullOrEmpty(name)
-                && !setups.Any(x => string.Compare(x.Name, name, true) == 0)
-            )
+            if (!string.IsNullOrEmpty(name) && !setups.Any(x => string.Compare(x.Name, name, true) == 0))
                 throw new SdkException($"No Database Setup found for Name '{name}'");
 
             InternalDatabaseSetup databaseSetup = default;
             if (string.IsNullOrEmpty(name))
                 databaseSetup = setups.FirstOrDefault();
             else
-                databaseSetup = setups.SingleOrDefault(x =>
-                    string.Compare(x.Name, name, true) == 0
-                );
+                databaseSetup = setups.SingleOrDefault(x => string.Compare(x.Name, name, true) == 0);
 
             var database = provider.GetRequiredService(databaseSetup.DatabaseType) as IDatabase;
-            var connectionBuilder =
-                provider.GetRequiredService(databaseSetup.ConnectionBuilderType)
-                as IConnectionBuilder;
+            var connectionBuilder = provider.GetRequiredService(databaseSetup.ConnectionBuilderType) as IConnectionBuilder;
 
             ((Database)database).Configure(connectionBuilder, databaseSetup);
 

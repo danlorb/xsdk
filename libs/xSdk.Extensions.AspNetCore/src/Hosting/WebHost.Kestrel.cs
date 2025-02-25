@@ -14,9 +14,7 @@ namespace xSdk.Hosting
     {
         private static void ConfigureKestrel(KestrelServerOptions options)
         {
-            var webSetup = options
-                .ApplicationServices.GetRequiredService<IVariableService>()
-                .GetSetup<WebHostSetup>();
+            var webSetup = options.ApplicationServices.GetRequiredService<IVariableService>().GetSetup<WebHostSetup>();
 
             var httpPort = webSetup.Http;
             var grpcPort = webSetup.Grpc;
@@ -57,15 +55,9 @@ namespace xSdk.Hosting
                 if (httpPort > 0)
                 {
                     if (string.Compare(webSetup.Bind, "localhost", true) == 0) // DevSkim: ignore DS162092
-                        options.ListenLocalhost(
-                            httpPort,
-                            setup => setup.Protocols = HttpProtocols.Http1AndHttp2
-                        );
+                        options.ListenLocalhost(httpPort, setup => setup.Protocols = HttpProtocols.Http1AndHttp2);
                     else
-                        options.ListenAnyIP(
-                            httpPort,
-                            setup => setup.Protocols = HttpProtocols.Http1AndHttp2
-                        );
+                        options.ListenAnyIP(httpPort, setup => setup.Protocols = HttpProtocols.Http1AndHttp2);
                 }
                 else
                 {
@@ -78,15 +70,9 @@ namespace xSdk.Hosting
                 if (grpcPort > 0)
                 {
                     if (string.Compare(webSetup.Bind, "localhost", true) == 0) // DevSkim: ignore DS162092
-                        options.ListenLocalhost(
-                            grpcPort,
-                            setup => setup.Protocols = HttpProtocols.Http2
-                        );
+                        options.ListenLocalhost(grpcPort, setup => setup.Protocols = HttpProtocols.Http2);
                     else
-                        options.ListenAnyIP(
-                            grpcPort,
-                            setup => setup.Protocols = HttpProtocols.Http2
-                        );
+                        options.ListenAnyIP(grpcPort, setup => setup.Protocols = HttpProtocols.Http2);
                 }
                 else
                 {
@@ -95,10 +81,7 @@ namespace xSdk.Hosting
             }
         }
 
-        private static bool TryLoadCertificateIfHttpsIsEnabled(
-            WebHostSetup webSetup,
-            out X509Certificate2? cert
-        )
+        private static bool TryLoadCertificateIfHttpsIsEnabled(WebHostSetup webSetup, out X509Certificate2? cert)
         {
             if (webSetup.IsHttpsEnabled)
             {
@@ -115,10 +98,7 @@ namespace xSdk.Hosting
                         try
                         {
                             Logger.Info("Load Certificate from certificate and key File");
-                            var innerCert = X509Certificate2.CreateFromPemFile(
-                                certFilePath,
-                                keyFilePath
-                            );
+                            var innerCert = X509Certificate2.CreateFromPemFile(certFilePath, keyFilePath);
                             // cert = X509CertificateLoader.LoadCertificate(innerCert.Export(X509ContentType.Pkcs12));
                             cert = new X509Certificate2(innerCert.Export(X509ContentType.Pkcs12));
 
@@ -126,24 +106,14 @@ namespace xSdk.Hosting
                         }
                         catch (Exception ex)
                         {
-                            Logger.Error(
-                                ex,
-                                "Certificate could not created from certificate- and key File. (Reason: {0})",
-                                ex.Message
-                            );
+                            Logger.Error(ex, "Certificate could not created from certificate- and key File. (Reason: {0})", ex.Message);
                         }
                     }
                     else
-                        Logger.Warn(
-                            "Https is enabled, but no key file '{0}' could not found",
-                            keyFilePath
-                        );
+                        Logger.Warn("Https is enabled, but no key file '{0}' could not found", keyFilePath);
                 }
                 else
-                    Logger.Warn(
-                        "Https is enabled, but no certificate file '{0}' could not found",
-                        certFilePath
-                    );
+                    Logger.Warn("Https is enabled, but no certificate file '{0}' could not found", certFilePath);
             }
 
             cert = null;

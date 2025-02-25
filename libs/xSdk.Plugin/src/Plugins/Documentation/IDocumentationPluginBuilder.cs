@@ -11,6 +11,6 @@ namespace xSdk.Plugins.Documentation
 
         void ConfigureSwaggerUi(SwaggerUIOptions options);
 
-        void ConfigureApiDescriptions(OpenApiInfo info);
+        void ConfigureApiDescriptions(Dictionary<string, OpenApiInfo> descriptions);
     }
 }

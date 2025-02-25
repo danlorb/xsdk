@@ -17,9 +17,6 @@ namespace xSdk.Extensions.Links
             }
         }
 
-        protected abstract Task HandleRequirementAsync(
-            LinksHandlerContext context,
-            TRequirement requirement
-        );
+        protected abstract Task HandleRequirementAsync(LinksHandlerContext context, TRequirement requirement);
     }
 }

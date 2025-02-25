@@ -18,9 +18,7 @@ namespace xSdk.Extensions.Links
             JsonSerializer serializer
         )
         {
-            var links =
-                (Dictionary<string, Link>)
-                    serializer.Deserialize(reader, typeof(Dictionary<string, Link>));
+            var links = (Dictionary<string, Link>)serializer.Deserialize(reader, typeof(Dictionary<string, Link>));
 
             foreach (var link in links)
             {
@@ -30,11 +28,7 @@ namespace xSdk.Extensions.Links
             return existingValue;
         }
 
-        public override void WriteJson(
-            JsonWriter writer,
-            LinkCollection value,
-            JsonSerializer serializer
-        )
+        public override void WriteJson(JsonWriter writer, LinkCollection value, JsonSerializer serializer)
         {
             var links = value?.ToDictionary(x => x.Name, x => x);
 

@@ -83,10 +83,7 @@ namespace xSdk.Data
                     if (_connections.ContainsKey(uniqueKey))
                         connection = _connections[uniqueKey];
 
-                    connection = Open<TConnection>(
-                        connection,
-                        () => builder.InitializeConnection(_setup)
-                    );
+                    connection = Open<TConnection>(connection, () => builder.InitializeConnection(_setup));
                     _connections.AddOrNew(uniqueKey, connection);
                 }
                 else
@@ -96,10 +93,7 @@ namespace xSdk.Data
             return connection as TConnection;
         }
 
-        internal void Configure(
-            IConnectionBuilder connectionStringBuilder,
-            InternalDatabaseSetup setup
-        )
+        internal void Configure(IConnectionBuilder connectionStringBuilder, InternalDatabaseSetup setup)
         {
             logger.Trace("Configure new Database");
 
@@ -118,10 +112,7 @@ namespace xSdk.Data
             return default;
         }
 
-        protected virtual TConnection Open<TConnection>(
-            object? connection,
-            Func<object> connectionStringBuilder
-        )
+        protected virtual TConnection Open<TConnection>(object? connection, Func<object> connectionStringBuilder)
             where TConnection : class
         {
             return default;

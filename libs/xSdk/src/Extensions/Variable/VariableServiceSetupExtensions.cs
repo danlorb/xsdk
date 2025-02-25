@@ -4,9 +4,7 @@ namespace xSdk.Extensions.Variable
 {
     public static class VariableServiceSetupExtensions
     {
-        public static VariableServiceSetup AddEnvironmentVariablesWithoutSetup(
-            this VariableServiceSetup setup
-        )
+        public static VariableServiceSetup AddEnvironmentVariablesWithoutSetup(this VariableServiceSetup setup)
         {
             setup.AddEnvironmentVariablesWithoutSetup = true;
             return setup;
@@ -18,9 +16,7 @@ namespace xSdk.Extensions.Variable
         //    return setup;
         //}
 
-        public static VariableServiceSetup RegisterProvider<TProvider>(
-            this VariableServiceSetup setup
-        )
+        public static VariableServiceSetup RegisterProvider<TProvider>(this VariableServiceSetup setup)
             where TProvider : VariableProvider, new()
         {
             setup.Providers.Add(typeof(TProvider));

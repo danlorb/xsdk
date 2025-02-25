@@ -16,49 +16,25 @@ namespace xSdk.Extensions.CloudEvents
         internal static string SourceBaseUrl = $"{BaseUrl}/events/spec/v1";
         internal static string SchemeBaseUrl = $"{BaseUrl}/schemes/v1";
 
-        public static CloudEvent CreateCloudEvent(string scope, string type) =>
-            CreateCloudEvent(scope, type, null, null, null);
+        public static CloudEvent CreateCloudEvent(string scope, string type) => CreateCloudEvent(scope, type, null, null, null);
 
-        public static CloudEvent CreateCloudEvent(
-            string scope,
-            string type,
-            IEnumerable<CloudEventAttribute> extensions
-        ) => CreateCloudEvent(scope, type, null, null, extensions);
+        public static CloudEvent CreateCloudEvent(string scope, string type, IEnumerable<CloudEventAttribute> extensions) =>
+            CreateCloudEvent(scope, type, null, null, extensions);
 
-        public static CloudEvent CreateCloudEvent(string scope, string type, string subject) =>
-            CreateCloudEvent(scope, type, subject, null, null);
+        public static CloudEvent CreateCloudEvent(string scope, string type, string subject) => CreateCloudEvent(scope, type, subject, null, null);
 
-        public static CloudEvent CreateCloudEvent(
-            string scope,
-            string type,
-            string subject,
-            IEnumerable<CloudEventAttribute> extensions
-        ) => CreateCloudEvent(scope, type, subject, null, extensions);
+        public static CloudEvent CreateCloudEvent(string scope, string type, string subject, IEnumerable<CloudEventAttribute> extensions) =>
+            CreateCloudEvent(scope, type, subject, null, extensions);
 
-        public static CloudEvent CreateCloudEvent(string scope, string type, object payload) =>
-            CreateCloudEvent(scope, type, null, payload, null);
+        public static CloudEvent CreateCloudEvent(string scope, string type, object payload) => CreateCloudEvent(scope, type, null, payload, null);
 
-        public static CloudEvent CreateCloudEvent(
-            string scope,
-            string type,
-            object payload,
-            IEnumerable<CloudEventAttribute> extensions
-        ) => CreateCloudEvent(scope, type, null, payload, extensions);
+        public static CloudEvent CreateCloudEvent(string scope, string type, object payload, IEnumerable<CloudEventAttribute> extensions) =>
+            CreateCloudEvent(scope, type, null, payload, extensions);
 
-        public static CloudEvent CreateCloudEvent(
-            string scope,
-            string type,
-            string subject,
-            object payload
-        ) => CreateCloudEvent(scope, type, subject, payload, null);
+        public static CloudEvent CreateCloudEvent(string scope, string type, string subject, object payload) =>
+            CreateCloudEvent(scope, type, subject, payload, null);
 
-        public static CloudEvent CreateCloudEvent(
-            string scope,
-            string type,
-            string subject,
-            object payload,
-            IEnumerable<CloudEventAttribute> extensions
-        )
+        public static CloudEvent CreateCloudEvent(string scope, string type, string subject, object payload, IEnumerable<CloudEventAttribute> extensions)
         {
             var (sourceBaseUrl, schemeBaseUrl) = CreateBaseUrls(scope);
 
@@ -66,26 +42,12 @@ namespace xSdk.Extensions.CloudEvents
             if (payload == null)
             {
                 // Event without a Data Object
-                cloudEvent = CreateRawCloudEvent(
-                    sourceBaseUrl,
-                    scope,
-                    type,
-                    subject,
-                    true,
-                    extensions
-                );
+                cloudEvent = CreateRawCloudEvent(sourceBaseUrl, scope, type, subject, true, extensions);
             }
             else
             {
                 // Event with Data Object
-                cloudEvent = CreateRawCloudEvent(
-                    sourceBaseUrl,
-                    scope,
-                    type,
-                    subject,
-                    false,
-                    extensions
-                );
+                cloudEvent = CreateRawCloudEvent(sourceBaseUrl, scope, type, subject, false, extensions);
                 cloudEvent.SetDataObject(payload);
             }
 
@@ -176,20 +138,14 @@ namespace xSdk.Extensions.CloudEvents
             return cloudEvent;
         }
 
-        public static JsonEventFormatter CreateFormatter() =>
-            CreateFormatter(JsonHelper.GetSerializerOptions(true), JsonHelper.GetDocumentOptions());
+        public static JsonEventFormatter CreateFormatter() => CreateFormatter(JsonHelper.GetSerializerOptions(true), JsonHelper.GetDocumentOptions());
 
-        public static JsonEventFormatter CreateFormatter(JsonSerializerOptions serializer) =>
-            CreateFormatter(serializer, JsonHelper.GetDocumentOptions());
+        public static JsonEventFormatter CreateFormatter(JsonSerializerOptions serializer) => CreateFormatter(serializer, JsonHelper.GetDocumentOptions());
 
-        public static JsonEventFormatter CreateFormatter(
-            JsonSerializerOptions serializer,
-            JsonDocumentOptions document
-        ) => new JsonEventFormatter(serializer, document);
+        public static JsonEventFormatter CreateFormatter(JsonSerializerOptions serializer, JsonDocumentOptions document) =>
+            new JsonEventFormatter(serializer, document);
 
-        internal static IEnumerable<CloudEventAttribute> MergeAttributes(
-            IEnumerable<CloudEventAttribute> attributes
-        )
+        internal static IEnumerable<CloudEventAttribute> MergeAttributes(IEnumerable<CloudEventAttribute> attributes)
         {
             if (attributes == null)
                 attributes = new List<CloudEventAttribute>();
@@ -198,11 +154,7 @@ namespace xSdk.Extensions.CloudEvents
             var attributesAsList = attributes.ToList();
             foreach (var defaultAttribute in defaultAttributes)
             {
-                if (
-                    !attributes.Any(x =>
-                        string.Compare(x.Name, defaultAttribute.Key.Name, true) == 0
-                    )
-                )
+                if (!attributes.Any(x => string.Compare(x.Name, defaultAttribute.Key.Name, true) == 0))
                 {
                     attributesAsList.Add(defaultAttribute.Key);
                 }
@@ -211,19 +163,14 @@ namespace xSdk.Extensions.CloudEvents
             return attributesAsList;
         }
 
-        internal static bool TryGetValueForAttribute(
-            CloudEventAttribute attribute,
-            out object value
-        )
+        internal static bool TryGetValueForAttribute(CloudEventAttribute attribute, out object value)
         {
             var defaultAttributes = LoadDefaultAttributes();
 
             value = null;
             if (defaultAttributes.Any(x => string.Compare(x.Key.Name, attribute.Name, true) == 0))
             {
-                var ce = defaultAttributes.SingleOrDefault(x =>
-                    string.Compare(x.Key.Name, attribute.Name, true) == 0
-                );
+                var ce = defaultAttributes.SingleOrDefault(x => string.Compare(x.Key.Name, attribute.Name, true) == 0);
                 value = ce.Value;
                 return true;
             }
@@ -235,24 +182,9 @@ namespace xSdk.Extensions.CloudEvents
         {
             return new Dictionary<CloudEventAttribute, object>()
             {
-                {
-                    CreateAttribute(
-                        nameof(Environment.MachineName),
-                        CloudEventAttributeType.String
-                    ),
-                    Environment.MachineName
-                },
-                {
-                    CreateAttribute(nameof(Environment.UserName), CloudEventAttributeType.String),
-                    Environment.UserName
-                },
-                {
-                    CreateAttribute(
-                        nameof(Environment.UserDomainName),
-                        CloudEventAttributeType.String
-                    ),
-                    Environment.UserDomainName
-                },
+                { CreateAttribute(nameof(Environment.MachineName), CloudEventAttributeType.String), Environment.MachineName },
+                { CreateAttribute(nameof(Environment.UserName), CloudEventAttributeType.String), Environment.UserName },
+                { CreateAttribute(nameof(Environment.UserDomainName), CloudEventAttributeType.String), Environment.UserDomainName },
             };
         }
     }

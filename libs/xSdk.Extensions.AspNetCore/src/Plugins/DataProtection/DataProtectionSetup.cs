@@ -17,22 +17,14 @@ namespace xSdk.Plugins.DataProtection
             set => this.SetValue(Definitions.ApplicationDiscriminator.Name, value);
         }
 
-        [Variable(
-            name: Definitions.ApplicationName.Name,
-            template: Definitions.ApplicationName.Template,
-            helpText: Definitions.ApplicationName.HelpText
-        )]
+        [Variable(name: Definitions.ApplicationName.Name, template: Definitions.ApplicationName.Template, helpText: Definitions.ApplicationName.HelpText)]
         public string ApplicationName
         {
             get => this.ReadValue<string>(Definitions.ApplicationName.Name);
             set => this.SetValue(Definitions.ApplicationName.Name, value);
         }
 
-        [Variable(
-            name: Definitions.KeyLifetime.Name,
-            template: Definitions.KeyLifetime.Template,
-            helpText: Definitions.KeyLifetime.HelpText
-        )]
+        [Variable(name: Definitions.KeyLifetime.Name, template: Definitions.KeyLifetime.Template, helpText: Definitions.KeyLifetime.HelpText)]
         public string KeyLifetime
         {
             get => this.ReadValue<string>(Definitions.KeyLifetime.Name);
@@ -53,16 +45,14 @@ namespace xSdk.Plugins.DataProtection
             {
                 public const string Name = "name";
                 public const string Template = "--name <name>";
-                public const string HelpText =
-                    "Sets the unique name of this application within the data protection system.";
+                public const string HelpText = "Sets the unique name of this application within the data protection system.";
             }
 
             public static class KeyLifetime
             {
                 public const string Name = "lifetime";
                 public const string Template = "--lifetime <lifetime>";
-                public const string HelpText =
-                    "Sets the default lifetime of keys created by the data protection system.";
+                public const string HelpText = "Sets the default lifetime of keys created by the data protection system.";
             }
         }
     }

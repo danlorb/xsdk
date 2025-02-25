@@ -16,10 +16,7 @@ namespace xSdk.Plugins.Authentication
 
             // Add ApiKey Auth
             builder
-                .AddApiKeyInHeader(
-                    AuthenticationDefaults.ApiKeyAuth.InHeader.Scheme,
-                    options => ActivateInHeader(options, envSetup, apiKeySetup)
-                )
+                .AddApiKeyInHeader(AuthenticationDefaults.ApiKeyAuth.InHeader.Scheme, options => ActivateInHeader(options, envSetup, apiKeySetup))
                 .AddApiKeyInAuthorizationHeader(
                     AuthenticationDefaults.ApiKeyAuth.InAuthorizationHeader.Scheme,
                     options => ActivateInAuthorizationHeader(options, envSetup, apiKeySetup)
@@ -28,33 +25,21 @@ namespace xSdk.Plugins.Authentication
             return builder;
         }
 
-        private static void ActivateInHeader(
-            ApiKeyOptions options,
-            EnvironmentSetup envSetup,
-            ApiKeySetup apiKeySetup
-        )
+        private static void ActivateInHeader(ApiKeyOptions options, EnvironmentSetup envSetup, ApiKeySetup apiKeySetup)
         {
             options.KeyName = AuthenticationDefaults.ApiKeyAuth.InHeader.Header;
 
             EnableApiKeyAuth(options, envSetup, apiKeySetup);
         }
 
-        private static void ActivateInAuthorizationHeader(
-            ApiKeyOptions options,
-            EnvironmentSetup envSetup,
-            ApiKeySetup apiKeySetup
-        )
+        private static void ActivateInAuthorizationHeader(ApiKeyOptions options, EnvironmentSetup envSetup, ApiKeySetup apiKeySetup)
         {
             options.KeyName = AuthenticationDefaults.ApiKeyAuth.InAuthorizationHeader.Header;
 
             EnableApiKeyAuth(options, envSetup, apiKeySetup);
         }
 
-        private static void EnableApiKeyAuth(
-            ApiKeyOptions options,
-            EnvironmentSetup envSetup,
-            ApiKeySetup apiKeySetup
-        )
+        private static void EnableApiKeyAuth(ApiKeyOptions options, EnvironmentSetup envSetup, ApiKeySetup apiKeySetup)
         {
             options.Realm = apiKeySetup.Realm;
 
@@ -78,19 +63,13 @@ namespace xSdk.Plugins.Authentication
                 OnAuthenticationSucceeded = context =>
                 {
                     // Will be invoked after a successful authentication.
-                    context.Response.Headers.Append(
-                        "AuthenticationCustomHeader",
-                        "From OnAuthenticationSucceeded"
-                    );
+                    context.Response.Headers.Append("AuthenticationCustomHeader", "From OnAuthenticationSucceeded");
                     return Task.CompletedTask;
                 },
             };
         }
 
-        private static async Task ValidateKeyAsync(
-            ApiKeyValidateKeyContext context,
-            EnvironmentSetup envSetup
-        )
+        private static async Task ValidateKeyAsync(ApiKeyValidateKeyContext context, EnvironmentSetup envSetup)
         {
             // Will be invoked just before validating the api key.
             IApiKey? apiKey = null;
@@ -127,9 +106,7 @@ namespace xSdk.Plugins.Authentication
             }
             else
             {
-                Logger.Warn(
-                    "API Key could not validated, because no Authorization Service is available"
-                );
+                Logger.Warn("API Key could not validated, because no Authorization Service is available");
             }
         }
 
@@ -140,8 +117,7 @@ namespace xSdk.Plugins.Authentication
             var details = new ProblemDetails
             {
                 Title = "Access could not verified",
-                Detail =
-                    "API Key does not match or is missing. Please define a valid API Key to access the API.",
+                Detail = "API Key does not match or is missing. Please define a valid API Key to access the API.",
                 Status = StatusCodes.Status401Unauthorized,
             };
             await context.Response.WriteAsJsonAsync(details);

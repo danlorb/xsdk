@@ -7,16 +7,11 @@ namespace xSdk.Extensions.Variable
 {
     public static class SerivceCollectionExtensions
     {
-        private static List<Action<VariableServiceSetup>> _configureActions =
-            new List<Action<VariableServiceSetup>>();
+        private static List<Action<VariableServiceSetup>> _configureActions = new List<Action<VariableServiceSetup>>();
 
-        public static IServiceCollection AddVariableServices(this IServiceCollection services) =>
-            services.AddVariableServices(null);
+        public static IServiceCollection AddVariableServices(this IServiceCollection services) => services.AddVariableServices(null);
 
-        public static IServiceCollection AddVariableServices(
-            this IServiceCollection services,
-            Action<VariableServiceSetup>? configure
-        )
+        public static IServiceCollection AddVariableServices(this IServiceCollection services, Action<VariableServiceSetup>? configure)
         {
             if (configure != null)
             {
@@ -58,10 +53,7 @@ namespace xSdk.Extensions.Variable
             return services;
         }
 
-        internal static IServiceCollection AddSlimVariableServices(
-            this IServiceCollection services,
-            IConfigurationRoot config
-        )
+        internal static IServiceCollection AddSlimVariableServices(this IServiceCollection services, IConfigurationRoot config)
         {
             services.AddSingleton<IConfiguration>(config);
             services.TryAddSingleton<IVariableService>(provider =>

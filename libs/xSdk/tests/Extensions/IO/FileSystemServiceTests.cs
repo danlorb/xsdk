@@ -11,9 +11,7 @@ namespace xSdk.Extensions.IO
         [InlineData(FileSystemContext.None)]
         public void RequestMachineFileSystem(FileSystemContext context)
         {
-            var service = fixture.GetService<IFileSystemService>(services =>
-                services.AddFileServices()
-            );
+            var service = fixture.GetService<IFileSystemService>(services => services.AddFileServices());
 
             Assert.NotNull(service);
 

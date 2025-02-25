@@ -5,13 +5,8 @@ using xSdk.Extensions.Plugin;
 
 namespace xSdk.Hosting
 {
-    public class HostPluginBase : PluginDescription
+    public class HostPluginBase : PluginDescription, IPlugin
     {
-        protected ILogger Logger { get; } = LogManager.GetCurrentClassLogger();
-
-        public virtual void ConfigureServices(
-            HostBuilderContext context,
-            IServiceCollection services
-        ) { }
+        public virtual void ConfigureServices(HostBuilderContext context, IServiceCollection services) { }
     }
 }

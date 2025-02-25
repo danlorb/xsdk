@@ -24,11 +24,7 @@ namespace xSdk.Extensions.Links
             return service.AddLinksAsync(linkContainer, policy.Requirements);
         }
 
-        public static Task AddLinksAsync<T>(
-            this ILinksService service,
-            T linkContainer,
-            ILinksRequirement requirement
-        )
+        public static Task AddLinksAsync<T>(this ILinksService service, T linkContainer, ILinksRequirement requirement)
             where T : ILinkContainer
         {
             if (service == null)

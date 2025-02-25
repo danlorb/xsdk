@@ -7,11 +7,7 @@ namespace xSdk.Data.Converters.Json
 {
     public sealed class DateTimeConverter : JsonConverter<DateTime>
     {
-        public override DateTime Read(
-            ref Utf8JsonReader reader,
-            Type typeToConvert,
-            JsonSerializerOptions options
-        )
+        public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             try
             {
@@ -25,10 +21,8 @@ namespace xSdk.Data.Converters.Json
                     var splittedDateTime = value.Split(" ", StringSplitOptions.RemoveEmptyEntries);
                     if (splittedDateTime.Count() > 1)
                     {
-                        var splittedDate = splittedDateTime[0]
-                            .Split("-", StringSplitOptions.RemoveEmptyEntries);
-                        var splittedTime = splittedDateTime[1]
-                            .Split(":", StringSplitOptions.RemoveEmptyEntries);
+                        var splittedDate = splittedDateTime[0].Split("-", StringSplitOptions.RemoveEmptyEntries);
+                        var splittedTime = splittedDateTime[1].Split(":", StringSplitOptions.RemoveEmptyEntries);
 
                         return new DateTime(
                             Convert(splittedDate[0]),
@@ -48,11 +42,7 @@ namespace xSdk.Data.Converters.Json
             }
         }
 
-        public override void Write(
-            Utf8JsonWriter writer,
-            DateTime value,
-            JsonSerializerOptions options
-        )
+        public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
         {
             writer.WriteStringValue(value.ToString("yyyy-MM-dd HH:mm:ss"));
         }

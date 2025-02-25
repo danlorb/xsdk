@@ -6,18 +6,13 @@ using System.Threading.Tasks;
 
 namespace xSdk.Extensions.Links.Requirements
 {
-    public class SelfLinkRequirement<TResource>
-        : LinksHandler<SelfLinkRequirement<TResource>>,
-            ILinksRequirement
+    public class SelfLinkRequirement<TResource> : LinksHandler<SelfLinkRequirement<TResource>>, ILinksRequirement
     {
         public SelfLinkRequirement() { }
 
         public string Id { get; set; }
 
-        protected override Task HandleRequirementAsync(
-            LinksHandlerContext context,
-            SelfLinkRequirement<TResource> requirement
-        )
+        protected override Task HandleRequirementAsync(LinksHandlerContext context, SelfLinkRequirement<TResource> requirement)
         {
             var route = context.CurrentRoute;
             var values = context.CurrentRouteValues;

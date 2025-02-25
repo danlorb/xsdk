@@ -15,7 +15,6 @@ namespace xSdk.Extensions.Variable.Providers
             return false;
         }
 
-        protected override object ReadVariable(IVariable variable) =>
-            EnvironmentTools.ReadEnvironmentVariable(Cast(variable).KeyForSystem);
+        protected override object ReadVariable(IVariable variable) => EnvironmentTools.ReadEnvironmentVariable(Cast(variable).KeyForSystem);
     }
 }

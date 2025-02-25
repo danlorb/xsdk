@@ -1,15 +1,16 @@
+using System.Security.Claims;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Security.Claims;
 using xSdk.Demos.Builders;
 using xSdk.Extensions.Web;
 
 namespace xSdk.Demos.Controllers
 {
     [ApiVersion(1)]
+    [ApiVersion(2)]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public sealed class SampleController(ILogger<SampleController> logger) : ControllerBase
@@ -19,23 +20,51 @@ namespace xSdk.Demos.Controllers
         /// </summary>
         [HttpGet(Name = "get-sample")]
         [MapToApiVersion(1)]
-        [Authorize]
+        //[Authorize]
         [SwaggerOperation(
             Summary = "Sends a sample model back",
             Description = "Requires authentication",
-            OperationId = nameof(GetSampleAsync),
+            OperationId = nameof(GetSampleAsyncv1),
             Tags = new[] { "Sample" }
         )]
-        public async Task<ActionResult> GetSampleAsync(CancellationToken token = default)
+        public async Task<ActionResult> GetSampleAsyncv1(CancellationToken token = default)
         {
             try
             {
-                logger.LogDebug("Call Hello World");
+                logger.LogDebug("Call Hello World from v1");
 
                 await Task.Yield();
 
-                return Ok();
+                return Ok("Hello World from v1");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "API: Hello World could not returned.");
+                return this.BadRequestAsProblem(ex);
+            }
+        }
 
+        // <summary>
+        /// Sends a Sample Model back
+        /// </summary>
+        [HttpGet(Name = "get-sample")]
+        [MapToApiVersion(2)]
+       // [Authorize]
+        [SwaggerOperation(
+            Summary = "Sends a sample model back",
+            Description = "Requires authentication",
+            OperationId = nameof(GetSampleAsyncv2),
+            Tags = new[] { "Sample" }
+        )]
+        public async Task<ActionResult> GetSampleAsyncv2(CancellationToken token = default)
+        {
+            try
+            {
+                logger.LogDebug("Call Hello World from v2");
+
+                await Task.Yield();
+
+                return Ok("Hello World from v2");
             }
             catch (Exception ex)
             {
@@ -67,7 +96,6 @@ namespace xSdk.Demos.Controllers
                 }
 
                 return Ok("Read was allowed");
-
             }
             catch (Exception ex)
             {
@@ -99,7 +127,6 @@ namespace xSdk.Demos.Controllers
                 await Task.Yield();
 
                 return Ok("Read and Write are allowed");
-
             }
             catch (Exception ex)
             {

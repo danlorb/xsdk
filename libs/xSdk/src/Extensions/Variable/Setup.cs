@@ -13,8 +13,7 @@ namespace xSdk.Extensions.Variable
     {
         private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ICollection<ValidationResult> _validationResults =
-            new Collection<ValidationResult>();
+        private readonly ICollection<ValidationResult> _validationResults = new Collection<ValidationResult>();
         private VariableService _variableService;
         private VariableService _slimVariableService;
 
@@ -47,9 +46,7 @@ namespace xSdk.Extensions.Variable
 
             if (!isValid && throwIfFails)
             {
-                throw new SdkException(
-                    string.Format("Implementation '{0}' not valid.", currentType.FullName)
-                );
+                throw new SdkException(string.Format("Implementation '{0}' not valid.", currentType.FullName));
             }
         }
 
@@ -89,11 +86,7 @@ namespace xSdk.Extensions.Variable
         private void CreateVariables()
         {
             // Remarks: Dont activate Logging, because its produces a StackOverFlow
-            var createMethod = typeof(Variable).GetMethod(
-                "Create",
-                BindingFlags.Static | BindingFlags.Public,
-                new Type[] { typeof(string) }
-            );
+            var createMethod = typeof(Variable).GetMethod("Create", BindingFlags.Static | BindingFlags.Public, new Type[] { typeof(string) });
             if (createMethod != null)
             {
                 // Read all properties of the Implementation
@@ -131,9 +124,7 @@ namespace xSdk.Extensions.Variable
                             // Nothing to tell
                         }
 
-                        if (
-                            IsDefaultValueGreater(property.PropertyType, currentValue, defaultValue)
-                        )
+                        if (IsDefaultValueGreater(property.PropertyType, currentValue, defaultValue))
                         {
                             currentValue = null;
                         }
@@ -143,17 +134,12 @@ namespace xSdk.Extensions.Variable
                         {
                             if (!TypeConverter.IsEmpty(defaultValue, property.PropertyType))
                             {
-                                defaultValue = TypeConverter.ConvertTo(
-                                    defaultValue,
-                                    property.PropertyType
-                                );
+                                defaultValue = TypeConverter.ConvertTo(defaultValue, property.PropertyType);
                             }
                         }
 
                         // Create Variable
-                        var genericCreateMethod = createMethod.MakeGenericMethod(
-                            property.PropertyType
-                        );
+                        var genericCreateMethod = createMethod.MakeGenericMethod(property.PropertyType);
                         if (genericCreateMethod != null)
                         {
                             var name = property.Name;
@@ -162,9 +148,7 @@ namespace xSdk.Extensions.Variable
                                 name = attr.Name;
                             }
 
-                            var variable =
-                                genericCreateMethod.Invoke(null, new object[] { name.ToLower() })
-                                as Variable;
+                            var variable = genericCreateMethod.Invoke(null, new object[] { name.ToLower() }) as Variable;
                             if (variable != null)
                             {
                                 if (!string.IsNullOrEmpty(mainPrefix))
@@ -208,9 +192,7 @@ namespace xSdk.Extensions.Variable
                                 }
 
                                 variable.SetAttribute(attr);
-                                variable.SetTelemetryResourceValueDelegate(
-                                    () => property.GetValue(this)
-                                );
+                                variable.SetTelemetryResourceValueDelegate(() => property.GetValue(this));
 
                                 GetVariableService().AddVariableFromSetupInitialize(variable);
 
@@ -222,22 +204,11 @@ namespace xSdk.Extensions.Variable
                                 );
                                 if (readMethod != null)
                                 {
-                                    var genericReadMethod = readMethod.MakeGenericMethod(
-                                        property.PropertyType
-                                    );
+                                    var genericReadMethod = readMethod.MakeGenericMethod(property.PropertyType);
                                     if (genericReadMethod != null)
                                     {
-                                        var environmentValue = genericReadMethod.Invoke(
-                                            GetVariableService(),
-                                            new object[] { name, false, false }
-                                        );
-                                        if (
-                                            environmentValue != null
-                                            && !TypeConverter.IsEmpty(
-                                                environmentValue,
-                                                property.PropertyType
-                                            )
-                                        )
+                                        var environmentValue = genericReadMethod.Invoke(GetVariableService(), new object[] { name, false, false });
+                                        if (environmentValue != null && !TypeConverter.IsEmpty(environmentValue, property.PropertyType))
                                         {
                                             if (!variable.IsProtected)
                                             {
@@ -254,11 +225,7 @@ namespace xSdk.Extensions.Variable
             }
         }
 
-        private static bool IsDefaultValueGreater(
-            Type type,
-            object currentValue,
-            object defaultValue
-        )
+        private static bool IsDefaultValueGreater(Type type, object currentValue, object defaultValue)
         {
             if (currentValue != null && defaultValue != null && type.IsEnum)
             {
@@ -295,8 +262,7 @@ namespace xSdk.Extensions.Variable
 
                     var provider = services.BuildServiceProvider();
 
-                    _slimVariableService =
-                        provider.GetRequiredService<IVariableService>() as VariableService;
+                    _slimVariableService = provider.GetRequiredService<IVariableService>() as VariableService;
                     CreateVariables();
                     Initialize();
                 }

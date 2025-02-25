@@ -12,24 +12,15 @@ namespace xSdk.Hosting
         private const string APP_COMPANY = "xUnit";
         private const string APP_PREFIX = "UnitTest";
 
-        public static IHostBuilder CreateBuilder() =>
-            CreateBuilder(new string[] { }, APP_NAME, APP_COMPANY, APP_PREFIX);
+        public static IHostBuilder CreateBuilder() => CreateBuilder(new string[] { }, APP_NAME, APP_COMPANY, APP_PREFIX);
 
-        public static IHostBuilder CreateBuilder(string[] args) =>
-            CreateBuilder(args, APP_NAME, APP_COMPANY, APP_PREFIX);
+        public static IHostBuilder CreateBuilder(string[] args) => CreateBuilder(args, APP_NAME, APP_COMPANY, APP_PREFIX);
 
-        public static IHostBuilder CreateBuilder(string[] args, string appName) =>
-            CreateBuilder(args, appName, APP_COMPANY, APP_PREFIX);
+        public static IHostBuilder CreateBuilder(string[] args, string appName) => CreateBuilder(args, appName, APP_COMPANY, APP_PREFIX);
 
-        public static IHostBuilder CreateBuilder(string[] args, string appName, string appPrefix) =>
-            CreateBuilder(args, appName, APP_COMPANY, appPrefix);
+        public static IHostBuilder CreateBuilder(string[] args, string appName, string appPrefix) => CreateBuilder(args, appName, APP_COMPANY, appPrefix);
 
-        public static IHostBuilder CreateBuilder(
-            string[] args,
-            string? appName,
-            string? appCompany,
-            string? appPrefix
-        )
+        public static IHostBuilder CreateBuilder(string[] args, string? appName, string? appCompany, string? appPrefix)
         {
             var boot = SlimHostInternal.InitializeTestHost(args, appName, appCompany, appPrefix);
 

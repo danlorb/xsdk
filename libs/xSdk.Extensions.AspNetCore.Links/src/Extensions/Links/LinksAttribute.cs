@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace xSdk.Extensions.Links
 {
-    [AttributeUsage(
-        AttributeTargets.Method | AttributeTargets.Class,
-        AllowMultiple = true,
-        Inherited = true
-    )]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     public class LinksAttribute : Attribute
     {
         public string Policy { get; set; }

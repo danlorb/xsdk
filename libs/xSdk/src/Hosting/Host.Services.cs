@@ -10,24 +10,14 @@ namespace xSdk.Hosting
     {
         private static void ConfigureHostServices(IServiceCollection services)
         {
-            services
-                .AddLogging(LoggingHelpers.ConfigureLogging)
-                .AddFileServices()
-                .AddVariableServices();
+            services.AddLogging(LoggingHelpers.ConfigureLogging).AddFileServices().AddVariableServices();
 
-            SlimHostInternal.Instance.PluginSystem.Invoke<PluginBase>(x =>
-                x.ConfigureServices(services)
-            );
+            SlimHostInternal.Instance.PluginSystem.Invoke<PluginBase>(x => x.ConfigureServices(services));
         }
 
-        private static void ConfigureHostServicesWithContext(
-            HostBuilderContext context,
-            IServiceCollection services
-        )
+        private static void ConfigureHostServicesWithContext(HostBuilderContext context, IServiceCollection services)
         {
-            SlimHostInternal.Instance.PluginSystem.Invoke<HostPluginBase>(x =>
-                x.ConfigureServices(context, services)
-            );
+            SlimHostInternal.Instance.PluginSystem.Invoke<HostPluginBase>(x => x.ConfigureServices(context, services));
         }
     }
 }

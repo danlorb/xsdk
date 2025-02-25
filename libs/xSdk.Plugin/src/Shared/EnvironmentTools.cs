@@ -2,8 +2,7 @@ namespace xSdk.Shared
 {
     public static class EnvironmentTools
     {
-        public static string? ReadEnvironmentVariable(string key) =>
-            ReadEnvironmentVariable(key, null);
+        public static string? ReadEnvironmentVariable(string key) => ReadEnvironmentVariable(key, null);
 
         public static string? ReadEnvironmentVariable(string key, string? defaultValue)
         {
@@ -26,14 +25,9 @@ namespace xSdk.Shared
             return result;
         }
 
-        public static bool TryReadEnvironmentVariable(string key, out string value) =>
-            TryReadEnvironmentVariable(key, out value, null);
+        public static bool TryReadEnvironmentVariable(string key, out string value) => TryReadEnvironmentVariable(key, out value, null);
 
-        public static bool TryReadEnvironmentVariable(
-            string key,
-            out string value,
-            string? defaultValue
-        )
+        public static bool TryReadEnvironmentVariable(string key, out string value, string? defaultValue)
         {
             value = string.Empty;
 

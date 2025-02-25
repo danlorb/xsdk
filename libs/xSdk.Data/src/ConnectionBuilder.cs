@@ -34,11 +34,7 @@ namespace xSdk.Data
 
                 if (content.IndexOf(placeholder, StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
-                    content = content.Replace(
-                        placeholder,
-                        value,
-                        StringComparison.InvariantCultureIgnoreCase
-                    );
+                    content = content.Replace(placeholder, value, StringComparison.InvariantCultureIgnoreCase);
                 }
 
                 if (content.IndexOf("{") > -1 && content.IndexOf("}") > -1)

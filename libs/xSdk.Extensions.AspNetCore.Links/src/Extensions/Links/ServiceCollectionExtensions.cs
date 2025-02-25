@@ -21,15 +21,8 @@ namespace xSdk.Extensions.Links
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.TryAddSingleton<IRouteMap, DefaultRouteMap>();
             //services.TryAdd(ServiceDescriptor.Transient<ILinksHandlerContextFactory, DefaultLinksHandlerContextFactory>());
-            services.TryAdd(
-                ServiceDescriptor.Transient<ILinksPolicyProvider, DefaultLinksPolicyProvider>()
-            );
-            services.TryAdd(
-                ServiceDescriptor.Transient<
-                    ILinkTransformationContextFactory,
-                    DefaultLinkTransformationContextFactory
-                >()
-            );
+            services.TryAdd(ServiceDescriptor.Transient<ILinksPolicyProvider, DefaultLinksPolicyProvider>());
+            services.TryAdd(ServiceDescriptor.Transient<ILinkTransformationContextFactory, DefaultLinkTransformationContextFactory>());
             services.TryAdd(ServiceDescriptor.Transient<ILinksEvaluator, DefaultLinksEvaluator>());
             //services.TryAdd(ServiceDescriptor.Transient<ILinkAuthorizationService, DefaultLinkAuthorizationService>());
             services.TryAdd(ServiceDescriptor.Transient<ILinksService, DefaultLinksService>());
@@ -37,10 +30,7 @@ namespace xSdk.Extensions.Links
             return services;
         }
 
-        public static IServiceCollection AddLinks(
-            this IServiceCollection services,
-            Action<LinksOptions> configure
-        )
+        public static IServiceCollection AddLinks(this IServiceCollection services, Action<LinksOptions> configure)
         {
             if (services == null)
                 throw new ArgumentNullException(nameof(services));

@@ -38,8 +38,7 @@ namespace xSdk.Extensions.Commands
             {
                 public const string Name = "stage";
                 public const string Template = "--stage <STAGE>";
-                public const string HelpText =
-                    "Stage where application is running. Default primaryKey is 'Development'.";
+                public const string HelpText = "Stage where application is running. Default primaryKey is 'Development'.";
                 public const xSdk.Stage DefaultValue = xSdk.Stage.Development;
             }
 
@@ -47,16 +46,14 @@ namespace xSdk.Extensions.Commands
             {
                 public const string Name = "demo";
                 public const string Template = "--demo";
-                public const string HelpText =
-                    "Enables the demo mode for the application. This will generate fake data for demostration";
+                public const string HelpText = "Enables the demo mode for the application. This will generate fake data for demostration";
             }
 
             public static class ContentRoot
             {
                 public const string Name = "content-root";
                 public const string Template = "--content-root <ROOT>";
-                public const string HelpText =
-                    "Content root folder where application should working. If not given, content root will automatically determined";
+                public const string HelpText = "Content root folder where application should working. If not given, content root will automatically determined";
             }
         }
     }

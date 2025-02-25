@@ -6,8 +6,7 @@ using Spectre.Console.Cli;
 namespace xSdk.Extensions.Variable.Commands
 {
     [Description(Definitions.HelpText)]
-    internal class ListCommand(IVariableService variableSvc, ILogger<ListCommand> logger)
-        : Command<ListCommandSettings>
+    internal class ListCommand(IVariableService variableSvc, ILogger<ListCommand> logger) : Command<ListCommandSettings>
     {
         internal static class Definitions
         {
@@ -31,9 +30,7 @@ namespace xSdk.Extensions.Variable.Commands
         {
             logger.LogInformation("Print variables as table");
 
-            var fields = format
-                .Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                .ToList();
+            var fields = format.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
 
             logger.LogTrace("Prepare data");
             var items = variableSvc
@@ -62,9 +59,7 @@ namespace xSdk.Extensions.Variable.Commands
                 .OrderBy(x => x.Template);
 
             logger.LogTrace("Create table");
-            var table = new Table()
-                .Border(TableBorder.MinimalHeavyHead)
-                .Title("Overview of loaded Variable");
+            var table = new Table().Border(TableBorder.MinimalHeavyHead).Title("Overview of loaded Variable");
 
             logger.LogTrace("Add header columns");
             foreach (var field in fields)

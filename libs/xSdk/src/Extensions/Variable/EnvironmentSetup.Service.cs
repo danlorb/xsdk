@@ -10,45 +10,28 @@ namespace xSdk.Extensions.Variable
 {
     public sealed partial class EnvironmentSetup
     {
-        [Variable(
-            name: Definitions.ServiceName.Name,
-            template: Definitions.ServiceName.Template,
-            helpText: Definitions.ServiceName.HelpText
-        )]
+        [Variable(name: Definitions.ServiceName.Name, template: Definitions.ServiceName.Template, helpText: Definitions.ServiceName.HelpText)]
         public string ServiceName
         {
             get => this.ReadValue<string>(Definitions.ServiceName.Name);
             set => this.SetValue(Definitions.ServiceName.Name, value);
         }
 
-        [Variable(
-            name: Definitions.ServiceNamespace.Name,
-            template: Definitions.ServiceNamespace.Template,
-            helpText: Definitions.ServiceNamespace.HelpText
-        )]
+        [Variable(name: Definitions.ServiceNamespace.Name, template: Definitions.ServiceNamespace.Template, helpText: Definitions.ServiceNamespace.HelpText)]
         public string ServiceNamespace
         {
             get => this.ReadValue<string>(Definitions.ServiceNamespace.Name);
             set => this.SetValue(Definitions.ServiceNamespace.Name, value);
         }
 
-        [Variable(
-            name: Definitions.ServiceVersion.Name,
-            template: Definitions.ServiceVersion.Template,
-            helpText: Definitions.ServiceVersion.HelpText
-        )]
+        [Variable(name: Definitions.ServiceVersion.Name, template: Definitions.ServiceVersion.Template, helpText: Definitions.ServiceVersion.HelpText)]
         public string ServiceVersion
         {
             get => this.ReadValue<string>(Definitions.ServiceVersion.Name);
             set => this.SetValue(Definitions.ServiceVersion.Name, value);
         }
 
-        [Variable(
-            name: Definitions.ServiceFullName.Name,
-            helpText: Definitions.ServiceFullName.HelpText,
-            protect: true,
-            hidden: true
-        )]
+        [Variable(name: Definitions.ServiceFullName.Name, helpText: Definitions.ServiceFullName.HelpText, protect: true, hidden: true)]
         public string ServiceFullName { get; private set; }
 
         private void InitializeService()
@@ -57,11 +40,7 @@ namespace xSdk.Extensions.Variable
             var currentServiceNamespace = ServiceNamespace;
             var currentServiceVersion = ServiceVersion;
 
-            if (
-                string.IsNullOrEmpty(currentServiceName)
-                || string.IsNullOrEmpty(currentServiceNamespace)
-                || string.IsNullOrEmpty(currentServiceVersion)
-            )
+            if (string.IsNullOrEmpty(currentServiceName) || string.IsNullOrEmpty(currentServiceNamespace) || string.IsNullOrEmpty(currentServiceVersion))
             {
                 var assembly = Assembly.GetEntryAssembly();
                 var assemblyName = assembly.GetName();
@@ -86,21 +65,15 @@ namespace xSdk.Extensions.Variable
                 }
             }
 
-            if (
-                !string.IsNullOrEmpty(currentServiceName)
-                && !string.IsNullOrEmpty(currentServiceNamespace)
-            )
+            if (!string.IsNullOrEmpty(currentServiceName) && !string.IsNullOrEmpty(currentServiceNamespace))
             {
                 var seperator = ".";
                 if (currentServiceNamespace.EndsWith("."))
                 {
-                    currentServiceNamespace = currentServiceNamespace.Substring(
-                        currentServiceNamespace.Length - 1
-                    );
+                    currentServiceNamespace = currentServiceNamespace.Substring(currentServiceNamespace.Length - 1);
                 }
 
-                ServiceFullName =
-                    $"{currentServiceNamespace}{seperator}{currentServiceName}".Trim();
+                ServiceFullName = $"{currentServiceNamespace}{seperator}{currentServiceName}".Trim();
             }
 
             ServiceName = currentServiceName;

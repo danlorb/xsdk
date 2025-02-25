@@ -47,10 +47,7 @@ namespace xSdk.Data
             }
             catch (Exception ex)
             {
-                _logger.Warn(
-                    ex,
-                    "A Error occurred while execute a Operation with Transactionon the Database"
-                );
+                _logger.Warn(ex, "A Error occurred while execute a Operation with Transactionon the Database");
 
                 if (withTransaction && transactionDatabase != null)
                     await transactionDatabase.RollbackAsync();
@@ -71,11 +68,7 @@ namespace xSdk.Data
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error(
-                        ex,
-                        "Indicies could not updated for Entity '{0}'",
-                        typeof(TEntity).FullName
-                    );
+                    _logger.Error(ex, "Indicies could not updated for Entity '{0}'", typeof(TEntity).FullName);
                 }
             }
         }

@@ -65,11 +65,7 @@ namespace xSdk.Extensions.Variable
                         var variable = this.LoadVariableInternal(name);
                         if (variable == null)
                         {
-                            variable = Variable
-                                .Create(name, valueType)
-                                .Protect()
-                                .DisablePrefix()
-                                .Hide();
+                            variable = Variable.Create(name, valueType).Protect().DisablePrefix().Hide();
 
                             NewVariable(variable);
                         }

@@ -9,10 +9,7 @@ namespace xSdk.Data
     {
         #region From Model to Entity
 
-        public static TEntity ToEntity<TProfile, TEntity>(
-            this IModel model,
-            Action<IMappingOperationOptions<IModel, TEntity>> opts = null
-        )
+        public static TEntity ToEntity<TProfile, TEntity>(this IModel model, Action<IMappingOperationOptions<IModel, TEntity>> opts = null)
             where TProfile : Profile, new()
             where TEntity : IEntity
         {
@@ -41,10 +38,7 @@ namespace xSdk.Data
 
         #region From Entity to Model
 
-        public static TModel ToModel<TProfile, TModel>(
-            this IEntity entity,
-            Action<IMappingOperationOptions<IEntity, TModel>> opts = null
-        )
+        public static TModel ToModel<TProfile, TModel>(this IEntity entity, Action<IMappingOperationOptions<IEntity, TModel>> opts = null)
             where TProfile : Profile, new()
             where TModel : IModel
         {
@@ -73,11 +67,7 @@ namespace xSdk.Data
 
         #region Copy Entity to Entity
 
-        public static TEntity CopyToEntity<TEntity>(
-            this TEntity entity,
-            TEntity destination,
-            Action<IMappingOperationOptions<TEntity, TEntity>> opts = null
-        )
+        public static TEntity CopyToEntity<TEntity>(this TEntity entity, TEntity destination, Action<IMappingOperationOptions<TEntity, TEntity>> opts = null)
             where TEntity : IEntity
         {
             var mapper = MappingProfile.CreateMapper<EntityMappingProfile<TEntity>>();
@@ -105,11 +95,7 @@ namespace xSdk.Data
 
         #region Copy Model to Model
 
-        public static TModel CopyToModel<TModel>(
-            this TModel model,
-            TModel destination,
-            Action<IMappingOperationOptions<TModel, TModel>> opts = null
-        )
+        public static TModel CopyToModel<TModel>(this TModel model, TModel destination, Action<IMappingOperationOptions<TModel, TModel>> opts = null)
             where TModel : IModel
         {
             var mapper = MappingProfile.CreateMapper<ModelMappingProfile<TModel>>();
@@ -141,12 +127,7 @@ namespace xSdk.Data
             return JsonSerializer.Serialize(model);
         }
 
-        public static TEntity EnrichEntity<TEntity>(
-            this IMapper mapper,
-            TEntity source,
-            TEntity destination,
-            Action<IMappingOperationOptions> opts = default
-        )
+        public static TEntity EnrichEntity<TEntity>(this IMapper mapper, TEntity source, TEntity destination, Action<IMappingOperationOptions> opts = default)
             where TEntity : IEntity
         {
             if (opts != null)

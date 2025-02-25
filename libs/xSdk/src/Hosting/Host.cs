@@ -7,21 +7,13 @@ namespace xSdk.Hosting
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public static IHostBuilder CreateBuilder(string[] args) =>
-            CreateBuilder(args, default, default, default);
+        public static IHostBuilder CreateBuilder(string[] args) => CreateBuilder(args, default, default, default);
 
-        public static IHostBuilder CreateBuilder(string[] args, string appName) =>
-            CreateBuilder(args, appName, default, default);
+        public static IHostBuilder CreateBuilder(string[] args, string appName) => CreateBuilder(args, appName, default, default);
 
-        public static IHostBuilder CreateBuilder(string[] args, string appName, string appPrefix) =>
-            CreateBuilder(args, appName, default, appPrefix);
+        public static IHostBuilder CreateBuilder(string[] args, string appName, string appPrefix) => CreateBuilder(args, appName, default, appPrefix);
 
-        public static IHostBuilder CreateBuilder(
-            string[] args,
-            string? appName,
-            string? appCompany,
-            string? appPrefix
-        )
+        public static IHostBuilder CreateBuilder(string[] args, string? appName, string? appCompany, string? appPrefix)
         {
             var boot = SlimHostInternal.Initialize(args, appName, appCompany, appPrefix);
 

@@ -9,14 +9,9 @@ namespace xSdk.Extensions.Links
 {
     public static class LinkTransformationBuilderExtensions
     {
-        public static LinkTransformationBuilder AddProtocol(
-            this LinkTransformationBuilder builder,
-            string scheme = null
-        )
+        public static LinkTransformationBuilder AddProtocol(this LinkTransformationBuilder builder, string scheme = null)
         {
-            return builder.Add(ctx =>
-                String.Concat(scheme ?? ctx.HttpContext.Request.Scheme, "://")
-            );
+            return builder.Add(ctx => String.Concat(scheme ?? ctx.HttpContext.Request.Scheme, "://"));
         }
 
         public static LinkTransformationBuilder AddHost(this LinkTransformationBuilder builder)
@@ -29,15 +24,9 @@ namespace xSdk.Extensions.Links
             return builder.Add(ctx =>
             {
                 if (string.IsNullOrEmpty(ctx.LinkSpec.RouteName))
-                    throw new InvalidOperationException(
-                        $"Invalid route specified in link specification."
-                    );
+                    throw new InvalidOperationException($"Invalid route specified in link specification.");
 
-                var path = ctx.LinkGenerator.GetPathByRouteValues(
-                    ctx.HttpContext,
-                    ctx.LinkSpec.RouteName,
-                    ctx.LinkSpec.RouteValues
-                );
+                var path = ctx.LinkGenerator.GetPathByRouteValues(ctx.HttpContext, ctx.LinkSpec.RouteName, ctx.LinkSpec.RouteValues);
 
                 if (string.IsNullOrEmpty(path))
                     throw new InvalidOperationException(
@@ -48,18 +37,12 @@ namespace xSdk.Extensions.Links
             });
         }
 
-        public static LinkTransformationBuilder AddVirtualPath(
-            this LinkTransformationBuilder builder,
-            string path
-        )
+        public static LinkTransformationBuilder AddVirtualPath(this LinkTransformationBuilder builder, string path)
         {
             return builder.AddVirtualPath(ctx => path);
         }
 
-        public static LinkTransformationBuilder AddVirtualPath(
-            this LinkTransformationBuilder builder,
-            Func<LinkTransformationContext, string> getPath
-        )
+        public static LinkTransformationBuilder AddVirtualPath(this LinkTransformationBuilder builder, Func<LinkTransformationContext, string> getPath)
         {
             return builder.Add(ctx =>
             {
@@ -70,25 +53,16 @@ namespace xSdk.Extensions.Links
             });
         }
 
-        public static LinkTransformationBuilder AddQueryStringValues(
-            this LinkTransformationBuilder builder,
-            IDictionary<string, string> values
-        )
+        public static LinkTransformationBuilder AddQueryStringValues(this LinkTransformationBuilder builder, IDictionary<string, string> values)
         {
             return builder.Add(ctx =>
             {
-                var queryString = String.Join(
-                    "&",
-                    values.Select(v => $"{v.Key}={v.Value?.ToString()}")
-                );
+                var queryString = String.Join("&", values.Select(v => $"{v.Key}={v.Value?.ToString()}"));
                 return string.Concat("?", queryString);
             });
         }
 
-        public static LinkTransformationBuilder AddFragment(
-            this LinkTransformationBuilder builder,
-            Func<LinkTransformationContext, string> getFragment
-        )
+        public static LinkTransformationBuilder AddFragment(this LinkTransformationBuilder builder, Func<LinkTransformationContext, string> getFragment)
         {
             return builder.Add(ctx => string.Concat("#", getFragment(ctx)));
         }

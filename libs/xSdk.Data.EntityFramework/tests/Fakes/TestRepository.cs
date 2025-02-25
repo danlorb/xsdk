@@ -3,9 +3,7 @@ using xSdk.Data.Fakes;
 
 namespace xSdk.Data.Fakes
 {
-    internal class TestRepository
-        : EntityFrameworkRepository<TestDbContext, TestEntity>,
-            ITestRepository
+    internal class TestRepository : EntityFrameworkRepository<TestDbContext, TestEntity>, ITestRepository
     {
         public Task AddDataAsync(TestEntity[] samples, CancellationToken token = default)
         {

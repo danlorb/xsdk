@@ -10,9 +10,7 @@ namespace xSdk.Data.Converters.Mapper
         public IEnumerable<string> Convert(string sourceMember, ResolutionContext context)
         {
             if (!string.IsNullOrEmpty(sourceMember))
-                return sourceMember
-                    .Split(",", StringSplitOptions.RemoveEmptyEntries)
-                    .Select(x => x.Trim());
+                return sourceMember.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
 
             return new List<string>();
         }

@@ -7,9 +7,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace xSdk.Extensions.Links.Requirements
 {
-    public class RouteLinkRequirement<TResource>
-        : LinksHandler<RouteLinkRequirement<TResource>>,
-            ILinksRequirement
+    public class RouteLinkRequirement<TResource> : LinksHandler<RouteLinkRequirement<TResource>>, ILinksRequirement
     {
         public RouteLinkRequirement() { }
 
@@ -18,10 +16,7 @@ namespace xSdk.Extensions.Links.Requirements
         public Func<TResource, RouteValueDictionary> GetRouteValues { get; set; }
         public LinkCondition<TResource> Condition { get; set; } = LinkCondition<TResource>.None;
 
-        protected override async Task HandleRequirementAsync(
-            LinksHandlerContext context,
-            RouteLinkRequirement<TResource> requirement
-        )
+        protected override async Task HandleRequirementAsync(LinksHandlerContext context, RouteLinkRequirement<TResource> requirement)
         {
             var condition = requirement.Condition;
             if (!context.AssertAll(condition))
@@ -31,22 +26,14 @@ namespace xSdk.Extensions.Links.Requirements
             }
             if (String.IsNullOrEmpty(requirement.RouteName))
             {
-                context.Skipped(
-                    requirement,
-                    LinkRequirementSkipReason.Error,
-                    $"Requirement did not have a RouteName specified for link: {requirement.Id}"
-                );
+                context.Skipped(requirement, LinkRequirementSkipReason.Error, $"Requirement did not have a RouteName specified for link: {requirement.Id}");
                 return;
             }
 
             var route = context.RouteMap.GetRoute(requirement.RouteName);
             if (route == null)
             {
-                context.Skipped(
-                    requirement,
-                    LinkRequirementSkipReason.Error,
-                    $"No route was found for route name: {requirement.RouteName}"
-                );
+                context.Skipped(requirement, LinkRequirementSkipReason.Error, $"No route was found for route name: {requirement.RouteName}");
                 return;
             }
             var values = new RouteValueDictionary();

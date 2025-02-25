@@ -7,9 +7,7 @@ namespace xSdk.Extensions.Variable
         [Fact]
         public void LoadSetup()
         {
-            var service = fixture.GetService<IVariableService>(services =>
-                services.AddVariableServices()
-            );
+            var service = fixture.GetService<IVariableService>(services => services.AddVariableServices());
             var setup = service.GetSetup<EnvironmentSetup>();
 
             Assert.NotNull(setup);
@@ -18,9 +16,7 @@ namespace xSdk.Extensions.Variable
         [Fact]
         public void LoadSetupFromInterface()
         {
-            var service = fixture.GetService<IVariableService>(services =>
-                services.AddVariableServices()
-            );
+            var service = fixture.GetService<IVariableService>(services => services.AddVariableServices());
             var setup = service.GetSetup<IEnvironmentSetup>();
 
             Assert.NotNull(setup);

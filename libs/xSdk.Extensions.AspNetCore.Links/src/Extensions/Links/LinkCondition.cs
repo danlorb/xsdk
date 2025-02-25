@@ -25,9 +25,7 @@ namespace xSdk.Extensions.Links
         {
             this.RequiresRouteAuthorization = requiresRouteAuthorization;
             this.Assertions = new List<Func<TResource, bool>>(assertions).AsReadOnly();
-            this.AuthorizationRequirements = new List<IAuthorizationRequirement>(
-                requirements
-            ).AsReadOnly();
+            this.AuthorizationRequirements = new List<IAuthorizationRequirement>(requirements).AsReadOnly();
             this.AuthorizationPolicyNames = new List<string>(policyNames).AsReadOnly();
         }
 
@@ -35,9 +33,6 @@ namespace xSdk.Extensions.Links
         public IReadOnlyList<IAuthorizationRequirement> AuthorizationRequirements { get; }
         public IReadOnlyList<string> AuthorizationPolicyNames { get; }
         public bool RequiresRouteAuthorization { get; set; }
-        public bool RequiresAuthorization =>
-            RequiresRouteAuthorization
-            || AuthorizationRequirements.Any()
-            || AuthorizationPolicyNames.Any();
+        public bool RequiresAuthorization => RequiresRouteAuthorization || AuthorizationRequirements.Any() || AuthorizationPolicyNames.Any();
     }
 }

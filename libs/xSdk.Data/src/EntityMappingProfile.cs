@@ -9,9 +9,7 @@ namespace xSdk.Data
 
         public EntityMappingProfile()
         {
-            CreateMap<TEntity, TEntity>()
-                .ForMember(x => x.Id, opts => opts.Ignore())
-                .ForMember(x => x.PrimaryKey, opts => opts.Ignore());
+            CreateMap<TEntity, TEntity>().ForMember(x => x.Id, opts => opts.Ignore()).ForMember(x => x.PrimaryKey, opts => opts.Ignore());
         }
     }
 }

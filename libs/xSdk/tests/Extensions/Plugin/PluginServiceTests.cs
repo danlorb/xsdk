@@ -7,9 +7,7 @@ namespace xSdk.Extensions.Plugin
         [Fact]
         public void LoadPlugins()
         {
-            var service = fixture.GetService<IPluginService>(services =>
-                services.AddPluginServices()
-            );
+            var service = fixture.GetService<IPluginService>(services => services.AddPluginServices());
 
             var plugins = service.GetPlugins();
             Assert.NotNull(plugins);

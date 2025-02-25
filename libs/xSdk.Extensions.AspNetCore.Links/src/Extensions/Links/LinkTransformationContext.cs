@@ -11,11 +11,7 @@ namespace xSdk.Extensions.Links
 {
     public class LinkTransformationContext
     {
-        public LinkTransformationContext(
-            ILinkSpec spec,
-            ActionContext actionContext,
-            LinkGenerator linkGenerator
-        )
+        public LinkTransformationContext(ILinkSpec spec, ActionContext actionContext, LinkGenerator linkGenerator)
         {
             this.LinkSpec = spec;
             this.ActionContext = actionContext;

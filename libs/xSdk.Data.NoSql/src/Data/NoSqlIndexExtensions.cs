@@ -17,9 +17,7 @@ namespace xSdk.Data
 
             foreach (var index in declaredIndicies)
             {
-                var existingIndex = existingIndicies.SingleOrDefault(x =>
-                    string.Compare(x.Field, index.Field, StringComparison.OrdinalIgnoreCase) == 0
-                );
+                var existingIndex = existingIndicies.SingleOrDefault(x => string.Compare(x.Field, index.Field, StringComparison.OrdinalIgnoreCase) == 0);
                 if (existingIndex == null)
                 {
                     if (!string.IsNullOrEmpty(index.Expression))
@@ -37,9 +35,7 @@ namespace xSdk.Data
             var entityType = typeof(TEntity);
             foreach (var property in entityType.GetProperties())
             {
-                var attribute =
-                    Attribute.GetCustomAttribute(property, typeof(NoSqlIndexAttribute))
-                    as NoSqlIndexAttribute;
+                var attribute = Attribute.GetCustomAttribute(property, typeof(NoSqlIndexAttribute)) as NoSqlIndexAttribute;
                 if (attribute != null)
                 {
                     var index = attribute.Index;
@@ -50,9 +46,7 @@ namespace xSdk.Data
 
             foreach (var field in entityType.GetFields())
             {
-                var attribute =
-                    Attribute.GetCustomAttribute(field, typeof(NoSqlIndexAttribute))
-                    as NoSqlIndexAttribute;
+                var attribute = Attribute.GetCustomAttribute(field, typeof(NoSqlIndexAttribute)) as NoSqlIndexAttribute;
                 if (attribute != null)
                 {
                     attribute.Index.Field = field.Name;

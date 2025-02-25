@@ -8,16 +8,9 @@ namespace xSdk.Extensions.Variable
     {
         private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
-        public static bool ValidateAnnotations(
-            this ISetup setup,
-            out ICollection<ValidationResult> results
-        ) => setup.ValidateAnnotations(out results, null);
+        public static bool ValidateAnnotations(this ISetup setup, out ICollection<ValidationResult> results) => setup.ValidateAnnotations(out results, null);
 
-        public static bool ValidateAnnotations(
-            this ISetup setup,
-            out ICollection<ValidationResult> results,
-            string[] allowedEmptyProperties
-        )
+        public static bool ValidateAnnotations(this ISetup setup, out ICollection<ValidationResult> results, string[] allowedEmptyProperties)
         {
             var ctx = new ValidationContext(setup);
             results = new List<ValidationResult>();
@@ -62,10 +55,7 @@ namespace xSdk.Extensions.Variable
                     }
                     else
                     {
-                        _logger.Warn(
-                            "Implementation is not valid. (Reason: {0})",
-                            result.ErrorMessage
-                        );
+                        _logger.Warn("Implementation is not valid. (Reason: {0})", result.ErrorMessage);
                     }
 
                     return false;
@@ -74,26 +64,13 @@ namespace xSdk.Extensions.Variable
             return true;
         }
 
-        public static void ValidateMember<TSetup>(
-            this TSetup setup,
-            Expression<Func<TSetup, bool>> validator
-        )
+        public static void ValidateMember<TSetup>(this TSetup setup, Expression<Func<TSetup, bool>> validator)
             where TSetup : ISetup => setup.ValidateMember(validator, null);
 
-        public static void ValidateMember<TSetup>(
-            this TSetup setup,
-            Expression<Func<TSetup, bool>> validator,
-            string errorMessage
-        )
-            where TSetup : ISetup =>
-            setup.ValidateMember(validator, errorMessage, Array.Empty<string>());
+        public static void ValidateMember<TSetup>(this TSetup setup, Expression<Func<TSetup, bool>> validator, string errorMessage)
+            where TSetup : ISetup => setup.ValidateMember(validator, errorMessage, Array.Empty<string>());
 
-        public static void ValidateMember<TSetup>(
-            this TSetup setup,
-            Expression<Func<TSetup, bool>> validator,
-            string errorMessage,
-            params string[] memberNames
-        )
+        public static void ValidateMember<TSetup>(this TSetup setup, Expression<Func<TSetup, bool>> validator, string errorMessage, params string[] memberNames)
             where TSetup : ISetup
         {
             var hasError = false;

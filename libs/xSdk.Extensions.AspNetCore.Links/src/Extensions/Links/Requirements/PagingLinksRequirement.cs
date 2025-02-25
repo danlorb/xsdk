@@ -8,9 +8,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace xSdk.Extensions.Links.Requirements
 {
-    public class PagingLinksRequirement<TResource>
-        : LinksHandler<PagingLinksRequirement<TResource>>,
-            ILinksRequirement
+    public class PagingLinksRequirement<TResource> : LinksHandler<PagingLinksRequirement<TResource>>, ILinksRequirement
     {
         public const string QueryStringFormat = "?pagenumber={0}&pagesize={1}";
 
@@ -21,10 +19,7 @@ namespace xSdk.Extensions.Links.Requirements
         public string PreviousId { get; set; }
         public LinkCondition<TResource> Condition { get; set; } = LinkCondition<TResource>.None;
 
-        protected override async Task HandleRequirementAsync(
-            LinksHandlerContext context,
-            PagingLinksRequirement<TResource> requirement
-        )
+        protected override async Task HandleRequirementAsync(LinksHandlerContext context, PagingLinksRequirement<TResource> requirement)
         {
             var condition = requirement.Condition;
             if (!context.AssertAll(condition))
@@ -53,72 +48,33 @@ namespace xSdk.Extensions.Links.Requirements
             }
 
             context.Links.Add(
-                new LinkSpec(
-                    requirement.CurrentId,
-                    route,
-                    GetPageValues(
-                        values,
-                        queryParams,
-                        pagingResource.PageNumber,
-                        pagingResource.PageSize
-                    )
-                )
+                new LinkSpec(requirement.CurrentId, route, GetPageValues(values, queryParams, pagingResource.PageNumber, pagingResource.PageSize))
             );
 
             var addPrevLink = ShouldAddPreviousPageLink(pagingResource.PageNumber);
-            var addNextLink = ShouldAddNextPageLink(
-                pagingResource.PageNumber,
-                pagingResource.PageCount
-            );
+            var addNextLink = ShouldAddNextPageLink(pagingResource.PageNumber, pagingResource.PageCount);
             if (addPrevLink)
             {
                 context.Links.Add(
-                    new LinkSpec(
-                        requirement.PreviousId,
-                        route,
-                        GetPageValues(
-                            values,
-                            queryParams,
-                            pagingResource.PageNumber - 1,
-                            pagingResource.PageSize
-                        )
-                    )
+                    new LinkSpec(requirement.PreviousId, route, GetPageValues(values, queryParams, pagingResource.PageNumber - 1, pagingResource.PageSize))
                 );
             }
             if (addNextLink)
             {
                 context.Links.Add(
-                    new LinkSpec(
-                        requirement.NextId,
-                        route,
-                        GetPageValues(
-                            values,
-                            queryParams,
-                            pagingResource.PageNumber + 1,
-                            pagingResource.PageSize
-                        )
-                    )
+                    new LinkSpec(requirement.NextId, route, GetPageValues(values, queryParams, pagingResource.PageNumber + 1, pagingResource.PageSize))
                 );
             }
             context.Handled(requirement);
             return;
         }
 
-        private RouteValueDictionary GetPageValues(
-            object values,
-            IQueryCollection queryValues,
-            int pageNumber,
-            int pageSize
-        )
+        private RouteValueDictionary GetPageValues(object values, IQueryCollection queryValues, int pageNumber, int pageSize)
         {
             var newValues = new RouteValueDictionary(values);
             if (queryValues != null)
             {
-                foreach (
-                    var queryValue in queryValues?.Where(q =>
-                        q.Key != "pagenumber" && q.Key != "pagesize"
-                    )
-                )
+                foreach (var queryValue in queryValues?.Where(q => q.Key != "pagenumber" && q.Key != "pagesize"))
                 {
                     newValues.Add(queryValue.Key, queryValue.Value);
                 }

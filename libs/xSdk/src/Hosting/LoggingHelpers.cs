@@ -11,11 +11,9 @@ namespace xSdk.Hosting
 {
     internal static class LoggingHelpers
     {
-        internal static void ConfigureSlimLogging(ILoggingBuilder builder) =>
-            ConfigureLogging(builder, true);
+        internal static void ConfigureSlimLogging(ILoggingBuilder builder) => ConfigureLogging(builder, true);
 
-        internal static void ConfigureLogging(ILoggingBuilder builder) =>
-            ConfigureLogging(builder, false);
+        internal static void ConfigureLogging(ILoggingBuilder builder) => ConfigureLogging(builder, false);
 
         private static void ConfigureLogging(ILoggingBuilder builder, bool isSlimMode)
         {
@@ -60,9 +58,7 @@ namespace xSdk.Hosting
             LogManager.Configuration = new LoggingConfiguration();
         }
 
-        private static (NLog.LogLevel minLogLevel, NLog.LogLevel maxLogLevel) GetLogLevels(
-            EnvironmentSetup envSetup
-        )
+        private static (NLog.LogLevel minLogLevel, NLog.LogLevel maxLogLevel) GetLogLevels(EnvironmentSetup envSetup)
         {
             var minLogLevel = NLog.LogLevel.FromString(envSetup.LogLevel);
             var maxLogLevel = NLog.LogLevel.Fatal;
@@ -71,11 +67,7 @@ namespace xSdk.Hosting
 
         private static Microsoft.Extensions.Logging.LogLevel ConvertLogLevel(EnvironmentSetup setup)
         {
-            Microsoft.Extensions.Logging.LogLevel result = Microsoft
-                .Extensions
-                .Logging
-                .LogLevel
-                .Warning;
+            Microsoft.Extensions.Logging.LogLevel result = Microsoft.Extensions.Logging.LogLevel.Warning;
             var level = NLog.LogLevel.FromString(setup.LogLevel);
 
             if (NLog.LogLevel.Off == level)
@@ -129,8 +121,7 @@ namespace xSdk.Hosting
                     NLog.Common.InternalLogger.LogLevel = minLogLevel;
                 }
                 var target = new NLog.Targets.ConsoleTarget("ConsoleTarget");
-                target.Layout =
-                    "${date:format=dd.MM.yyyy HH\\:mm\\:ss} ${level:uppercase=true} ${message:withexception=true}";
+                target.Layout = "${date:format=dd.MM.yyyy HH\\:mm\\:ss} ${level:uppercase=true} ${message:withexception=true}";
 
                 LogManager.Configuration.AddRule(minLogLevel, maxLogLevel, target);
             }
@@ -139,10 +130,7 @@ namespace xSdk.Hosting
         private static void EnableFileTarget(ISetupBuilder logSetup, EnvironmentSetup envSetup)
         {
             // Disable File Log for Visual Studio and Containers
-            var configFile = LoadDefaultLogConfig(
-                envSetup,
-                (!Debugger.IsAttached && !envSetup.IsDotNetRunningInContainer)
-            );
+            var configFile = LoadDefaultLogConfig(envSetup, (!Debugger.IsAttached && !envSetup.IsDotNetRunningInContainer));
             if (File.Exists(configFile))
             {
                 logSetup.LoadConfigurationFromFile(configFile);
@@ -151,14 +139,8 @@ namespace xSdk.Hosting
 
         private static string LoadDefaultLogConfig(EnvironmentSetup envSetup, bool shouldExists)
         {
-            var configFolder = FileSystemHelper.CreateSpecificDataFolder(
-                FileSystemContext.Machine,
-                "/config"
-            );
-            var logFolder = FileSystemHelper.CreateSpecificDataFolder(
-                FileSystemContext.Machine,
-                "/logs"
-            );
+            var configFolder = FileSystemHelper.CreateSpecificDataFolder(FileSystemContext.Machine, "/config");
+            var logFolder = FileSystemHelper.CreateSpecificDataFolder(FileSystemContext.Machine, "/logs");
             var configFile = Path.Combine(configFolder, "nlog.config");
 
             if (shouldExists && !File.Exists(configFile))

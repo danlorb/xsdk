@@ -44,11 +44,7 @@ namespace xSdk.Extensions.Variable
 
         void NewVariable<TValueType>(IVariable variable, TValueType value);
 
-        void NewVariable<TValueType>(
-            IVariable variable,
-            TValueType value,
-            bool throwIfAlreadyExists
-        );
+        void NewVariable<TValueType>(IVariable variable, TValueType value, bool throwIfAlreadyExists);
 
         Dictionary<string, object> ToDictionary();
 

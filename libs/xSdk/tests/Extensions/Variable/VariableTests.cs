@@ -7,16 +7,8 @@ namespace xSdk.Extensions.Variable
         private const string PREFIX = "MyPrefix";
         private const string NAME = "my_variable";
 
-        private const string PREFIX_SEPERATOR = xSdk.Extensions
-            .Variable
-            .Globals
-            .Constants
-            .PREFIX_SEPERATOR;
-        private const string SEPERATOR = xSdk.Extensions
-            .Variable
-            .Globals
-            .Constants
-            .VARIABLE_SEPERATOR;
+        private const string PREFIX_SEPERATOR = xSdk.Extensions.Variable.Globals.Constants.PREFIX_SEPERATOR;
+        private const string SEPERATOR = xSdk.Extensions.Variable.Globals.Constants.VARIABLE_SEPERATOR;
 
         [Fact]
         public void CreateVariable()
@@ -39,14 +31,8 @@ namespace xSdk.Extensions.Variable
             Assert.NotNull(variable);
             Assert.Equal(PREFIX.ToLower(), variable.Prefix);
 
-            Assert.Equal(
-                $"{fixture.AppPrefix}{PREFIX_SEPERATOR}{PREFIX}{PREFIX_SEPERATOR}{NAME}{PREFIX_SEPERATOR}FILE".ToUpper(),
-                variable.KeyForFile
-            );
-            Assert.Equal(
-                $"--{PREFIX}{SEPERATOR}{NAME}".Replace(SEPERATOR, "-").ToLower(),
-                variable.KeyForCommandline
-            );
+            Assert.Equal($"{fixture.AppPrefix}{PREFIX_SEPERATOR}{PREFIX}{PREFIX_SEPERATOR}{NAME}{PREFIX_SEPERATOR}FILE".ToUpper(), variable.KeyForFile);
+            Assert.Equal($"--{PREFIX}{SEPERATOR}{NAME}".Replace(SEPERATOR, "-").ToLower(), variable.KeyForCommandline);
         }
 
         [Fact]

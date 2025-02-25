@@ -17,17 +17,11 @@ namespace xSdk.Data.Fakes
                     .AddDbContextFactory<TestDbContext>(options =>
                     {
                         // Use InMemory Database
-                        options
-                            .UseInMemoryDatabase(Globals.DatabaseName)
-                            .ConfigureWarnings(x =>
-                                x.Ignore(InMemoryEventId.TransactionIgnoredWarning)
-                            );
+                        options.UseInMemoryDatabase(Globals.DatabaseName).ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning));
                     })
                     .AddDatalayer(builder =>
                     {
-                        builder
-                            .UseEntityFramework<TestDbContext>(Globals.DatalayerName)
-                            .MapRepository<ITestRepository, TestRepository>(Globals.DatalayerName);
+                        builder.UseEntityFramework<TestDbContext>(Globals.DatalayerName).MapRepository<ITestRepository, TestRepository>(Globals.DatalayerName);
                     });
             });
 

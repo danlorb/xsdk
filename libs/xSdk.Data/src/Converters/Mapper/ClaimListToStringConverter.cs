@@ -12,9 +12,7 @@ namespace xSdk.Data.Converters.Mapper
 
             if (sourceMember != null)
             {
-                result = sourceMember
-                    .Select(x => $"{x.Type}={x.Value}")
-                    .Aggregate((a, b) => a + ", " + b);
+                result = sourceMember.Select(x => $"{x.Type}={x.Value}").Aggregate((a, b) => a + ", " + b);
             }
 
             return Base64Helper.ConvertToBase64(result);

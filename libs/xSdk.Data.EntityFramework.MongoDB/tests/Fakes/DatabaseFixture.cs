@@ -28,11 +28,7 @@ namespace xSdk.Data.Fakes
                             .WithAutoRemove(true)
                             .Build();
 
-                        mongoDbContainer
-                            .StartAsync()
-                            .ConfigureAwait(false)
-                            .GetAwaiter()
-                            .GetResult();
+                        mongoDbContainer.StartAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                         var connectionString = mongoDbContainer.GetConnectionString();
 
                         var client = new MongoClient(connectionString);

@@ -11,9 +11,7 @@ namespace xSdk.Data.Converters.Mapper
         {
             if (!string.IsNullOrEmpty(sourceMember))
             {
-                return sourceMember
-                    .Split(",", StringSplitOptions.RemoveEmptyEntries)
-                    .Select(x => System.Convert.ToInt32(x));
+                return sourceMember.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(x => System.Convert.ToInt32(x));
             }
             return new List<int>();
         }

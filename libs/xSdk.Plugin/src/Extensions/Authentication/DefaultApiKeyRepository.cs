@@ -7,9 +7,7 @@ namespace xSdk.Extensions.Authentication
         public Task<IApiKey> GetApiKeyAsync(string key)
         {
             // Default dynamic ApiKey
-            return Task.FromResult<IApiKey>(
-                new ApiKey { Key = Guid.NewGuid().ToString(), OwnerName = "Dynamic API Key User" }
-            );
+            return Task.FromResult<IApiKey>(new ApiKey { Key = Guid.NewGuid().ToString(), OwnerName = "Dynamic API Key User" });
         }
     }
 }

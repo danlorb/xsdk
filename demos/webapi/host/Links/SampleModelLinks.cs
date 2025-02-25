@@ -1,7 +1,4 @@
 namespace xSdk.Demos.Data
 {
-    public sealed class SampleModelLinks
-    {
-        
-    }
+    public sealed class SampleModelLinks { }
 }

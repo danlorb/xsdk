@@ -10,9 +10,7 @@ namespace xSdk.Hosting
         {
             const string testRunnerPrefix = "xunit.runner";
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            var runnerFound = assemblies.Any(x =>
-                x.FullName.StartsWith(testRunnerPrefix, StringComparison.Ordinal)
-            );
+            var runnerFound = assemblies.Any(x => x.FullName.StartsWith(testRunnerPrefix, StringComparison.Ordinal));
             return runnerFound;
         }
     }

@@ -13,11 +13,7 @@ namespace xSdk.Data.Fakes
             {
                 services.AddDatalayer(builder =>
                 {
-                    var currentFolder = Path.Combine(
-                        FileSystemHelper.GetExecutingFolder(),
-                        "data",
-                        Guid.NewGuid().ToString("N")
-                    );
+                    var currentFolder = Path.Combine(FileSystemHelper.GetExecutingFolder(), "data", Guid.NewGuid().ToString("N"));
                     if (!Directory.Exists(currentFolder))
                     {
                         Directory.CreateDirectory(currentFolder);

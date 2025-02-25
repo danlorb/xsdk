@@ -14,42 +14,21 @@ namespace xSdk.Data
         public override Task<bool> InsertAsync(TEntity entity, CancellationToken token = default) =>
             ExecuteInternalAsync((col) => col.InsertOneAsync(entity), token);
 
-        public override Task<int> InsertAsync(
-            IEnumerable<TEntity> entities,
-            CancellationToken token = default
-        ) =>
-            ExecuteInternalAsync(
-                (col) => col.InsertManyAsync(entities).ContinueWith(task => entities.Count()),
-                token
-            );
+        public override Task<int> InsertAsync(IEnumerable<TEntity> entities, CancellationToken token = default) =>
+            ExecuteInternalAsync((col) => col.InsertManyAsync(entities).ContinueWith(task => entities.Count()), token);
 
-        public override Task<bool> RemoveAsync(
-            IPrimaryKey primaryKey,
-            CancellationToken token = default
-        ) =>
-            ExecuteInternalAsync(
-                (col) => col.DeleteOneAsync(x => x.PrimaryKey == primaryKey),
-                token
-            );
+        public override Task<bool> RemoveAsync(IPrimaryKey primaryKey, CancellationToken token = default) =>
+            ExecuteInternalAsync((col) => col.DeleteOneAsync(x => x.PrimaryKey == primaryKey), token);
 
-        public override Task<int> RemoveAsync(
-            IEnumerable<IPrimaryKey> primaryKeys,
-            CancellationToken token = default
-        )
+        public override Task<int> RemoveAsync(IEnumerable<IPrimaryKey> primaryKeys, CancellationToken token = default)
         {
             throw new NotImplementedException();
         }
 
         public override Task<bool> RemoveAsync(TEntity entity, CancellationToken token = default) =>
-            ExecuteInternalAsync(
-                (col) => col.DeleteOneAsync(x => x.PrimaryKey == entity.PrimaryKey),
-                token
-            );
+            ExecuteInternalAsync((col) => col.DeleteOneAsync(x => x.PrimaryKey == entity.PrimaryKey), token);
 
-        public override Task<int> RemoveAsync(
-            IEnumerable<TEntity> entities,
-            CancellationToken token = default
-        )
+        public override Task<int> RemoveAsync(IEnumerable<TEntity> entities, CancellationToken token = default)
         {
             return ExecuteInternalAsync(
                 async (col) =>
@@ -67,67 +46,37 @@ namespace xSdk.Data
             );
         }
 
-        protected Task<bool> RemoveAsync(
-            Expression<Func<TEntity, bool>> filter,
-            CancellationToken token = default
-        ) => ExecuteInternalAsync(col => col.DeleteManyAsync(ConvertFilter(filter)), token);
+        protected Task<bool> RemoveAsync(Expression<Func<TEntity, bool>> filter, CancellationToken token = default) =>
+            ExecuteInternalAsync(col => col.DeleteManyAsync(ConvertFilter(filter)), token);
 
-        public override Task<TEntity?> SelectAsync(
-            IPrimaryKey primaryKey,
-            CancellationToken token = default
-        ) =>
-            ExecuteInternalAsync(
-                (col) =>
-                    Task.FromResult(
-                        col.AsQueryable().SingleOrDefault(x => x.PrimaryKey == primaryKey)
-                    ),
-                token
-            );
+        public override Task<TEntity?> SelectAsync(IPrimaryKey primaryKey, CancellationToken token = default) =>
+            ExecuteInternalAsync((col) => Task.FromResult(col.AsQueryable().SingleOrDefault(x => x.PrimaryKey == primaryKey)), token);
 
-        public override Task<IEnumerable<TEntity>> SelectListAsync(
-            CancellationToken token = default
-        ) => ExecuteInternalAsync((col) => Task.FromResult(col.AsQueryable()), token);
+        public override Task<IEnumerable<TEntity>> SelectListAsync(CancellationToken token = default) =>
+            ExecuteInternalAsync((col) => Task.FromResult(col.AsQueryable()), token);
 
-        protected TEntity? Select(Expression<Func<TEntity, bool>> filter) =>
-            SelectAsync(filter).GetAwaiter().GetResult();
+        protected TEntity? Select(Expression<Func<TEntity, bool>> filter) => SelectAsync(filter).GetAwaiter().GetResult();
 
-        protected Task<TEntity?> SelectAsync(
-            Expression<Func<TEntity, bool>> filter,
-            CancellationToken token = default
-        )
+        protected Task<TEntity?> SelectAsync(Expression<Func<TEntity, bool>> filter, CancellationToken token = default)
         {
-            return ExecuteInternalAsync(
-                    col => Task.FromResult(col.Find(ConvertFilter(filter))),
-                    token
-                )
+            return ExecuteInternalAsync(col => Task.FromResult(col.Find(ConvertFilter(filter))), token)
                 .ContinueWith(task => task.Result.SingleOrDefault(), token);
         }
 
-        protected IEnumerable<TEntity> SelectList(Expression<Func<TEntity, bool>> filter) =>
-            SelectListAsync(filter).GetAwaiter().GetResult();
+        protected IEnumerable<TEntity> SelectList(Expression<Func<TEntity, bool>> filter) => SelectListAsync(filter).GetAwaiter().GetResult();
 
-        protected Task<IEnumerable<TEntity>> SelectListAsync(
-            Expression<Func<TEntity, bool>> filter,
-            CancellationToken token = default
-        ) => ExecuteInternalAsync(col => Task.FromResult(col.Find(ConvertFilter(filter))), token);
+        protected Task<IEnumerable<TEntity>> SelectListAsync(Expression<Func<TEntity, bool>> filter, CancellationToken token = default) =>
+            ExecuteInternalAsync(col => Task.FromResult(col.Find(ConvertFilter(filter))), token);
 
-        public override Task<bool> UpdateAsync(
-            IPrimaryKey primaryKey,
-            TEntity entity,
-            CancellationToken token = default
-        ) =>
-            ExecuteInternalAsync(
-                (col) => col.UpdateOneAsync(entity.PrimaryKey.GetValue<object>(), entity),
-                token
-            );
+        public override Task<bool> UpdateAsync(IPrimaryKey primaryKey, TEntity entity, CancellationToken token = default) =>
+            ExecuteInternalAsync((col) => col.UpdateOneAsync(entity.PrimaryKey.GetValue<object>(), entity), token);
 
         public override Task<bool> UpsertAsync(TEntity entity, CancellationToken token = default)
         {
             return ExecuteInternalAsync(
                 async (col) =>
                 {
-                    var item = col.AsQueryable()
-                        .SingleOrDefault(x => x.PrimaryKey == entity.PrimaryKey);
+                    var item = col.AsQueryable().SingleOrDefault(x => x.PrimaryKey == entity.PrimaryKey);
 
                     var result = false;
                     if (item == null)
@@ -141,10 +90,7 @@ namespace xSdk.Data
             );
         }
 
-        private async Task<TResult?> ExecuteInternalAsync<TResult>(
-            Func<IDocumentCollection<TEntity>, Task<TResult>> func,
-            CancellationToken token
-        )
+        private async Task<TResult?> ExecuteInternalAsync<TResult>(Func<IDocumentCollection<TEntity>, Task<TResult>> func, CancellationToken token)
         {
             TResult? result = default;
             IDataStore? openedDatabase = null;
@@ -162,10 +108,7 @@ namespace xSdk.Data
             }
             catch (Exception ex)
             {
-                throw new SdkException(
-                    "A Error occurred while execute a Operation for the Database",
-                    ex
-                );
+                throw new SdkException("A Error occurred while execute a Operation for the Database", ex);
             }
 
             return result;

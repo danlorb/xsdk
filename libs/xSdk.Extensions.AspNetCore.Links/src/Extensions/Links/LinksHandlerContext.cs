@@ -80,15 +80,10 @@ namespace xSdk.Extensions.Links
         {
             if (condition == null)
                 throw new ArgumentNullException(nameof(condition));
-            return !condition.Assertions.Any()
-                || condition.Assertions.All(a => a((TResource)this.Resource));
+            return !condition.Assertions.Any() || condition.Assertions.All(a => a((TResource)this.Resource));
         }
 
-        public virtual async Task<bool> AuthorizeAsync<TResource>(
-            RouteInfo route,
-            RouteValueDictionary values,
-            LinkCondition<TResource> condition
-        )
+        public virtual async Task<bool> AuthorizeAsync<TResource>(RouteInfo route, RouteValueDictionary values, LinkCondition<TResource> condition)
         {
             if (route == null)
                 throw new ArgumentNullException(nameof(route));
@@ -115,11 +110,7 @@ namespace xSdk.Extensions.Links
             pendingRequirements.Remove(requirement);
         }
 
-        public virtual void Skipped(
-            ILinksRequirement requirement,
-            LinkRequirementSkipReason reason = LinkRequirementSkipReason.Custom,
-            string message = null
-        )
+        public virtual void Skipped(ILinksRequirement requirement, LinkRequirementSkipReason reason = LinkRequirementSkipReason.Custom, string message = null)
         {
             var username = User?.Identity?.Name ?? "Unknown";
             Logger.LogInformation(

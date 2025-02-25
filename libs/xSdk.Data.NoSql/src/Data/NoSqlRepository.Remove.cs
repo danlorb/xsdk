@@ -6,26 +6,15 @@ namespace xSdk.Data
 {
     public partial class NoSqlRepository<TEntity>
     {
-        public override Task<bool> RemoveAsync(
-            IPrimaryKey primaryKey,
-            CancellationToken token = default
-        )
+        public override Task<bool> RemoveAsync(IPrimaryKey primaryKey, CancellationToken token = default)
         {
             _logger.Trace("Remove Entity '{0}'", primaryKey);
-            return ExecuteInternalAsync(
-                col => col.DeleteAsync(BsonValueConverter.Convert(primaryKey.GetValue<ObjectId>())),
-                true,
-                token
-            );
+            return ExecuteInternalAsync(col => col.DeleteAsync(BsonValueConverter.Convert(primaryKey.GetValue<ObjectId>())), true, token);
         }
 
-        public override Task<bool> RemoveAsync(TEntity entity, CancellationToken token = default) =>
-            RemoveAsync(entity.PrimaryKey, token);
+        public override Task<bool> RemoveAsync(TEntity entity, CancellationToken token = default) => RemoveAsync(entity.PrimaryKey, token);
 
-        public override async Task<int> RemoveAsync(
-            IEnumerable<IPrimaryKey> primaryKeys,
-            CancellationToken token = default
-        )
+        public override async Task<int> RemoveAsync(IEnumerable<IPrimaryKey> primaryKeys, CancellationToken token = default)
         {
             _logger.Trace("Remove Entities ...");
 
@@ -40,14 +29,10 @@ namespace xSdk.Data
             return deleted;
         }
 
-        public override Task<int> RemoveAsync(
-            IEnumerable<TEntity> entities,
-            CancellationToken token = default
-        ) => RemoveAsync(entities.Select(x => x.PrimaryKey), token);
+        public override Task<int> RemoveAsync(IEnumerable<TEntity> entities, CancellationToken token = default) =>
+            RemoveAsync(entities.Select(x => x.PrimaryKey), token);
 
-        protected Task<int> RemoveAsync(
-            Expression<Func<TEntity, bool>> filter,
-            CancellationToken token = default
-        ) => ExecuteInternalAsync(col => col.DeleteManyAsync(filter), true, token);
+        protected Task<int> RemoveAsync(Expression<Func<TEntity, bool>> filter, CancellationToken token = default) =>
+            ExecuteInternalAsync(col => col.DeleteManyAsync(filter), true, token);
     }
 }

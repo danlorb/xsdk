@@ -11,9 +11,7 @@ namespace xSdk.Data.Fakes
     {
         protected override void Build(Faker<TestEntity> builder)
         {
-            builder
-                .RuleFor(x => x.Name, f => f.Person.FirstName)
-                .RuleFor(x => x.Age, f => f.Random.Number(1, 100));
+            builder.RuleFor(x => x.Name, f => f.Person.FirstName).RuleFor(x => x.Age, f => f.Random.Number(1, 100));
         }
     }
 }

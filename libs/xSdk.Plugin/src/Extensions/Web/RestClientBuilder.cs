@@ -13,37 +13,23 @@ namespace xSdk.Extensions.Web
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public static IRestClient CreateRestClient(string baseUrl) =>
-            CreateRestClient(baseUrl, default, default, default);
+        public static IRestClient CreateRestClient(string baseUrl) => CreateRestClient(baseUrl, default, default, default);
 
-        public static IRestClient CreateRestClient(string baseUrl, IProgress<double> progress) =>
-            CreateRestClient(baseUrl, default, default, progress);
+        public static IRestClient CreateRestClient(string baseUrl, IProgress<double> progress) => CreateRestClient(baseUrl, default, default, progress);
 
-        public static IRestClient CreateRestClient(
-            string baseUrl,
-            Action<RestClientOptions>? configure
-        ) => CreateRestClient(baseUrl, default, configure, default);
+        public static IRestClient CreateRestClient(string baseUrl, Action<RestClientOptions>? configure) =>
+            CreateRestClient(baseUrl, default, configure, default);
 
-        public static IRestClient CreateRestClient(
-            string baseUrl,
-            Action<RestClientOptions>? configure,
-            IProgress<double> progress
-        ) => CreateRestClient(baseUrl, default, configure, progress);
+        public static IRestClient CreateRestClient(string baseUrl, Action<RestClientOptions>? configure, IProgress<double> progress) =>
+            CreateRestClient(baseUrl, default, configure, progress);
 
-        public static IRestClient CreateRestClient(string baseUrl, IAuthenticator? authenticator) =>
-            CreateRestClient(baseUrl, authenticator, default, default);
+        public static IRestClient CreateRestClient(string baseUrl, IAuthenticator? authenticator) => CreateRestClient(baseUrl, authenticator, default, default);
 
-        public static IRestClient CreateRestClient(
-            string baseUrl,
-            IAuthenticator? authenticator,
-            IProgress<double> progress
-        ) => CreateRestClient(baseUrl, authenticator, default, progress);
+        public static IRestClient CreateRestClient(string baseUrl, IAuthenticator? authenticator, IProgress<double> progress) =>
+            CreateRestClient(baseUrl, authenticator, default, progress);
 
-        public static IRestClient CreateRestClient(
-            string baseUrl,
-            IAuthenticator? authenticator,
-            Action<RestClientOptions>? configure
-        ) => CreateRestClient(baseUrl, authenticator, configure, default);
+        public static IRestClient CreateRestClient(string baseUrl, IAuthenticator? authenticator, Action<RestClientOptions>? configure) =>
+            CreateRestClient(baseUrl, authenticator, configure, default);
 
         public static IRestClient CreateRestClient(
             string baseUrl,
@@ -52,37 +38,24 @@ namespace xSdk.Extensions.Web
             IProgress<double>? progress
         ) => CreateRestClientInternal(new Uri(baseUrl), authenticator, configure, progress);
 
-        public static IRestClient CreateRestClient(Uri baseUrl) =>
-            CreateRestClientInternal(baseUrl, default, default, default);
+        public static IRestClient CreateRestClient(Uri baseUrl) => CreateRestClientInternal(baseUrl, default, default, default);
 
-        public static IRestClient CreateRestClient(Uri baseUrl, IProgress<double> progress) =>
-            CreateRestClientInternal(baseUrl, default, default, progress);
+        public static IRestClient CreateRestClient(Uri baseUrl, IProgress<double> progress) => CreateRestClientInternal(baseUrl, default, default, progress);
 
-        public static IRestClient CreateRestClient(
-            Uri baseUrl,
-            Action<RestClientOptions> configure
-        ) => CreateRestClientInternal(baseUrl, default, configure, default);
+        public static IRestClient CreateRestClient(Uri baseUrl, Action<RestClientOptions> configure) =>
+            CreateRestClientInternal(baseUrl, default, configure, default);
 
-        public static IRestClient CreateRestClient(
-            Uri baseUrl,
-            Action<RestClientOptions> configure,
-            IProgress<double> progress
-        ) => CreateRestClientInternal(baseUrl, default, configure, progress);
+        public static IRestClient CreateRestClient(Uri baseUrl, Action<RestClientOptions> configure, IProgress<double> progress) =>
+            CreateRestClientInternal(baseUrl, default, configure, progress);
 
         public static IRestClient CreateRestClient(Uri baseUrl, IAuthenticator? authenticator) =>
             CreateRestClientInternal(baseUrl, authenticator, default, default);
 
-        public static IRestClient CreateRestClient(
-            Uri baseUrl,
-            IAuthenticator? authenticator,
-            IProgress<double> progress
-        ) => CreateRestClientInternal(baseUrl, authenticator, default, progress);
+        public static IRestClient CreateRestClient(Uri baseUrl, IAuthenticator? authenticator, IProgress<double> progress) =>
+            CreateRestClientInternal(baseUrl, authenticator, default, progress);
 
-        public static IRestClient CreateRestClient(
-            Uri baseUrl,
-            IAuthenticator? authenticator,
-            Action<RestClientOptions> configure
-        ) => CreateRestClientInternal(baseUrl, authenticator, configure, default);
+        public static IRestClient CreateRestClient(Uri baseUrl, IAuthenticator? authenticator, Action<RestClientOptions> configure) =>
+            CreateRestClientInternal(baseUrl, authenticator, configure, default);
 
         private static IRestClient CreateRestClient(
             Uri baseUrl,
@@ -113,11 +86,7 @@ namespace xSdk.Extensions.Web
 
             var httpClient = HttpClientBuilder.CreateHttpClient(baseUrl, progress);
 
-            return new RestClient(
-                httpClient,
-                options,
-                configureSerialization: s => s.UseSystemTextJson(JsonHelper.GetSerializerOptions())
-            );
+            return new RestClient(httpClient, options, configureSerialization: s => s.UseSystemTextJson(JsonHelper.GetSerializerOptions()));
         }
     }
 }

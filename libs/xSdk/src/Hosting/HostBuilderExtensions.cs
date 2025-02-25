@@ -28,20 +28,14 @@ namespace xSdk.Hosting
             return builder;
         }
 
-        public static IHostBuilder RegisterSetup<TSetup>(
-            this IHostBuilder builder,
-            Action<TSetup>? configure
-        )
+        public static IHostBuilder RegisterSetup<TSetup>(this IHostBuilder builder, Action<TSetup>? configure)
             where TSetup : class, ISetup, new()
         {
             SlimHostInternal.Instance.VariableSystem.RegisterSetup<TSetup>(configure);
             return builder;
         }
 
-        public static IHostBuilder RegisterSetup<TSetup>(
-            this IHostBuilder builder,
-            TSetup implementation
-        )
+        public static IHostBuilder RegisterSetup<TSetup>(this IHostBuilder builder, TSetup implementation)
             where TSetup : class, ISetup, new()
         {
             SlimHostInternal.Instance.VariableSystem.RegisterSetup<TSetup>(implementation);
