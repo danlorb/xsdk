@@ -6,16 +6,16 @@ using xSdk.Extensions.Variable;
 
 namespace xSdk.Hosting
 {
-    public static partial class Host
+    public static class HostServicesManager
     {
-        private static void ConfigureHostServices(IServiceCollection services)
+        internal static void ConfigureHostServices(IServiceCollection services)
         {
-            services.AddLogging(LoggingHelpers.ConfigureLogging).AddFileServices().AddVariableServices();
+            services.AddLogging(LoggingHelpers.ConfigureLogging).AddFileServices().AddPluginServices().AddVariableServices();
 
             SlimHostInternal.Instance.PluginSystem.Invoke<PluginBase>(x => x.ConfigureServices(services));
         }
 
-        private static void ConfigureHostServicesWithContext(HostBuilderContext context, IServiceCollection services)
+        internal static void ConfigureHostServicesWithContext(HostBuilderContext context, IServiceCollection services)
         {
             SlimHostInternal.Instance.PluginSystem.Invoke<HostPluginBase>(x => x.ConfigureServices(context, services));
         }

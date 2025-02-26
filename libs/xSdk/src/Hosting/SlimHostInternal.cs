@@ -43,14 +43,18 @@ namespace xSdk.Hosting
                 }
                 else
                 {
-                    configBuilder.SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.tests.json", true, true);
+                    HostConfigurationManager.LoadTestConfiguration(configBuilder);
                 }
                 var config = configBuilder.Build();
 
                 // Load all slim services
                 builder.ConfigureServices(services =>
                 {
-                    services.AddLogging(LoggingHelpers.ConfigureSlimLogging).AddSlimPluginServices().AddSlimFileServices().AddSlimVariableServices(config);
+                    services
+                        .AddLogging(LoggingHelpers.ConfigureSlimLogging)
+                        .AddSlimPluginServices()
+                        .AddSlimFileServices()
+                        .AddSlimVariableServices(config, false);
                 });
 
                 // Now get the real instance of the host

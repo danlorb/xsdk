@@ -7,7 +7,6 @@ using xSdk.Extensions.IO;
 using xSdk.Extensions.Plugin;
 using xSdk.Hosting;
 using xSdk.Plugins.Authentication;
-using xSdk.Shared;
 
 namespace xSdk.Plugins.Documentation
 {

@@ -20,7 +20,7 @@ namespace xSdk.Extensions.Links
             //services.TryAddSingleton<IAssemblyLoader, DefaultAssemblyLoader>();
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.TryAddSingleton<IRouteMap, DefaultRouteMap>();
-            //services.TryAdd(ServiceDescriptor.Transient<ILinksHandlerContextFactory, DefaultLinksHandlerContextFactory>());
+            services.TryAdd(ServiceDescriptor.Transient<ILinksHandlerContextFactory, DefaultLinksHandlerContextFactory>());
             services.TryAdd(ServiceDescriptor.Transient<ILinksPolicyProvider, DefaultLinksPolicyProvider>());
             services.TryAdd(ServiceDescriptor.Transient<ILinkTransformationContextFactory, DefaultLinkTransformationContextFactory>());
             services.TryAdd(ServiceDescriptor.Transient<ILinksEvaluator, DefaultLinksEvaluator>());

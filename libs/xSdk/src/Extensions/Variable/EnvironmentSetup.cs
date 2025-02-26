@@ -81,12 +81,12 @@ namespace xSdk.Extensions.Variable
             name: DefaultCommandSettings.Definitions.Demo.Name,
             template: DefaultCommandSettings.Definitions.Demo.Template,
             helpText: DefaultCommandSettings.Definitions.Demo.HelpText,
-            resourceNames: new[] { "{{app.prefix}}.environment.demo" },
-            protect: true
+            resourceNames: new[] { "{{app.prefix}}.environment.demo" }
         )]
         public bool IsDemo
         {
             get => this.ReadValue<bool>(DefaultCommandSettings.Definitions.Demo.Name);
+            set => this.SetValue(DefaultCommandSettings.Definitions.Demo.Name, value);
         }
 
         [Variable(

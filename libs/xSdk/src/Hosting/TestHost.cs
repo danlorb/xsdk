@@ -1,6 +1,6 @@
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
+using xSdk.Extensions.Plugin;
 
 namespace xSdk.Hosting
 {
@@ -24,7 +24,19 @@ namespace xSdk.Hosting
         {
             var boot = SlimHostInternal.InitializeTestHost(args, appName, appCompany, appPrefix);
 
-            var builder = new HostBuilder();
+            var builder = new HostBuilder()
+                .ConfigureHostConfiguration(HostConfigurationManager.LoadTestConfiguration)
+                .ConfigureServices(HostServicesManager.ConfigureHostServices)
+                .ConfigureServices(HostServicesManager.ConfigureHostServicesWithContext)
+                .ConfigureWebHost(webhostBuilder =>
+                {
+                    webhostBuilder.ConfigureServices(
+                        (context, services) =>
+                        {
+                            SlimHostInternal.Instance.PluginSystem.Invoke<WebHostPluginBase>(x => x.ConfigureServices(context, services));
+                        }
+                    );
+                });
 
             return builder;
         }

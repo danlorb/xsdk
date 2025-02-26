@@ -20,8 +20,8 @@ namespace xSdk.Hosting
             var builder = new HostBuilder()
                 .ConfigureHostConfiguration(HostConfigurationManager.LoadHostConfiguration)
                 .ConfigureAppConfiguration(HostConfigurationManager.LoadAppConfiguration)
-                .ConfigureServices(ConfigureHostServices)
-                .ConfigureServices(ConfigureHostServicesWithContext);
+                .ConfigureServices(HostServicesManager.ConfigureHostServices)
+                .ConfigureServices(HostServicesManager.ConfigureHostServicesWithContext);
 
             // Shutdown the logger
             AppDomain.CurrentDomain.ProcessExit += (sender, args) =>

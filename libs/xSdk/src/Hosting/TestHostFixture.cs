@@ -1,7 +1,11 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
+using xSdk.Extensions.Commands;
+using xSdk.Extensions.IO;
 using xSdk.Extensions.Plugin;
+using xSdk.Extensions.Variable;
 
 namespace xSdk.Hosting
 {
@@ -10,8 +14,10 @@ namespace xSdk.Hosting
         private IHostBuilder builder;
         private IHost? host;
 
-        private List<Action<IServiceCollection>> configureServicesDelegates = new();
-        private List<Action<HostBuilderContext, IServiceCollection>> configureServicesWithContextDelegates = new();
+        private List<Action<IServiceCollection>> servicesDelegates = new();
+        private List<Action<HostBuilderContext, IServiceCollection>> hostServicesDelegates = new();
+        private List<Action<WebHostBuilderContext, IServiceCollection>> webhostServicesDelegates = new();
+
         private List<Action<IHostBuilder>> builderDelegates = new();
 
         private bool disposed;
@@ -36,72 +42,72 @@ namespace xSdk.Hosting
 
         public IHost Host => Build();
 
-        public IPluginService PluginSystem => Build().Services.GetService<IPluginService>() ?? throw new SdkException("Plugin Services was not added");
+        public string AppName => SlimHostInternal.Instance.AppName;
 
-        public string AppName => SlimHost.Instance.AppName;
+        public string AppCompany => SlimHostInternal.Instance.AppCompany;
 
-        public string AppCompany => SlimHost.Instance.AppCompany;
+        public string AppPrefix => SlimHostInternal.Instance.AppPrefix;
 
-        public string AppPrefix => SlimHost.Instance.AppPrefix;
-
-        public string AppVersion => SlimHost.Instance.AppVersion;
+        public string AppVersion => SlimHostInternal.Instance.AppVersion;
 
         public TService? GetService<TService>()
             where TService : notnull => Host.Services.GetRequiredService<TService>();
 
-        public TService? GetService<TService>(Action<IServiceCollection> configure)
-            where TService : notnull => TestHost.CreateBuilder().ConfigureServices(configure).Build().Services.GetService<TService>();
-
         public IEnumerable<TService> GetServices<TService>()
             where TService : notnull => Host.Services.GetServices<TService>();
-
-        public IEnumerable<TService> GetServices<TService>(Action<IServiceCollection> configure)
-            where TService : notnull => TestHost.CreateBuilder().ConfigureServices(configure).Build().Services.GetServices<TService>();
 
         public TService GetRequiredService<TService>()
             where TService : notnull => Host.Services.GetRequiredService<TService>();
 
-        public TService GetRequiredService<TService>(Action<IServiceCollection> configure)
-            where TService : notnull => TestHost.CreateBuilder().ConfigureServices(configure).Build().Services.GetRequiredService<TService>();
-
         public TService? GetKeyedService<TService>(object? serviceKey)
             where TService : notnull => Host.Services.GetKeyedService<TService>(serviceKey);
-
-        public TService? GetKeyedService<TService>(object? serviceKey, Action<IServiceCollection> configure)
-            where TService : notnull => TestHost.CreateBuilder().ConfigureServices(configure).Build().Services.GetKeyedService<TService>(serviceKey);
 
         public IEnumerable<TService> GetKeyedServices<TService>(object? serviceKey)
             where TService : notnull => Host.Services.GetKeyedServices<TService>(serviceKey);
 
-        public IEnumerable<TService> GetKeyedServices<TService>(object? serviceKey, Action<IServiceCollection> configure)
-            where TService : notnull => TestHost.CreateBuilder().ConfigureServices(configure).Build().Services.GetKeyedServices<TService>(serviceKey);
-
         public TService? GetRequiredKeyedService<TService>(object? serviceKey)
             where TService : notnull => Host.Services.GetRequiredKeyedService<TService>(serviceKey);
+
+        public TService? GetService<TService>(Action<IServiceCollection> configure)
+            where TService : notnull => TestHost.CreateBuilder().ConfigureServices(configure).Build().Services.GetService<TService>();
+
+        public IEnumerable<TService> GetServices<TService>(Action<IServiceCollection> configure)
+            where TService : notnull => TestHost.CreateBuilder().ConfigureServices(configure).Build().Services.GetServices<TService>();
+
+        public TService GetRequiredService<TService>(Action<IServiceCollection> configure)
+            where TService : notnull => TestHost.CreateBuilder().ConfigureServices(configure).Build().Services.GetRequiredService<TService>();
+
+        public TService? GetKeyedService<TService>(object? serviceKey, Action<IServiceCollection> configure)
+            where TService : notnull => TestHost.CreateBuilder().ConfigureServices(configure).Build().Services.GetKeyedService<TService>(serviceKey);
+
+        public IEnumerable<TService> GetKeyedServices<TService>(object? serviceKey, Action<IServiceCollection> configure)
+            where TService : notnull => TestHost.CreateBuilder().ConfigureServices(configure).Build().Services.GetKeyedServices<TService>(serviceKey);
 
         public TService? GetRequiredKeyedService<TService>(object? serviceKey, Action<IServiceCollection> configure)
             where TService : notnull => TestHost.CreateBuilder().ConfigureServices(configure).Build().Services.GetRequiredKeyedService<TService>(serviceKey);
 
-        public TestHostFixture Invoke<TPlugin>()
-        {
-            return this;
-        }
-
         public TestHostFixture ConfigureServices(Action<IServiceCollection> configure)
         {
-            configureServicesDelegates.Add(configure);
+            servicesDelegates.Add(configure);
 
             return this;
         }
 
-        public TestHostFixture ConfigureServices(Action<HostBuilderContext, IServiceCollection> configure)
+        public TestHostFixture ConfigureHostServices(Action<HostBuilderContext, IServiceCollection> configure)
         {
-            configureServicesWithContextDelegates.Add(configure);
+            hostServicesDelegates.Add(configure);
 
             return this;
         }
 
-        public TestHostFixture ConfigurePlugin(Action<IHostBuilder> configure)
+        public TestHostFixture ConfigureWebHostServices(Action<WebHostBuilderContext, IServiceCollection> configure)
+        {
+            webhostServicesDelegates.Add(configure);
+
+            return this;
+        }
+
+        public TestHostFixture EnablePlugin(Action<IHostBuilder> configure)
         {
             builderDelegates.Add(configure);
             return this;
@@ -111,20 +117,33 @@ namespace xSdk.Hosting
         {
             if (host == null)
             {
-                builder.ConfigureServices(
-                    (context, services) =>
-                    {
-                        foreach (var configure in configureServicesDelegates)
+                builder
+                    .ConfigureServices(
+                        (context, services) =>
                         {
-                            configure?.Invoke(services);
-                        }
+                            foreach (var configure in servicesDelegates)
+                            {
+                                configure?.Invoke(services);
+                            }
 
-                        foreach (var configure in configureServicesWithContextDelegates)
-                        {
-                            configure?.Invoke(context, services);
+                            foreach (var configure in hostServicesDelegates)
+                            {
+                                configure?.Invoke(context, services);
+                            }
                         }
-                    }
-                );
+                    )
+                    .ConfigureWebHost(webhostBuilder =>
+                    {
+                        webhostBuilder.ConfigureServices(
+                            (context, services) =>
+                            {
+                                foreach (var configure in webhostServicesDelegates)
+                                {
+                                    configure?.Invoke(context, services);
+                                }
+                            }
+                        );
+                    });
 
                 foreach (var configure in builderDelegates)
                 {
@@ -145,6 +164,8 @@ namespace xSdk.Hosting
 
             if (disposing)
             {
+                RestoreDemoMode();
+
                 // Dispose managed state (managed objects).
                 LogManager.Flush();
                 LogManager.Shutdown();
@@ -166,6 +187,37 @@ namespace xSdk.Hosting
             }
 
             return imageName;
+        }
+
+        private bool? currentDemoMode;
+
+        public void EnableDemoMode()
+        {
+            var setup = GetService<IVariableService>().GetSetup<EnvironmentSetup>();
+            if (!currentDemoMode.HasValue)
+            {
+                currentDemoMode = setup.IsDemo;
+            }
+            setup.IsDemo = true;
+        }
+
+        public void DisableDemoMode()
+        {
+            var setup = GetService<IVariableService>().GetSetup<EnvironmentSetup>();
+            if (!currentDemoMode.HasValue)
+            {
+                currentDemoMode = setup.IsDemo;
+            }
+            setup.IsDemo = false;
+        }
+
+        private void RestoreDemoMode()
+        {
+            if (currentDemoMode.HasValue)
+            {
+                var setup = GetService<IVariableService>().GetSetup<EnvironmentSetup>();
+                setup.IsDemo = currentDemoMode.Value;
+            }
         }
     }
 }

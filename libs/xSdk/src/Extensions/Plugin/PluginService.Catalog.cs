@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+using System.Reflection;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Weikio.PluginFramework.Catalogs;
 using xSdk.Extensions.IO;
@@ -15,10 +16,8 @@ namespace xSdk.Extensions.Plugin
         private readonly Dictionary<Assembly, AssemblyPluginCatalog> assemblyPluginCatalogs = new();
         private bool isAssemblyPluginCatalogsStale = false;
 
-        private async Task<List<PluginItem>> LoadPluginsAsync()
+        private async Task LoadPluginsAsync()
         {
-            List<PluginItem> plugins = new();
-
             var catalog = await InitialzeCatalogsAsync();
 
             var abstractPlugins = catalog.GetPlugins().Where(x => x != null);
@@ -26,7 +25,11 @@ namespace xSdk.Extensions.Plugin
             {
                 try
                 {
-                    plugins.Add(new PluginItem(abstractPlugin));
+                    if (!plugins.Any(x => x.WeikioPlugin.Type == abstractPlugin.Type))
+                    {
+                        var item = new PluginItem(abstractPlugin);
+                        plugins.Add(item);
+                    }
                 }
                 catch (MissingMethodException mme)
                 {
@@ -38,8 +41,6 @@ namespace xSdk.Extensions.Plugin
                     logger.LogError(ex, "Failed to create plugin instance");
                 }
             }
-
-            return plugins;
         }
 
         private async Task<CompositePluginCatalog> InitialzeCatalogsAsync()

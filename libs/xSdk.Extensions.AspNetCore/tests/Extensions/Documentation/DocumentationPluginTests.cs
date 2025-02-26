@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using xSdk.Extensions.Documentation.Fakes;
 using xSdk.Extensions.Plugin;
 using xSdk.Hosting;
@@ -9,16 +10,15 @@ namespace xSdk.Extensions.Documentation
     public class DocumentationPluginTests : IClassFixture<TestHostFixture>
     {
         private readonly IPluginService service;
+        private readonly TestHostFixture fixture;
 
         public DocumentationPluginTests(TestHostFixture fixture)
         {
-            this.service = fixture
-                .ConfigureServices(services => services.AddPluginServices())
-                .ConfigurePlugin(builder =>
-                {
-                    builder.EnableDocumentation<DocumentationPluginBuilderFake>();
-                })
-                .GetRequiredService<IPluginService>();
+            fixture.EnablePlugin(builder => builder.EnableDocumentation<DocumentationPluginBuilderFake>());
+
+            service = fixture.GetRequiredService<IPluginService>();
+
+            this.fixture = fixture;
         }
 
         [Fact]
@@ -46,6 +46,14 @@ namespace xSdk.Extensions.Documentation
 
             Assert.NotNull(services);
             Assert.True(services.Count > 0);
+        }
+
+        [Fact]
+        public void LoadSwaggerSchemaGenerator()
+        {
+            var schemaGenerator = this.fixture.Host.Services.GetRequiredService<ISchemaGenerator>();
+
+            Assert.NotNull(schemaGenerator);
         }
     }
 }

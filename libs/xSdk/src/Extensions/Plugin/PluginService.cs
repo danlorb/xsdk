@@ -9,7 +9,7 @@ namespace xSdk.Extensions.Plugin
 {
     internal partial class PluginService(IFileSystemService fsService, ILogger<PluginService> logger) : IPluginService
     {
-        private Dictionary<string, PluginItem> plugins = new();
+        private List<PluginItem> plugins = new();
 
         public Task<TPlugin?> GetPluginAsync<TPlugin>(CancellationToken token = default) =>
             GetPluginsAsync<TPlugin>(token).ContinueWith(task => task.Result.FirstOrDefault());
@@ -18,20 +18,12 @@ namespace xSdk.Extensions.Plugin
         {
             var searchResult = new List<PluginItem>();
 
-            var items = await LoadPluginsAsync();
-            foreach (var item in items)
+            await LoadPluginsAsync();
+            foreach (var item in plugins)
             {
                 if (item.Plugin is TPlugin concretePlugin)
                 {
-                    if (plugins.ContainsKey(item.Key))
-                    {
-                        searchResult.Add(plugins[item.Key]);
-                    }
-                    else
-                    {
-                        plugins.Add(item.Key, item);
-                        searchResult.Add(item);
-                    }
+                    searchResult.Add(item);
                 }
             }
 

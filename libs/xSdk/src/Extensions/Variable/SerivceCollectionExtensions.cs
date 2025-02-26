@@ -7,6 +7,8 @@ namespace xSdk.Extensions.Variable
 {
     public static class SerivceCollectionExtensions
     {
+        private static bool IsLocked;
+
         private static List<Action<VariableServiceSetup>> _configureActions = new List<Action<VariableServiceSetup>>();
 
         public static IServiceCollection AddVariableServices(this IServiceCollection services) => services.AddVariableServices(null);
@@ -40,31 +42,35 @@ namespace xSdk.Extensions.Variable
                     {
                         concreteService.AddEnvironmentVariables();
                     }
-
-                    //if (setup.AddCommanlineVariablesWithoutSetup)
-                    //{
-                    //    concreteService.AddCommandlineVariables();
-                    //}
                 }
 
+                IsLocked = true;
                 return service;
             });
 
             return services;
         }
 
-        internal static IServiceCollection AddSlimVariableServices(this IServiceCollection services, IConfigurationRoot config)
+        internal static IServiceCollection AddSlimVariableServices(this IServiceCollection services, IConfigurationRoot config, bool ignoreLock)
         {
-            services.AddSingleton<IConfiguration>(config);
-            services.TryAddSingleton<IVariableService>(provider =>
-            {
-                var service = ActivatorUtilities.CreateInstance<VariableService>(provider);
+            services
+                .AddSingleton<IConfiguration>(config)
+                .AddSingleton<IVariableService>(provider =>
+                {
+                    if (!IsLocked || ignoreLock)
+                    {
+                        var service = ActivatorUtilities.CreateInstance<VariableService>(provider);
 
-                // Add Environment Setup (it will always needed)
-                service.RegisterSetup<EnvironmentSetup>();
+                        // Add Environment Setup (it will always needed)
+                        service.RegisterSetup<EnvironmentSetup>();
 
-                return service;
-            });
+                        return service;
+                    }
+                    else
+                    {
+                        throw new SdkException("VariableService is locked and cannot be used over SlimHost");
+                    }
+                });
 
             return services;
         }

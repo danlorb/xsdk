@@ -20,8 +20,15 @@ namespace xSdk.Demos.Builders
             descriptions
                 .Add("v2", new OpenApiInfo
                 {
-                    Title = "Sample API TEst",
+                    Title = "Sample API Test",
                     Version = "v2"
+                });
+
+            descriptions
+                .Add("v3", new OpenApiInfo
+                {
+                    Title = "Sample API with HATEOAS Links",
+                    Version = "v3"
                 });
         }
 

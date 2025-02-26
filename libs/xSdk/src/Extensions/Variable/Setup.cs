@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NLog;
 using xSdk.Extensions.Variable.Attributes;
+using xSdk.Hosting;
 using xSdk.Shared;
 
 namespace xSdk.Extensions.Variable
@@ -29,8 +30,8 @@ namespace xSdk.Extensions.Variable
 
             var currentType = this.GetType();
 
-            _logger.Info("Validate Implementation '{0}'", currentType.FullName);
-            _logger.Trace("Validate Annotations for Implementation '{0}'", currentType.FullName);
+            _logger.Info("Validate Setup '{0}'", currentType.FullName);
+            _logger.Trace("Validate Annotations for Setup '{0}'", currentType.FullName);
             if (!this.ValidateAnnotations(out ICollection<ValidationResult> annotationResults))
             {
                 isValid = annotationResults.ValidateResults();
@@ -38,7 +39,7 @@ namespace xSdk.Extensions.Variable
 
             if (isValid)
             {
-                _logger.Trace("Validate Implementation '{0}'", currentType.FullName);
+                _logger.Trace("Validate Setup '{0}'", currentType.FullName);
                 ValidateSetup();
 
                 isValid = Results.ValidateResults();
@@ -46,7 +47,7 @@ namespace xSdk.Extensions.Variable
 
             if (!isValid && throwIfFails)
             {
-                throw new SdkException(string.Format("Implementation '{0}' not valid.", currentType.FullName));
+                throw new SdkException(string.Format("Setup '{0}' not valid.", currentType.FullName));
             }
         }
 
@@ -258,10 +259,9 @@ namespace xSdk.Extensions.Variable
                 {
                     var config = new ConfigurationBuilder().AddInMemoryCollection().Build();
                     var services = new ServiceCollection();
-                    services.AddSlimVariableServices(config);
+                    services.AddSlimVariableServices(config, true);
 
                     var provider = services.BuildServiceProvider();
-
                     _slimVariableService = provider.GetRequiredService<IVariableService>() as VariableService;
                     CreateVariables();
                     Initialize();

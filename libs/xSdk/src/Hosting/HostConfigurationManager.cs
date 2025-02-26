@@ -12,7 +12,7 @@ namespace xSdk.Hosting
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
-        public static void LoadHostConfiguration(IConfigurationBuilder builder)
+        internal static void LoadHostConfiguration(IConfigurationBuilder builder)
         {
             logger.Info("Try to load Machine Configuration");
 
@@ -29,7 +29,7 @@ namespace xSdk.Hosting
             LoadAppConfiguration(null, builder);
         }
 
-        public static void LoadAppConfiguration(HostBuilderContext? context, IConfigurationBuilder builder)
+        internal static void LoadAppConfiguration(HostBuilderContext? context, IConfigurationBuilder builder)
         {
             logger.Info("Try to load Application Configuration");
 
@@ -55,6 +55,11 @@ namespace xSdk.Hosting
                     builder.AddKeyPerFile("/var/run/configs", true);
                 }
             }
+        }
+
+        internal static void LoadTestConfiguration(IConfigurationBuilder builder)
+        {
+            builder.SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.tests.json", true, true);
         }
 
         private static void LoadConfigurationFile(IConfigurationBuilder builder, string? file, bool reloadOnChange = false)

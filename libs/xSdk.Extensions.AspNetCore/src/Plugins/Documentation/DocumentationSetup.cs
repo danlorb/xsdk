@@ -35,7 +35,7 @@ namespace xSdk.Plugins.Documentation
         {
             public static class RoutePrefix
             {
-                public const string Name = "route_prefix";
+                public const string Name = "route-prefix";
                 public const string Template = "--route-prefix <route>";
                 public const string HelpText = "RoutePrefix prefix for the api";
                 public const string DefaultValue = "api/documentation";
@@ -43,7 +43,7 @@ namespace xSdk.Plugins.Documentation
 
             public static class VariableDocumentation
             {
-                public const string Name = "with_variable_documentation";
+                public const string Name = "with-variable-documentation";
                 public const string Template = "--with-variable-documentation";
                 public const string HelpText = "Show documentation from Variable Controller";
             }

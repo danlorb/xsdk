@@ -8,16 +8,6 @@ namespace xSdk.Data
     public abstract class Repository : IRepository
     {
         private IDatabase _database;
-        private readonly bool _isDemoMode;
-
-        public Repository()
-        {
-            var envSetup = SlimHost.Instance.VariableSystem.GetSetup<EnvironmentSetup>();
-            if (envSetup != null)
-            {
-                _isDemoMode = envSetup.IsDemo;
-            }
-        }
 
         #region Dispose Handling
 
@@ -39,7 +29,18 @@ namespace xSdk.Data
 
         internal IEnumerable<InternalDatabaseSetup> InternalSetups { get; set; }
 
-        protected bool IsDemoMode => _isDemoMode;
+        protected bool IsDemoMode
+        {
+            get
+            {
+                var envSetup = SlimHost.Instance.VariableSystem.GetSetup<EnvironmentSetup>();
+                if (envSetup != null)
+                {
+                    return envSetup.IsDemo;
+                }
+                return false;
+            }
+        }
 
         internal void Configure(IDatabase database)
         {

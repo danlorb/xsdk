@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using xSdk.Shared;
 
 namespace xSdk.Extensions.Plugin
@@ -13,6 +13,7 @@ namespace xSdk.Extensions.Plugin
         public IPluginDescription Description { get; private set; }
 
         public string Key { get; private set; }
+
         public object? Plugin
         {
             get

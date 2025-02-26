@@ -6,9 +6,17 @@ namespace xSdk.Extensions.Plugin
 {
     public static class ServiceCollectionExtensions
     {
+        private static bool IsLocked = false;
+
         public static IServiceCollection AddPluginServices(this IServiceCollection services)
         {
-            services.TryAddSingleton<IPluginService>(SlimHostInternal.Instance.PluginSystem);
+            services.Replace(
+                ServiceDescriptor.Singleton(provider =>
+                {
+                    IsLocked = true;
+                    return SlimHostInternal.Instance.PluginSystem;
+                })
+            );
 
             return services;
         }
@@ -17,8 +25,15 @@ namespace xSdk.Extensions.Plugin
         {
             services.TryAddSingleton<IPluginService>(provider =>
             {
-                var service = ActivatorUtilities.CreateInstance<PluginService>(provider);
-                return service;
+                if (!IsLocked)
+                {
+                    var service = ActivatorUtilities.CreateInstance<PluginService>(provider);
+                    return service;
+                }
+                else
+                {
+                    throw new SdkException("SlimPluginService is locked and cannot be used");
+                }
             });
 
             return services;

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using xSdk.Extensions.Plugin;
 using xSdk.Hosting;
 using xSdk.Plugins.Compression;
@@ -9,11 +10,9 @@ namespace xSdk.Extensions.Compression
         [Fact]
         public void CreatePlugin()
         {
-            var service = fixture
-                .ConfigureServices(services => services.AddPluginServices())
-                .ConfigurePlugin(builder => builder.EnableCompression())
-                .GetRequiredService<IPluginService>();
+            fixture.Builder.EnableCompression().ConfigureServices((context, services) => services.AddPluginServices());
 
+            var service = fixture.Host.Services.GetRequiredService<IPluginService>();
             var plugin = service.GetPlugin<CompressionPlugin>();
 
             Assert.NotNull(plugin);
