@@ -15,8 +15,15 @@ namespace xSdk.Plugins.Documentation
 
             if (hasAuthorize)
             {
-                operation.Responses.Add("401", new OpenApiResponse { Description = "Unauthorized" });
-                operation.Responses.Add("403", new OpenApiResponse { Description = "Forbidden" });
+                if (!operation.Responses.ContainsKey("401"))
+                {
+                    operation.Responses.Add("401", CreateProblemResponse("Unauthorized"));
+                }
+
+                if (!operation.Responses.ContainsKey("403"))
+                {
+                    operation.Responses.Add("403", CreateProblemResponse("Forbidden"));
+                }
 
                 var requirements = new List<OpenApiSecurityRequirement>();
                 requirements.Add(
@@ -34,6 +41,35 @@ namespace xSdk.Plugins.Documentation
 
                 operation.Security = requirements;
             }
+        }
+
+        private OpenApiResponse CreateProblemResponse(string message)
+        {
+            return new OpenApiResponse
+            {
+                Description = message
+            };
+
+            return new OpenApiResponse
+            {
+                Description = message,
+                Content = new Dictionary<string, OpenApiMediaType>()
+                {
+                    {
+                        "application/json", new OpenApiMediaType()
+                        {
+                            Schema = new OpenApiSchema()
+                            {
+                                Reference = new OpenApiReference()
+                                {
+                                    Id = "ProblemDetails",
+                                    Type = ReferenceType.Schema
+                                }
+                            }
+                        }
+                    }
+                }
+            };
         }
     }
 }

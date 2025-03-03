@@ -1,11 +1,12 @@
 using Microsoft.Extensions.Hosting;
 using NLog;
+using xSdk.Extensions.Plugin;
 
 namespace xSdk.Hosting
 {
     public static partial class Host
     {
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public static IHostBuilder CreateBuilder(string[] args) => CreateBuilder(args, default, default, default);
 

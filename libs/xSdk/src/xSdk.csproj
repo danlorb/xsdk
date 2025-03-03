@@ -6,12 +6,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Newtonsoft.Json" />
-        <PackageReference Include="NLog.Extensions.Logging" />
-        <PackageReference Include="OpenTelemetry" />
-        <PackageReference Include="Spectre.Console.Cli" />
-        <PackageReference Include="Weikio.PluginFramework" />
-        <PackageReference Include="Zio" />        
+        <PackageReference Include="Newtonsoft.Json" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="NLog.Extensions.Logging" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="OpenTelemetry" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="Spectre.Console.Cli" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="Weikio.PluginFramework" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="Zio" PrivateAssets="contentfiles;analyzers;build;compile" />
     </ItemGroup>
 
     <ItemGroup>

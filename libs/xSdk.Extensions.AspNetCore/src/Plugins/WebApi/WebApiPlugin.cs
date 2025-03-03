@@ -1,15 +1,16 @@
-using System.Diagnostics;
-using System.Reflection;
 using Asp.Versioning;
+using FluentValidation;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
 using xSdk.Data;
 using xSdk.Extensions.Plugin;
 using xSdk.Extensions.Variable;
 using xSdk.Hosting;
+using xSdk.Shared;
 
 namespace xSdk.Plugins.WebApi
 {
@@ -23,9 +24,9 @@ namespace xSdk.Plugins.WebApi
             services
                 // Add Context Accessor
                 .AddHttpContextAccessor()
-                // Add Problem Details Services
                 .AddProblemDetails(_ =>
                 {
+                    Logger.Debug("Configure Problem Details");
                     var currentStage = SlimHost.Instance.VariableSystem.GetSetup<EnvironmentSetup>().Stage;
 
                     _.IncludeExceptionDetails = (ctx, ex) =>
@@ -43,6 +44,7 @@ namespace xSdk.Plugins.WebApi
                 // Add Routing
                 .AddRouting(_ =>
                 {
+                    Logger.Debug("Configure Routing");
                     _.LowercaseUrls = true;
                     _.LowercaseQueryStrings = true;
                     _.SuppressCheckForUnhandledSecurityMetadata = false;
@@ -51,13 +53,14 @@ namespace xSdk.Plugins.WebApi
             var mvcBuilder = services
                 .AddControllers(_ =>
                 {
+                    Logger.Debug("Configure Mvc");
                     _.InputFormatters.Add(new PlainTextFormatter());
 
                     SlimHost.Instance.PluginSystem.Invoke<IWebApiPluginBuilder>(x => x.ConfigureMvc(_));
-                })
-                // Configure Json
+                })                
                 .AddJsonOptions(_ =>
                 {
+                    Logger.Debug("Configure Json");
                     _.JsonSerializerOptions.ConfigureSerializerOptions();
                 });
 
@@ -65,6 +68,8 @@ namespace xSdk.Plugins.WebApi
             services
                 .AddApiVersioning(_ =>
                 {
+                    Logger.Debug("Enable Api Versioning");
+
                     // Add the headers "api-supported-versions" and "api-deprecated-versions"
                     // This is better for discoverability
                     _.ReportApiVersions = true;
@@ -84,12 +89,26 @@ namespace xSdk.Plugins.WebApi
                         new MediaTypeApiVersionReader("version")
                     );
                 })
-                .AddMvc();
+                .AddMvc()
+                .AddApiExplorer(_ =>
+                {
+                    _.GroupNameFormat = "'v'V";
+                    _.SubstituteApiVersionInUrl = true;                    
+                });
 
-            // Enable Endpoints for API Explorer
+            Logger.Debug("Enable Endpoints for API Explorer");
             services.AddEndpointsApiExplorer();
 
-            LoadApplicationParts(mvcBuilder);
+            var assemblies = AssemblyCollector.Collect();
+
+            Logger.Debug("Add Fluent Validation");
+            services.AddValidatorsFromAssemblies(assemblies);            
+
+            Logger.Debug("Add Application Parts");            
+            foreach (var assembly in assemblies)
+            {
+                mvcBuilder.AddApplicationPart(assembly);
+            }
         }
 
         public override void ConfigureDefaults(WebHostBuilderContext context, IApplicationBuilder app)
@@ -115,43 +134,9 @@ namespace xSdk.Plugins.WebApi
 
         public override void ConfigureEndpoint(IEndpointRouteBuilder builder)
         {
-            builder.MapControllers();
-        }
-
-        private void LoadApplicationParts(IMvcBuilder builder)
-        {
-            Logger.Info("Add Application Parts");
-
-            var assemblies = new List<Assembly>();
-
-            var entryAssembly = Assembly.GetEntryAssembly();
-            if (entryAssembly != null)
-            {
-                Logger.Debug("Add Application Part from Entry Assembly");
-                assemblies.Add(entryAssembly);
-            }
-
-            Logger.Debug("Add Application Part from this Assembly");
-            assemblies.Add(GetType().Assembly);
-
-            Logger.Info("Load allParts from other Assemblies");
-            var plugins = SlimHost.Instance.PluginSystem.GetPlugins();
-            foreach (var plugin in plugins)
-            {
-                var assembly = plugin.GetType().Assembly;
-                assemblies.Add(assembly);
-            }
-
-            var assemblyNames = new List<string>();
-            foreach (var assembly in assemblies)
-            {
-                var name = assembly.FullName;
-                if (!assemblyNames.Contains(name))
-                {
-                    builder.AddApplicationPart(assembly);
-                    assemblyNames.Add(name);
-                }
-            }
+            builder
+                .MapControllers();
+            
         }
     }
 }

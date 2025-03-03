@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <!-- SonarQube needs this, do not change -->
@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="NLog" PrivateAssets="contentfiles;analyzers;build;compile" />
         <PackageReference Include="Spectre.Console.Cli" PrivateAssets="contentfiles;analyzers;build;compile" />
     </ItemGroup>
 

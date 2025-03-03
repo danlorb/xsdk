@@ -7,13 +7,17 @@ namespace xSdk.Plugins.Documentation
     {
         public static IHostBuilder EnableDocumentation(this IHostBuilder hostBuilder)
         {
-            return hostBuilder.RegisterSetup<DocumentationSetup>().EnablePlugin<DocumentationPlugin>();
+            return hostBuilder
+                .RegisterSetup<DocumentationSetup>()
+                .EnablePlugin<DocumentationPlugin>();
         }
 
         public static IHostBuilder EnableDocumentation<TPluginBuilder>(this IHostBuilder hostBuilder)
             where TPluginBuilder : IDocumentationPluginBuilder
         {
-            return hostBuilder.EnableDocumentation().EnablePlugin<TPluginBuilder>();
+            return hostBuilder
+                .EnableDocumentation()
+                .EnablePlugin<TPluginBuilder>();
         }
     }
 }

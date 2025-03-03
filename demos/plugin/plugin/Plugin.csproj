@@ -6,6 +6,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="NLog" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\..\..\libs\xSdk\src\xSdk.csproj" />
     </ItemGroup>
 

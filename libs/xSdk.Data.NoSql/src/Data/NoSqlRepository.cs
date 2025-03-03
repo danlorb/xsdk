@@ -6,7 +6,7 @@ namespace xSdk.Data
     public partial class NoSqlRepository<TEntity> : Repository<TEntity>
         where TEntity : class, IEntity
     {
-        private object _syncObject = new();
+        private readonly object _syncObject = new();
         private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
         private async Task<TResult> ExecuteInternalAsync<TResult>(

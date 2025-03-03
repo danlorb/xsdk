@@ -139,7 +139,7 @@ namespace xSdk.Data
         //    else if (setup.Dialect == Dialect.LiteDb)
         //    { }
         //    else
-        //        throw new SdkException("No Dialect choosed for Repository");
+        //        throw new AminOOException("No Dialect choosed for Repository");
         //}
     }
 }

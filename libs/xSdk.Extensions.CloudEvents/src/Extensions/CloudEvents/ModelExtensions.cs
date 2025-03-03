@@ -29,7 +29,7 @@ namespace xSdk.Extensions.CloudEvents
         /// </summary>
         /// <typeparam name="TModel">A Model Type <see cref="IModel"/></typeparam>
         /// <param name="model">The Model which should converted to CloudEvent Object</param>
-        /// <param name="scope">Scope for the Model</param>
+        /// <param name="scope">Scope for the Model, e.g, aminoo/blueprint</param>
         /// <param name="type">Event Type for the Model, e.g. model.created</param>
         /// <returns>A <see cref="CloudEvent"/></returns>
         public static CloudEvent ToCloudEvent<TModel>(this TModel model, string scope, string type)
@@ -40,7 +40,7 @@ namespace xSdk.Extensions.CloudEvents
         /// </summary>
         /// <typeparam name="TModel">A Model Type <see cref="IModel"/></typeparam>
         /// <param name="model">The Model which should converted to CloudEvent Object</param>
-        /// <param name="scope">Scope for the Model</param>
+        /// <param name="scope">Scope for the Model, e.g, aminoo/blueprint</param>
         /// <param name="type">Event Type for the Model, e.g. model.created</param>
         /// <param name="subject">A specific Subject to use. It could be tenant orientated Informations</param>
         /// <returns>A <see cref="CloudEvent"/></returns>

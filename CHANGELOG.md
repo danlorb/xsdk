@@ -1,3 +1,15 @@
+## [1.0.0-next.8](https://git.x-breitschaft.de/global/xsdk/compare/v1.0.0-next.7...v1.0.0-next.8) (2025-03-03)
+
+### Features
+
+* add examples for builtin controllers ([d6c97e6](https://git.x-breitschaft.de/global/xsdk/commit/d6c97e61a7c83887b794cf7b8ed8dc714f427bfb))
+* create hateoas link builder plugin ([138da9b](https://git.x-breitschaft.de/global/xsdk/commit/138da9bb1e7357fed0c2b97249cb59cec2b29a78))
+* enable fluent validation for models and swagger examples ([5ad45a3](https://git.x-breitschaft.de/global/xsdk/commit/5ad45a324c648c15be24b102e194fc77b4b93137))
+* enable swagger example generation with bogus ([99f812f](https://git.x-breitschaft.de/global/xsdk/commit/99f812fef37738a6e967ca8577ec7d79b3b65974))
+* fakegenerator could now create fakes for models and entities ([0549460](https://git.x-breitschaft.de/global/xsdk/commit/05494600204842b3dbc77e79e3e1ff646c25da6f))
+* initial development for hashicorp vault datalayer ([7ae91d2](https://git.x-breitschaft.de/global/xsdk/commit/7ae91d2e8d9cf5f0b1d78b5388a1d50446f8c256))
+* make primary keys for mongo entities and models public ([070cc9a](https://git.x-breitschaft.de/global/xsdk/commit/070cc9a5363ee36ef9d5b131128b793b0a68a4d4))
+
 ## [1.0.0-next.7](https://git.x-breitschaft.de/global/xsdk/compare/v1.0.0-next.6...v1.0.0-next.7) (2025-02-26)
 
 ### Features

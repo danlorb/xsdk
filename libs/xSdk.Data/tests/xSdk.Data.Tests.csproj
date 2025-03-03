@@ -12,7 +12,7 @@
         <PackageReference Include="AutoMapper"/>
         <PackageReference Include="Bogus" />
         <PackageReference Include="Microsoft.NET.Test.Sdk"/>
-        <PackageReference Include="xunit" />                
+        <PackageReference Include="xunit" />
         <PackageReference Include="xunit.runner.visualstudio"/>
     </ItemGroup>
 

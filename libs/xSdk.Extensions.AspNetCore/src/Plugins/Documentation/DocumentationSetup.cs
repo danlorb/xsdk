@@ -18,18 +18,18 @@ namespace xSdk.Plugins.Documentation
             set => SetValue(Definitions.RoutePrefix.Name, value);
         }
 
-        [Variable(
-            name: Definitions.VariableDocumentation.Name,
-            template: Definitions.VariableDocumentation.Template,
-            helpText: Definitions.VariableDocumentation.HelpText,
-            hidden: true,
-            protect: true
-        )]
-        public bool ShowVariableDocumentation
-        {
-            get => ReadValue<bool>(Definitions.VariableDocumentation.Name);
-            set => SetValue(Definitions.VariableDocumentation.Name, value);
-        }
+        //[Variable(
+        //    name: Definitions.VariableDocumentation.Name,
+        //    template: Definitions.VariableDocumentation.Template,
+        //    helpText: Definitions.VariableDocumentation.HelpText,
+        //    hidden: true,
+        //    protect: true
+        //)]
+        //public bool ShowVariableDocumentation
+        //{
+        //    get => ReadValue<bool>(Definitions.VariableDocumentation.Name);
+        //    set => SetValue(Definitions.VariableDocumentation.Name, value);
+        //}
 
         public static class Definitions
         {

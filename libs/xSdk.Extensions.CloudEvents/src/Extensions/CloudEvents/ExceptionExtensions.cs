@@ -60,7 +60,7 @@ namespace xSdk.Extensions.CloudEvents
         /// Creates a <see cref="CloudEvent"/> Object from given Exception with a specific Scope/Category
         /// </summary>
         /// <param name="ex">The Exception which should converted to CloudEvent Object</param>
-        /// <param name="scope">Scope for the Exception</param>
+        /// <param name="scope">Scope for the Exception, e.g, aminoo/blueprint</param>
         /// <param name="type">Event Type for the Exception, e.g. blueprint.create.error</param>
         /// <param name="subject">A specific Subject to use. It could be tenant orientated Informations</param>
         /// <returns>A <see cref="CloudEvent"/></returns>
@@ -70,7 +70,7 @@ namespace xSdk.Extensions.CloudEvents
         /// Creates a <see cref="CloudEvent"/> Object from given Exception with a specific Scope/Category and Type
         /// </summary>
         /// <param name="ex">The Exception which should converted to CloudEvent Object</param>
-        /// <param name="scope">Scope for the Exception</param>
+        /// <param name="scope">Scope for the Exception, e.g, aminoo/blueprint</param>
         /// <param name="type">Event Type for the Exception, e.g. blueprint.create.error</param>
         /// <param name="subject">A specific Subject to use. It could be tenant orientated Informations</param>
         /// <returns>A <see cref="CloudEvent"/></returns>
@@ -80,7 +80,7 @@ namespace xSdk.Extensions.CloudEvents
         /// Creates a <see cref="CloudEvent"/> Object from given Exception with a specific Scope/Category, Type and Subject
         /// </summary>
         /// <param name="ex">The Exception which should converted to CloudEvent Object</param>
-        /// <param name="scope">Scope for the Exception</param>
+        /// <param name="scope">Scope for the Exception, e.g, aminoo/blueprint</param>
         /// <param name="type">Event Type for the Exception, e.g. blueprint.create.error</param>
         /// <param name="subject">A specific Subject to use. It could be tenant orientated Informations</param>
         /// <returns>A <see cref="CloudEvent"/></returns>

@@ -2,9 +2,7 @@
 
     <PropertyGroup>
         <!-- SonarQube needs this, do not change -->
-        <ProjectGuid>5d71c932-2d9b-4bf6-b207-b9e206b6d549</ProjectGuid>
-        <GenerateDocumentationFile>True</GenerateDocumentationFile>
-        <NoWarn>$(NoWarn);1591</NoWarn>
+        <ProjectGuid>5d71c932-2d9b-4bf6-b207-b9e206b6d549</ProjectGuid>        
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,11 +10,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Asp.Versioning.Mvc" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" PrivateAssets="contentfiles;analyzers;build;compile" />
         <PackageReference Include="AspNetCore.Authentication.ApiKey" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="Bogus" PrivateAssets="contentfiles;analyzers;build;compile" />
         <PackageReference Include="CloudNative.CloudEvents.SystemTextJson" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="Hellang.Middleware.ProblemDetails" PrivateAssets="contentfiles;analyzers;build;compile" />
-        <PackageReference Include="NWebsec.AspNetCore.Middleware" PrivateAssets="contentfiles;analyzers;build;compile" />        
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="Hellang.Middleware.ProblemDetails" PrivateAssets="contentfiles;analyzers;build;compile" />        
+        <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="NLog" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="NWebsec.AspNetCore.Middleware" PrivateAssets="contentfiles;analyzers;build;compile" />
         <PackageReference Include="Swashbuckle.AspNetCore" PrivateAssets="contentfiles;analyzers;build;compile" />
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" PrivateAssets="contentfiles;analyzers;build;compile" />
         <PackageReference Include="Swashbuckle.AspNetCore.Filters" PrivateAssets="contentfiles;analyzers;build;compile" />
@@ -24,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\xSdk\src\xSdk.csproj" />
+      <ProjectReference Include="..\..\xSdk.Data\src\xSdk.Data.csproj" />
     </ItemGroup>
 
 </Project>

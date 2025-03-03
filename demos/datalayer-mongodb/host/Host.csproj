@@ -2,7 +2,7 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <!-- SonarQube needs this, do not change -->
-        <ProjectGuid>{C699E1A5-52F4-4BCC-BD81-3B02DF2F7B09}</ProjectGuid>
+        <ProjectGuid>C699E1A5-52F4-4BCC-BD81-3B02DF2F7B09</ProjectGuid>
     </PropertyGroup>
 
     <ItemGroup>
@@ -10,6 +10,7 @@
         <PackageReference Include="Spectre.Console.Cli" />
         <PackageReference Include="MongoDB.EntityFrameworkCore" />
         <PackageReference Include="Testcontainers.MongoDb" />
+        <PackageReference Include="NLog" />
     </ItemGroup>
 
     <ItemGroup>

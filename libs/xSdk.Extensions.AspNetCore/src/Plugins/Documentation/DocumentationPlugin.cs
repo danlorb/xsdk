@@ -1,12 +1,16 @@
+using Asp.Versioning.ApiExplorer;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using xSdk.Extensions.IO;
 using xSdk.Extensions.Plugin;
 using xSdk.Hosting;
 using xSdk.Plugins.Authentication;
+using xSdk.Shared;
 
 namespace xSdk.Plugins.Documentation
 {
@@ -21,37 +25,36 @@ namespace xSdk.Plugins.Documentation
             License = new OpenApiLicense { Name = "MIT" },
         };
 
-        private Dictionary<string, OpenApiInfo> apiInfos;
-
+        
         public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
         {
+            // Hack: Retrieve currently configured ApiVersions from previously loaded ApiVersionProvider
+            // To do this, it is neccessary to build the service provider
+            var descriptionProvider = services
+                .BuildServiceProvider()
+                .GetRequiredService<IApiVersionDescriptionProvider>();
+
             var authPlugin = SlimHost.Instance.PluginSystem.GetPlugin<AuthenticationPlugin>();
-            var pluginBuilders = SlimHost.Instance.PluginSystem.GetPlugins<IDocumentationPluginBuilder>();
+            var docPluginBuilder = SlimHost.Instance.PluginSystem.GetPlugin<IDocumentationPluginBuilder>();
 
-            apiInfos = new Dictionary<string, OpenApiInfo>();
-            foreach (var plugin in pluginBuilders)
-            {
-                plugin.ConfigureApiDescriptions(apiInfos);
-            }
-
-            if (!apiInfos.Any())
-            {
-                Logger.Debug("API Documentation configuration found. So add default API Documentation.");
-                apiInfos.Add(DefaultApiInfo.Version, DefaultApiInfo);
-            }
-
-            services.AddSwaggerGen(
-                (setup) =>
+            services
+                .AddSwaggerGen(options =>
                 {
                     Logger.Info("Configure Swagger Document Generator");
-                    foreach (var apiInfo in apiInfos)
+                    
+                    foreach(var description in descriptionProvider.ApiVersionDescriptions)
                     {
-                        setup.SwaggerDoc(apiInfo.Key, apiInfo.Value);
+                        var apiInfo = docPluginBuilder?.CreateApiInfo(description);
+                        if(apiInfo == null)
+                        {
+                            apiInfo = DefaultApiInfo;
+                        }
+                        options.SwaggerDoc(description.GroupName, apiInfo);
                     }
 
                     if (authPlugin != null)
                     {
-                        setup.AddSecurityDefinition(
+                        options.AddSecurityDefinition(
                             AuthenticationDefaults.ApiKeyAuth.Name,
                             new OpenApiSecurityScheme()
                             {
@@ -62,49 +65,59 @@ namespace xSdk.Plugins.Documentation
                             }
                         );
 
-                        setup.OperationFilter<AuthorizeCheckOperationFilter>();
+                        options.OperationFilter<AuthorizeCheckOperationFilter>();
                     }
 
-                    setup.OperationFilter<RemoveVersionParameterFilter>();
-                    setup.DocumentFilter<ModifyPathsDocumentFilter>();
-                    setup.EnableAnnotations();
-
-                    setup.ResolveConflictingActions(infos => infos.First());
-                    setup.IgnoreObsoleteActions();
-                    setup.IgnoreObsoleteProperties();
-                    setup.CustomSchemaIds(type => type.FullName);
+                    options.EnableAnnotations();
+                    options.IgnoreObsoleteActions();
+                    options.IgnoreObsoleteProperties();
+                    options.ExampleFilters();                    
 
                     Logger.Trace("Add Docu Infos from current Assembly");
-                    LoadXmlDocumentations(setup);
+                    LoadXmlDocumentations(options);
 
-                    SlimHost.Instance.PluginSystem.Invoke<IDocumentationPluginBuilder>(x => x.ConfigureSwagger(setup));
-                }
-            );
+                    docPluginBuilder?.ConfigureSwagger(options);
+                });
+
+            Logger.Debug("Enable Swagger Example Generator");
+            var assemblies = AssemblyCollector.Collect();
+            services.AddSwaggerExamplesFromAssemblies(assemblies.ToArray());
+
+            Logger.Debug("Enable FluentValidation Rules to Swagger");
+            services.AddFluentValidationRulesToSwagger();
         }
 
         public override void Configure(WebHostBuilderContext context, IApplicationBuilder app)
         {
-            var plugins = SlimHost.Instance.PluginSystem.GetPlugins();
-            var authPlugin = SlimHost.Instance.PluginSystem.GetPlugin<AuthenticationPlugin>();
+            var pluginSvc = app.ApplicationServices.GetRequiredService<IPluginService>();
+            var descriptionProvider = app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
+            
+            var plugins = pluginSvc.GetPlugins();
+            var authPlugin = pluginSvc.GetPlugin<AuthenticationPlugin>();
+            
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             // see also https://cpratt.co/customizing-swagger-ui-in-asp-net-core/
-            app.UseSwagger(setup =>
+            app
+                .UseSwagger(setup =>
                 {
-                    setup.SerializeAsV2 = true;
+                    setup.SerializeAsV2 = true;                    
                 })
+
                 // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
                 // specifying the Swagger JSON endpoint.
                 .UseSwaggerUI(setup =>
-                {
+                {                    
                     var docSetup = SlimHost.Instance.VariableSystem.GetSetup<DocumentationSetup>();
 
                     setup.RoutePrefix = docSetup.RoutePrefix;
-                    foreach (var apiInfo in apiInfos)
+                    foreach(var description in descriptionProvider.ApiVersionDescriptions)                    
                     {
-                        setup.SwaggerEndpoint($"/swagger/{apiInfo.Key}/swagger.json", $"{apiInfo.Value.Title} {apiInfo.Key}");
+                        setup.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName);
                     }
 
+                    setup.EnableValidator();
+                    
                     SlimHost.Instance.PluginSystem.Invoke<IDocumentationPluginBuilder>(x => x.ConfigureSwaggerUi(setup));
                 });
         }

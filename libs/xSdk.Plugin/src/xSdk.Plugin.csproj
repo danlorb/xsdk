@@ -7,6 +7,7 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" PrivateAssets="contentfiles;analyzers;build;compile" />
+        <PackageReference Include="Asp.Versioning.Http" PrivateAssets="contentfiles;analyzers;build;compile" />
         <PackageReference Include="NLog" PrivateAssets="contentfiles;analyzers;build;compile" />
         <PackageReference Include="AspNetCore.Authentication.ApiKey" PrivateAssets="contentfiles;analyzers;build;compile" />
         <PackageReference Include="Microsoft.AspNet.WebApi.Client" PrivateAssets="contentfiles;analyzers;build" />

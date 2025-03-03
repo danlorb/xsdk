@@ -38,32 +38,32 @@ namespace xSdk.Data
 
         //public override object ExecuteScalar(string command, Dictionary<string, object> parameters)
         //{
-        //    throw new SdkException("Execute Scalar is not available for NoSql Data Repositories. Give ExecuteReader a try");
+        //    throw new AminOOException("Execute Scalar is not available for NoSql Data Repositories. Give ExecuteReader a try");
         //}
 
         //public override TValue ExecuteScalar<TValue>(string command, Dictionary<string, object> parameters)
         //{
-        //    throw new SdkException("Execute Scalar is not available for NoSql Data Repositories. Give ExecuteReader a try");
+        //    throw new AminOOException("Execute Scalar is not available for NoSql Data Repositories. Give ExecuteReader a try");
         //}
 
         //public override Task<int> ExecuteAsync(string command, Dictionary<string, object> parameters)
         //{
-        //    throw new SdkException("Async Execute is not available for NoSql Data Repositories");
+        //    throw new AminOOException("Async Execute is not available for NoSql Data Repositories");
         //}
 
         //public override Task<TReader> ExecuteReaderAsync<TReader>(string command, Dictionary<string, object> parameters)
         //{
-        //    throw new SdkException("Async Execute is not available for NoSql Data Repositories");
+        //    throw new AminOOException("Async Execute is not available for NoSql Data Repositories");
         //}
 
         //public override Task<object> ExecuteScalarAsync(string command, Dictionary<string, object> parameters)
         //{
-        //    throw new SdkException("Async Execute is not available for NoSql Data Repositories");
+        //    throw new AminOOException("Async Execute is not available for NoSql Data Repositories");
         //}
 
         //public override Task<TValue> ExecuteScalarAsync<TValue>(string command, Dictionary<string, object> parameters)
         //{
-        //    throw new SdkException("Async Execute is not available for NoSql Data Repositories");
+        //    throw new AminOOException("Async Execute is not available for NoSql Data Repositories");
         //}
 
         private IBsonDataReader CreateReader(string command, Dictionary<string, object> parameters)

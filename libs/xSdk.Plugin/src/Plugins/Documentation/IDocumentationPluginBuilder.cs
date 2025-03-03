@@ -1,3 +1,4 @@
+using Asp.Versioning.ApiExplorer;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -11,6 +12,6 @@ namespace xSdk.Plugins.Documentation
 
         void ConfigureSwaggerUi(SwaggerUIOptions options);
 
-        void ConfigureApiDescriptions(Dictionary<string, OpenApiInfo> descriptions);
+        OpenApiInfo CreateApiInfo(ApiVersionDescription description);
     }
 }

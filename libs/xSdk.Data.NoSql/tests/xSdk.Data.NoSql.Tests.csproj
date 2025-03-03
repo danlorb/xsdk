@@ -11,6 +11,7 @@
         <PackageReference Include="AutoMapper"/>
         <PackageReference Include="Bogus" />
         <PackageReference Include="LiteDB" />
+        <PackageReference Include="TestContainers" />
         <PackageReference Include="Microsoft.NET.Test.Sdk"/>
         <PackageReference Include="xunit" />
         <PackageReference Include="xunit.runner.visualstudio"/>

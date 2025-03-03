@@ -13,7 +13,7 @@ namespace xSdk.Data
         private string _name;
         private IConnectionBuilder _connectionStringBuilder;
 
-        private object _syncObject = new object();
+        private readonly object _syncObject = new object();
 
         public Database()
         {

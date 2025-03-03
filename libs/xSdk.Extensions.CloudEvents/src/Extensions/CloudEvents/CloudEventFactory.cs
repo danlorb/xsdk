@@ -116,6 +116,10 @@ namespace xSdk.Extensions.CloudEvents
                 Time = DateTimeOffset.Now,
 
                 // The Event Name for the Model,
+                // e.g. de.aminoo.blueprint.plan to plan a Blueprint, or
+                // de.aminoo.download.gpack to download a GPack
+                // otherwise when e.g. a Blueprint is planed the Event
+                // returned is de.aminoo.blueprint.planed
                 Type = type.ToLower(),
 
                 // The Cateogry or Scope for the Cloudevent

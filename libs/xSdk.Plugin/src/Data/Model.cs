@@ -30,5 +30,8 @@ namespace xSdk.Data
             get => PrimaryKey.GetValue();
             set => PrimaryKey.SetValue(value);
         }
+
+        [JsonExtensionData]
+        public IDictionary<string, object> AdditionalData { get; set; }
     }
 }
