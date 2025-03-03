@@ -1,3 +1,9 @@
+## [1.0.0-next.9](https://git.x-breitschaft.de/global/xsdk/compare/v1.0.0-next.8...v1.0.0-next.9) (2025-03-03)
+
+### Features
+
+* update swashbuckl references ([d27bedc](https://git.x-breitschaft.de/global/xsdk/commit/d27bedcdfe27fd3ea27c7fed6b86feed7c6690dc))
+
 ## [1.0.0-next.8](https://git.x-breitschaft.de/global/xsdk/compare/v1.0.0-next.7...v1.0.0-next.8) (2025-03-03)
 
 ### Features
