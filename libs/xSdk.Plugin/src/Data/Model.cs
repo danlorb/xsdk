@@ -32,6 +32,6 @@ namespace xSdk.Data
         }
 
         [JsonExtensionData]
-        public IDictionary<string, object> AdditionalData { get; set; }
+        public IDictionary<string, object>? AdditionalData { get; set; }
     }
 }

@@ -1,3 +1,10 @@
+## [1.0.0-next.10](https://git.x-breitschaft.de/global/xsdk/compare/v1.0.0-next.9...v1.0.0-next.10) (2025-03-04)
+
+### Bug Fixes
+
+* assembly collector does not load all assemblies ([c3ade1c](https://git.x-breitschaft.de/global/xsdk/commit/c3ade1c722be6bc5c992494a98fa93da4917586f))
+* ignore validation for reference fields ([8363863](https://git.x-breitschaft.de/global/xsdk/commit/83638633f8367e0439bd2af01946596169e697a1))
+
 ## [1.0.0-next.9](https://git.x-breitschaft.de/global/xsdk/compare/v1.0.0-next.8...v1.0.0-next.9) (2025-03-03)
 
 ### Features

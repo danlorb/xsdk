@@ -19,7 +19,11 @@ namespace xSdk.Plugins.WebSecurity
             set => SetValue(Definitions.Cors.Name, value);
         }
 
-        [Variable(name: Definitions.Origins.Name, template: Definitions.Origins.Template, helpText: Definitions.Origins.HelpText, protect: true)]
+        [Variable(
+            name: Definitions.Origins.Name,
+            template: Definitions.Origins.Template,
+            helpText: Definitions.Origins.HelpText,
+            protect: true)]
         public string Origins
         {
             get => ReadValue<string>(Definitions.Origins.Name);

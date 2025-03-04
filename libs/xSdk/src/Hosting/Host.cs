@@ -1,6 +1,9 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
+using xSdk.Extensions.IO;
 using xSdk.Extensions.Plugin;
+using xSdk.Extensions.Variable;
 
 namespace xSdk.Hosting
 {
@@ -21,8 +24,22 @@ namespace xSdk.Hosting
             var builder = new HostBuilder()
                 .ConfigureHostConfiguration(HostConfigurationManager.LoadHostConfiguration)
                 .ConfigureAppConfiguration(HostConfigurationManager.LoadAppConfiguration)
-                .ConfigureServices(HostServicesManager.ConfigureHostServices)
-                .ConfigureServices(HostServicesManager.ConfigureHostServicesWithContext);
+                .ConfigureServices(services =>
+                {
+                    services
+                        .AddLogging(HostLoggingManager.ConfigureLogging)
+                        .AddFileServices()
+                        .AddPluginServices()
+                        .AddVariableServices();
+
+                        SlimHostInternal.Instance.PluginSystem
+                            .Invoke<PluginBase>(x => x.ConfigureServices(services));
+                })
+                .ConfigureServices((context, services) =>
+                {
+                    SlimHostInternal.Instance.PluginSystem
+                        .Invoke<HostPluginBase>(x => x.ConfigureServices(context, services));
+                });
 
             // Shutdown the logger
             AppDomain.CurrentDomain.ProcessExit += (sender, args) =>

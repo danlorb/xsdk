@@ -55,6 +55,7 @@ namespace xSdk.Plugins.WebApi
                 {
                     Logger.Debug("Configure Mvc");
                     _.InputFormatters.Add(new PlainTextFormatter());
+                    _.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
 
                     SlimHost.Instance.PluginSystem.Invoke<IWebApiPluginBuilder>(x => x.ConfigureMvc(_));
                 })                

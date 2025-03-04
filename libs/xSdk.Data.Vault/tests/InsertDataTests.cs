@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using xSdk.Data.Fakes;
+using xSdk.Data.Mocks;
 
 namespace xSdk.Data
 {

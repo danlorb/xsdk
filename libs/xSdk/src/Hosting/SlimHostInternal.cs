@@ -22,7 +22,7 @@ namespace xSdk.Hosting
         {
             if (host == null)
             {
-                LoggingHelpers.ResetLogger();
+                HostLoggingManager.ResetLogger();
 
                 var builder = SlimHostBuilder
                     .CreateBuilder<SlimHostInternal>()
@@ -51,10 +51,10 @@ namespace xSdk.Hosting
                 builder.ConfigureServices(services =>
                 {
                     services
-                        .AddLogging(LoggingHelpers.ConfigureSlimLogging)
-                        .AddSlimPluginServices()
-                        .AddSlimFileServices()
-                        .AddSlimVariableServices(config, false);
+                       .AddLogging(HostLoggingManager.ConfigureSlimLogging)
+                       .AddSlimPluginServices()
+                       .AddSlimFileServices()
+                       .AddSlimVariableServices(config, false);
                 });
 
                 // Now get the real instance of the host

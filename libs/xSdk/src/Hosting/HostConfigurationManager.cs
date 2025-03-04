@@ -21,7 +21,7 @@ namespace xSdk.Hosting
 
             builder.AddEnvironmentVariables(prefix: "DOTNET_");
             builder.AddEnvironmentVariables(prefix: "ASPNET_");
-            builder.AddEnvironmentVariables(prefix: $"{SlimHost.Instance.AppPrefix.ToUpperInvariant()}_");
+            builder.AddEnvironmentVariables(prefix: $"{SlimHostInternal.Instance.AppPrefix.ToUpperInvariant()}_");
         }
 
         internal static void LoadAppConfiguration(IConfigurationBuilder builder)
@@ -57,10 +57,6 @@ namespace xSdk.Hosting
             }
         }
 
-        internal static void LoadTestConfiguration(IConfigurationBuilder builder)
-        {
-            builder.SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.tests.json", true, true);
-        }
 
         private static void LoadConfigurationFile(IConfigurationBuilder builder, string? file, bool reloadOnChange = false)
         {
@@ -109,6 +105,11 @@ namespace xSdk.Hosting
                 logger.Trace("Success! Configuration file found.");
                 return configFile;
             }
+        }
+
+        internal static void LoadTestConfiguration(IConfigurationBuilder configBuilder)
+        {
+            configBuilder.SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.tests.json", true, true);
         }
     }
 }

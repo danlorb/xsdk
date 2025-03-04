@@ -1,12 +1,7 @@
 using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using xSdk.Data;
+using xSdk.Extensions.IO;
 using xSdk.Hosting;
 
 namespace xSdk.Shared
@@ -14,41 +9,38 @@ namespace xSdk.Shared
     internal static class AssemblyCollector
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static List<Assembly> assemblies;
 
         internal static List<Assembly> Collect()
         {
             Logger.Info("Collect loaded Assemblies");
 
-            var assemblies = new List<Assembly>();
-
-            var entryAssembly = Assembly.GetEntryAssembly();
-            if (entryAssembly != null)
+            if (assemblies == null || assemblies.Count == 0)
             {
-                Logger.Debug("Add Entry Assembly");
-                AddAssembly(assemblies, entryAssembly);
-            }
+                assemblies = new List<Assembly>();
 
-            Logger.Debug("Add xSdk Assembly");
-            AddAssembly(assemblies, typeof(TestHost).Assembly);
+                Logger.Debug("Add referencedAssemblies Assemblies");
+                AddReferencedAssemblies(assemblies);
 
-            Logger.Debug("Add xSdk.Data Assembly");
-            AddAssembly(assemblies, typeof(FakeGenerator).Assembly);
-
-            Logger.Debug("Add xSdk.Plugin Assembly");
-            AddAssembly(assemblies, typeof(SdkException).Assembly);
-
-            Logger.Debug("Add this Assembly");
-            AddAssembly(assemblies, typeof(AssemblyCollector).Assembly);
-
-            Logger.Debug("Add assemblies from loaded plugins");
-            var plugins = SlimHost.Instance.PluginSystem.GetPlugins();
-            foreach (var plugin in plugins)
-            {
-                var assembly = plugin.GetType().Assembly;
-                AddAssembly(assemblies, assembly);
+                Logger.Debug("Add assemblies from loaded plugins");
+                var plugins = SlimHost.Instance.PluginSystem.GetPlugins();
+                foreach (var plugin in plugins)
+                {
+                    var assembly = plugin.GetType().Assembly;
+                    AddAssembly(assemblies, assembly);
+                }
             }
 
             return assemblies;
+        }
+
+        private static void AddReferencedAssemblies(List<Assembly> assemblies)
+        {
+            var referencedAssemblies = LoadReferencedAssemblies();
+
+            referencedAssemblies
+                .ToList()
+                .ForEach(x => AddAssembly(assemblies, x));
         }
 
         private static void AddAssembly(List<Assembly> assemblies, Assembly assembly)
@@ -59,6 +51,60 @@ namespace xSdk.Shared
             {
                 assemblies.Add(assembly);
             }
+        }
+
+        private static IEnumerable<Assembly> LoadReferencedAssemblies()
+        {
+            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            var executingFolder = FileSystemHelper.GetExecutingFolder();
+            var assemblyFiles = new DirectoryInfo(executingFolder)
+                .EnumerateFiles("*.dll", SearchOption.TopDirectoryOnly)
+                .Where(x => !IsBlacklisted(x.Name));
+
+            return assemblyFiles
+                .Select(x => loadedAssemblies.FirstOrDefault(y => x.FullName == y.Location)!)
+                .Where(x => x != null)
+                .Distinct();
+        }
+
+        private static bool IsBlacklisted(string name)
+        {
+            var pattern = new string[]
+            {
+                "Asp",
+                "AspNetCore",
+                "AutoMapper",
+                "Bogus",
+                "CloudNative",
+                "FluentValidation",
+                "Google",
+                "Grpc",
+                "Handlebars",
+                "Hellang",
+                "LiteDB",
+                "MicroElements",
+                "Microsoft",
+                "MongoDB",
+                "NLog",
+                "NWebsec",
+                "Newtonsoft",
+                "OpenTelemetry",
+                "RestSharp",
+                "SemanticVersioning",
+                "Sewer56",
+                "Spectre",
+                "Swashbuckle",
+                "System",
+                "VaultSharp",
+                "Weikio",
+                "YamlDotNet",
+                "Zio",
+                "netcore",
+                "netstandard",
+            };
+
+            return pattern.Any(x => name.StartsWith(x));
         }
     }
 }

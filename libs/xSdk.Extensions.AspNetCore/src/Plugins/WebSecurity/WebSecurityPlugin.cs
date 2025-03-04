@@ -159,12 +159,12 @@ namespace xSdk.Plugins.WebSecurity
             IEnumerable<string> additionalOrigins = new List<string>();
             if (!string.IsNullOrEmpty(securitySetup.Origins))
             {
-                var splittedOrigins = securitySetup.Origins.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                var splittedOrigins = securitySetup.Origins
+                    .Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                 additionalOrigins = new List<string>(splittedOrigins);
             }
 
             IEnumerable<string> origins = new List<string>();
-
             if (additionalOrigins.Any())
                 origins = origins.Concat(additionalOrigins);
 
