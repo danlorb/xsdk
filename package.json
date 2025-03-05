@@ -1,6 +1,6 @@
 {
   "name": "@global/xsdk",
-  "version": "1.0.0-next.11",
+  "version": "1.0.0-next.12",
   "description": "xbash is a bash function library for commonly used operations",
   "repository": {
     "type": "git",

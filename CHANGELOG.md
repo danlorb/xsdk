@@ -1,3 +1,9 @@
+## [1.0.0-next.12](https://git.x-breitschaft.de/global/xsdk/compare/v1.0.0-next.11...v1.0.0-next.12) (2025-03-05)
+
+### Bug Fixes
+
+* new way to search for calling controller ([7966edf](https://git.x-breitschaft.de/global/xsdk/commit/7966edf86e658c16ec3d43c6fea3654d68438dae))
+
 ## [1.0.0-next.11](https://git.x-breitschaft.de/global/xsdk/compare/v1.0.0-next.10...v1.0.0-next.11) (2025-03-05)
 
 ### Features

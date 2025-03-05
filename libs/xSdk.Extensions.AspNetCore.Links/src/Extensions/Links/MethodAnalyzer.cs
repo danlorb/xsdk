@@ -1,23 +1,18 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Routing;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace xSdk.Extensions.Links
 {
     internal static class MethodAnalyzer
     {
-        internal static List<MethodDescription> Analyze()
+        internal static List<MethodDescription> Analyze(HttpContext? context)
         {
             var descriptions = new List<MethodDescription>();
 
-            var classType = SearchCallingController();
+            var classType = SearchCallingController(context);
             if (classType != null)
             {
                 var methods = classType.GetMethods();
@@ -60,19 +55,28 @@ namespace xSdk.Extensions.Links
         }
 
 
-        private static Type? SearchCallingController()
+        private static TypeInfo? SearchCallingController(HttpContext? context)
         {
-            var stackTrace = new StackTrace();
-            foreach (var frame in stackTrace.GetFrames())
+            if (context != null)
             {
-                var method = frame.GetMethod();
-                if (method != null)
+                var endpoint = context.GetEndpoint();
+                if (endpoint != null)
                 {
-                    var type = method.ReflectedType;
-                    var attr = type.GetCustomAttribute<ApiControllerAttribute>();
-                    if(attr != null)
-                    {
-                        return type;
+                    var requestDelegate = endpoint.RequestDelegate;
+                    if(requestDelegate != null) {
+                        var target = requestDelegate.Target;
+                        if (target != null)
+                        {
+                            var controllerProperty = target.GetType().GetField("controller");
+                            if(controllerProperty != null)
+                            {
+                                var controller = controllerProperty.GetValue(target) as ControllerActionDescriptor;
+                                if (controller != null)
+                                {
+                                    return controller.ControllerTypeInfo;                                    
+                                }
+                            }                            
+                        }
                     }
                 }
             }

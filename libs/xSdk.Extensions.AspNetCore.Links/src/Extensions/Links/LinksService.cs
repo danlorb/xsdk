@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using xSdk.Data;
 
 namespace xSdk.Extensions.Links
 {
-    internal sealed partial class LinksService(LinksOptions options, IHttpContextAccessor context, ILogger<LinksService> logger) : ILinksService
+    internal sealed partial class LinksService(LinksOptions options, IHttpContextAccessor context, IServiceProvider provider, ILogger<LinksService> logger) : ILinksService
     {
         public Task AddLinksAsync<TModel>(IEnumerable<TModel> model, CancellationToken cancellationToken = default)
             where TModel : class, IModel
@@ -28,8 +31,7 @@ namespace xSdk.Extensions.Links
         private void AddLinksInternal<TModel>(TModel model)
             where TModel : class, IModel
         {
-            var descriptions = MethodAnalyzer.Analyze();
-
+            var descriptions = MethodAnalyzer.Analyze(context.HttpContext);
             var links = new Dictionary<string, IHateoasItem>();
 
             foreach(var description in descriptions)
