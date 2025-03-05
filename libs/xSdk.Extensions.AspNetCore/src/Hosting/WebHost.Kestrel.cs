@@ -15,6 +15,7 @@ namespace xSdk.Hosting
         private static void ConfigureKestrel(KestrelServerOptions options)
         {
             var webSetup = options.ApplicationServices.GetRequiredService<IVariableService>().GetSetup<WebHostSetup>();
+            var certAvailable = false;
 
             var httpPort = webSetup.Http;
             var grpcPort = webSetup.Grpc;
@@ -24,6 +25,7 @@ namespace xSdk.Hosting
 
             if (TryLoadCertificateIfHttpsIsEnabled(webSetup, out X509Certificate2 cert))
             {
+                certAvailable = true;
                 httpPort = webSetup.Https;
 
                 options.ConfigureHttpsDefaults(_ =>
@@ -50,14 +52,20 @@ namespace xSdk.Hosting
                 throw new SdkException($"Http Port must be different to gRpc Port");
             }
 
+            var protocols = HttpProtocols.Http1;
+            if (certAvailable)
+            {
+                protocols = HttpProtocols.Http1AndHttp2;
+            }
+
             if (httpPort > 1024 || webSetup.AllowSystemPorts)
             {
                 if (httpPort > 0)
                 {
                     if (string.Compare(webSetup.Bind, "localhost", true) == 0) // DevSkim: ignore DS162092
-                        options.ListenLocalhost(httpPort, setup => setup.Protocols = HttpProtocols.Http1AndHttp2);
+                        options.ListenLocalhost(httpPort, setup => setup.Protocols = protocols);
                     else
-                        options.ListenAnyIP(httpPort, setup => setup.Protocols = HttpProtocols.Http1AndHttp2);
+                        options.ListenAnyIP(httpPort, setup => setup.Protocols = protocols);
                 }
                 else
                 {
@@ -69,10 +77,17 @@ namespace xSdk.Hosting
             {
                 if (grpcPort > 0)
                 {
-                    if (string.Compare(webSetup.Bind, "localhost", true) == 0) // DevSkim: ignore DS162092
-                        options.ListenLocalhost(grpcPort, setup => setup.Protocols = HttpProtocols.Http2);
+                    if (certAvailable)
+                    {
+                        if (string.Compare(webSetup.Bind, "localhost", true) == 0) // DevSkim: ignore DS162092
+                            options.ListenLocalhost(grpcPort, setup => setup.Protocols = HttpProtocols.Http2);
+                        else
+                            options.ListenAnyIP(grpcPort, setup => setup.Protocols = HttpProtocols.Http2);
+                    }
                     else
-                        options.ListenAnyIP(grpcPort, setup => setup.Protocols = HttpProtocols.Http2);
+                    {
+                        Logger.Error("Https configuration is needed for gRpc");
+                    }
                 }
                 else
                 {

@@ -7,19 +7,6 @@ namespace xSdk.Plugins.WebSecurity
     public sealed class WebSecuritySetup : Setup, IWebSecuritySetup
     {
         [Variable(
-            name: Definitions.Cors.Name,
-            template: Definitions.Cors.Template,
-            helpText: Definitions.Cors.HelpText,
-            defaultValue: Definitions.Cors.DefaultValue,
-            protect: true
-        )]
-        public bool IsCorsEnabled
-        {
-            get => ReadValue<bool>(Definitions.Cors.Name);
-            set => SetValue(Definitions.Cors.Name, value);
-        }
-
-        [Variable(
             name: Definitions.Origins.Name,
             template: Definitions.Origins.Template,
             helpText: Definitions.Origins.HelpText,
@@ -32,14 +19,6 @@ namespace xSdk.Plugins.WebSecurity
 
         public static class Definitions
         {
-            public static class Cors
-            {
-                public const string Name = "cors";
-                public const string Template = "--cors";
-                public const string HelpText = "Enables cors for the web server";
-                public const bool DefaultValue = false;
-            }
-
             public static class Origins
             {
                 public const string Name = "origins";

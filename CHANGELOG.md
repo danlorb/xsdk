@@ -1,3 +1,14 @@
+## [1.0.0-next.11](https://git.x-breitschaft.de/global/xsdk/compare/v1.0.0-next.10...v1.0.0-next.11) (2025-03-05)
+
+### Features
+
+* search dynamic for calling controller to create links ([f9d09fe](https://git.x-breitschaft.de/global/xsdk/commit/f9d09fecc848ae061445efa908ad71dfd72a6be2))
+
+### Bug Fixes
+
+* disable http2 if no cert is given ([797fe3f](https://git.x-breitschaft.de/global/xsdk/commit/797fe3f1d0ac56f71bb9065722bdb1265ef59ffc))
+* remove enabled flag for cors configuration ([0f9bb39](https://git.x-breitschaft.de/global/xsdk/commit/0f9bb390a7bd785492cbb374f9cad8bfeb22aa6b))
+
 ## [1.0.0-next.10](https://git.x-breitschaft.de/global/xsdk/compare/v1.0.0-next.9...v1.0.0-next.10) (2025-03-04)
 
 ### Bug Fixes

@@ -27,9 +27,12 @@ namespace xSdk.Hosting
                     var envSetup = SlimHost.Instance.VariableSystem.GetSetup<EnvironmentSetup>();
                     var stage = envSetup.Stage;
 
+                    var contentRoot = GetContentRoot(envSetup);
                     webHostBuilder
                         // Set the Content Root
-                        .UseContentRoot(GetContentRoot(envSetup))
+                        .UseContentRoot(contentRoot)
+                        .UseWebRoot(contentRoot)
+                        
                         // Set the Environment
                         .UseEnvironment(stage.ToString())
                         // Enable detailed Errors if in Development Mode

@@ -7,11 +7,28 @@ namespace xSdk.Extensions.Links
 {
     internal sealed partial class LinksService(LinksOptions options, IHttpContextAccessor context, ILogger<LinksService> logger) : ILinksService
     {
-        public Task AddLinksAsync(IModel model, CancellationToken cancellationToken = default)
+        public Task AddLinksAsync<TModel>(IEnumerable<TModel> model, CancellationToken cancellationToken = default)
+            where TModel : class, IModel
         {
-            var caller = new StackTrace().GetFrame(3).GetMethod();
+            foreach(var item in model)
+            {
+                AddLinksInternal(item);
+            }
 
-            var descriptions = MethodAnalyzer.Analyze(caller);
+            return Task.CompletedTask;
+        }
+
+        public Task AddLinksAsync<TModel>(TModel model, CancellationToken cancellationToken = default)
+            where TModel : class, IModel
+        {
+            AddLinksInternal(model);
+            return Task.CompletedTask;
+        }
+
+        private void AddLinksInternal<TModel>(TModel model)
+            where TModel : class, IModel
+        {
+            var descriptions = MethodAnalyzer.Analyze();
 
             var links = new Dictionary<string, IHateoasItem>();
 
@@ -32,8 +49,6 @@ namespace xSdk.Extensions.Links
             }
 
             SaveLinks(model, links);
-
-            return Task.CompletedTask;
         }        
 
         private RoutedLink? SearchPolicyLink(IModel model, MethodDescription description, HttpContext? context)

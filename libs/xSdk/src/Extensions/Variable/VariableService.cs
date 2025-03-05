@@ -1,8 +1,7 @@
+using Microsoft.Extensions.Configuration;
+using NLog;
 using System.Collections;
 using System.Collections.Concurrent;
-using Microsoft.Extensions.Configuration;
-using xSdk.Extensions.Commands;
-using xSdk.Hosting;
 using xSdk.Shared;
 
 namespace xSdk.Extensions.Variable
@@ -10,6 +9,8 @@ namespace xSdk.Extensions.Variable
     internal partial class VariableService : IVariableService
     {
         private readonly IConfiguration? _config;
+
+        private Logger logger = LogManager.GetCurrentClassLogger();
 
         public VariableService(IConfiguration? config)
         {
@@ -29,6 +30,10 @@ namespace xSdk.Extensions.Variable
                     if (TryReadVariableValue<object>(variable.Name, out object value))
                     {
                         result.AddOrNew(variable.Name, value);
+                    }
+                    else
+                    {
+                        logger.Warn("Variable Value '{0}' not found", variable.Name);
                     }
                 }
                 catch

@@ -4,9 +4,10 @@
             "commandName": "Project",
             "environmentVariables": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "WEBAPI__WEBSECURITY__CORS": "true",
-                "WEBAPI__AUTH_APIKEY__REALM": "Gateway Realm",                
-                "WEBAPI__API_DOCU__WITH_VARIABLE_DOCUMENTATION": "true"
+                "WEBAPI__WEBSECURITY__ORIGINS": "http://localhost:4200",
+                "WEBAPI__CONTENTROOT": "www",
+                "WEBAPI__AUTH_APIKEY__REALM": "Gateway Realm",
+                "WEBAPI__API_DOCU__WITH_VARIABLE_DOCUMENTATION": "true",                
             },
         },
         "WSL : Ubuntu": {

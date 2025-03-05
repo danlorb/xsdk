@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
+using NLog;
 using xSdk.Extensions.Variable;
 using xSdk.Hosting;
 
@@ -13,9 +14,11 @@ namespace xSdk.Plugins.WebSecurity
         public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
         {
             var securitySetup = SlimHost.Instance.VariableSystem.GetSetup<WebSecuritySetup>();
+            var isCorsEnabled = securitySetup != null && !string.IsNullOrEmpty(securitySetup.Origins);
 
-            if (securitySetup.IsCorsEnabled)
+            if (isCorsEnabled)
             {
+                Logger.Info("Cors is enabled. Configure further security options");
                 services.AddCors(cors =>
                     cors.AddDefaultPolicy(policy =>
                         policy
@@ -39,7 +42,7 @@ namespace xSdk.Plugins.WebSecurity
         public override void Configure(WebHostBuilderContext context, IApplicationBuilder app)
         {
             var securitySetup = SlimHost.Instance.VariableSystem.GetSetup<WebSecuritySetup>();
-            var enableCors = securitySetup.IsCorsEnabled;
+            var isCorsEnabled = securitySetup != null && !string.IsNullOrEmpty(securitySetup.Origins);
 
             PreBuild(app);
 
@@ -56,22 +59,24 @@ namespace xSdk.Plugins.WebSecurity
 
             app.UseStaticFiles();
 
-            if (enableCors)
+            if (isCorsEnabled)
                 app.UseCors();
 
             PostBuild(app);
         }
 
-        private static void PreBuild(IApplicationBuilder app)
+        private void PreBuild(IApplicationBuilder app)
         {
+            Logger.Debug("Configure Forwarded Headers");
             var fordwardedHeaderOptions = new ForwardedHeadersOptions { ForwardedHeaders = ForwardedHeaders.All };
             fordwardedHeaderOptions.KnownNetworks.Clear();
             fordwardedHeaderOptions.KnownProxies.Clear();
             app.UseForwardedHeaders(fordwardedHeaderOptions);
         }
 
-        private static void Build(IApplicationBuilder app)
+        private void Build(IApplicationBuilder app)
         {
+            Logger.Debug("Configure HSTS");
             app.UseHsts()
                 .UseReferrerPolicy(_ =>
                 {
@@ -83,6 +88,7 @@ namespace xSdk.Plugins.WebSecurity
         {
             var origins = GetOrigins();
 
+            Logger.Debug("Configure Security Headers");
             app.UseXXssProtection(options => options.EnabledWithBlockMode());
             app.UseXContentTypeOptions();
 
