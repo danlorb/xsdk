@@ -1,3 +1,9 @@
+## [1.0.0-next.13](https://git.x-breitschaft.de/global/xsdk/compare/v1.0.0-next.12...v1.0.0-next.13) (2025-03-14)
+
+### Features
+
+* load all referenced assemblies in found assemblies ([5db8ab0](https://git.x-breitschaft.de/global/xsdk/commit/5db8ab05d74c0774adb8f27a1eed2ef48219cefc))
+
 ## [1.0.0-next.12](https://git.x-breitschaft.de/global/xsdk/compare/v1.0.0-next.11...v1.0.0-next.12) (2025-03-05)
 
 ### Bug Fixes

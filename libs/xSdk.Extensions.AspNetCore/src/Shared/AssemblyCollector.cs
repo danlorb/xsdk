@@ -1,6 +1,5 @@
 using NLog;
 using System.Reflection;
-using xSdk.Data;
 using xSdk.Extensions.IO;
 using xSdk.Hosting;
 
@@ -19,7 +18,7 @@ namespace xSdk.Shared
             {
                 assemblies = new List<Assembly>();
 
-                Logger.Debug("Add referencedAssemblies Assemblies");
+                Logger.Debug("Add referenced Assemblies Assemblies");
                 AddReferencedAssemblies(assemblies);
 
                 Logger.Debug("Add assemblies from loaded plugins");
@@ -28,6 +27,29 @@ namespace xSdk.Shared
                 {
                     var assembly = plugin.GetType().Assembly;
                     AddAssembly(assemblies, assembly);
+                }
+
+                Logger.Debug("Add referenced Assemblies for found Assemblies");
+                foreach(var assembly in assemblies)
+                {
+                    var referencedAssemblyNames = assembly.GetReferencedAssemblies();
+                    var filteredReferencedAssemblyNames = referencedAssemblyNames
+                        .Where(x => !IsBlacklisted(x.Name))
+                        .Where(x => !assemblies.Any(y => y.FullName == x.FullName));
+
+                    if (filteredReferencedAssemblyNames.Any())
+                    {
+                        try
+                        {
+                            filteredReferencedAssemblyNames
+                                .ToList()
+                                .ForEach(x => AddAssembly(assemblies, Assembly.Load(x)));
+                        }
+                        catch
+                        {
+                            // nothing to tell
+                        }
+                    }                    
                 }
             }
 
@@ -54,21 +76,22 @@ namespace xSdk.Shared
         }
 
         private static IEnumerable<Assembly> LoadReferencedAssemblies()
-        {
-            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+            => LoadReferencedAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
+        private static IEnumerable<Assembly> LoadReferencedAssemblies(Assembly[] assemblies)
+        {
             var executingFolder = FileSystemHelper.GetExecutingFolder();
             var assemblyFiles = new DirectoryInfo(executingFolder)
                 .EnumerateFiles("*.dll", SearchOption.TopDirectoryOnly)
                 .Where(x => !IsBlacklisted(x.Name));
 
             return assemblyFiles
-                .Select(x => loadedAssemblies.FirstOrDefault(y => x.FullName == y.Location)!)
+                .Select(x => assemblies.FirstOrDefault(y => x.FullName == y.Location)!)
                 .Where(x => x != null)
                 .Distinct();
         }
 
-        private static bool IsBlacklisted(string name)
+        private static bool IsBlacklisted(string? name)
         {
             var pattern = new string[]
             {
@@ -104,7 +127,12 @@ namespace xSdk.Shared
                 "netstandard",
             };
 
-            return pattern.Any(x => name.StartsWith(x));
+            if (!string.IsNullOrEmpty(name))
+            {
+                return pattern.Any(x => name.StartsWith(x));
+            }
+
+            return false;
         }
     }
 }
