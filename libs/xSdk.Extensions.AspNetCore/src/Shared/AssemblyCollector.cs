@@ -18,8 +18,8 @@ namespace xSdk.Shared
             {
                 assemblies = new List<Assembly>();
 
-                Logger.Debug("Add referenced Assemblies Assemblies");
-                AddReferencedAssemblies(assemblies);
+                Logger.Debug("Add assemblies from executing folder");
+                AddAssembliesFromExecutingFolder(assemblies);
 
                 Logger.Debug("Add assemblies from loaded plugins");
                 var plugins = SlimHost.Instance.PluginSystem.GetPlugins();
@@ -28,41 +28,9 @@ namespace xSdk.Shared
                     var assembly = plugin.GetType().Assembly;
                     AddAssembly(assemblies, assembly);
                 }
-
-                Logger.Debug("Add referenced Assemblies for found Assemblies");
-                foreach(var assembly in assemblies)
-                {
-                    var referencedAssemblyNames = assembly.GetReferencedAssemblies();
-                    var filteredReferencedAssemblyNames = referencedAssemblyNames
-                        .Where(x => !IsBlacklisted(x.Name))
-                        .Where(x => !assemblies.Any(y => y.FullName == x.FullName));
-
-                    if (filteredReferencedAssemblyNames.Any())
-                    {
-                        try
-                        {
-                            filteredReferencedAssemblyNames
-                                .ToList()
-                                .ForEach(x => AddAssembly(assemblies, Assembly.Load(x)));
-                        }
-                        catch
-                        {
-                            // nothing to tell
-                        }
-                    }                    
-                }
             }
 
             return assemblies;
-        }
-
-        private static void AddReferencedAssemblies(List<Assembly> assemblies)
-        {
-            var referencedAssemblies = LoadReferencedAssemblies();
-
-            referencedAssemblies
-                .ToList()
-                .ForEach(x => AddAssembly(assemblies, x));
         }
 
         private static void AddAssembly(List<Assembly> assemblies, Assembly assembly)
@@ -72,23 +40,48 @@ namespace xSdk.Shared
             if (!string.IsNullOrEmpty(name) && !assemblyNames.Contains(name))
             {
                 assemblies.Add(assembly);
+
+                Logger.Debug("Add referenced Assemblies for found Assemblies");
+                AddReferencedAssemblies(assemblies, assembly);
             }
         }
 
-        private static IEnumerable<Assembly> LoadReferencedAssemblies()
-            => LoadReferencedAssemblies(AppDomain.CurrentDomain.GetAssemblies());
-
-        private static IEnumerable<Assembly> LoadReferencedAssemblies(Assembly[] assemblies)
+        private static void AddReferencedAssemblies(List<Assembly> assemblies, Assembly assembly)
         {
+            var referencedAssemblyNames = assembly.GetReferencedAssemblies();
+            var filteredReferencedAssemblyNames = referencedAssemblyNames
+                .Where(x => !IsBlacklisted(x.Name))
+                .Where(x => !assemblies.Any(y => y.FullName == x.FullName));
+
+            if (filteredReferencedAssemblyNames.Any())
+            {
+                try
+                {
+                    filteredReferencedAssemblyNames
+                        .ToList()
+                        .ForEach(x => AddAssembly(assemblies, Assembly.Load(x)));
+                }
+                catch
+                {
+                    // nothing to tell
+                }
+            }
+        }
+
+        private static void AddAssembliesFromExecutingFolder(List<Assembly> assemblies)
+        {
+            var appDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies();
             var executingFolder = FileSystemHelper.GetExecutingFolder();
             var assemblyFiles = new DirectoryInfo(executingFolder)
                 .EnumerateFiles("*.dll", SearchOption.TopDirectoryOnly)
                 .Where(x => !IsBlacklisted(x.Name));
 
-            return assemblyFiles
-                .Select(x => assemblies.FirstOrDefault(y => x.FullName == y.Location)!)
+            assemblyFiles
+                .Select(x => appDomainAssemblies.FirstOrDefault(y => x.FullName == y.Location)!)
                 .Where(x => x != null)
-                .Distinct();
+                .Distinct()
+                .ToList()
+                .ForEach(x => AddAssembly(assemblies, x));
         }
 
         private static bool IsBlacklisted(string? name)

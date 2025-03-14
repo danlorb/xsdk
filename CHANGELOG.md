@@ -1,3 +1,9 @@
+## [1.0.0-next.14](https://git.x-breitschaft.de/global/xsdk/compare/v1.0.0-next.13...v1.0.0-next.14) (2025-03-14)
+
+### Bug Fixes
+
+* fix assembly collector to get loaded assemblies ([e36d29c](https://git.x-breitschaft.de/global/xsdk/commit/e36d29c51265d84d0389c6dbde395af96bc07816))
+
 ## [1.0.0-next.13](https://git.x-breitschaft.de/global/xsdk/compare/v1.0.0-next.12...v1.0.0-next.13) (2025-03-14)
 
 ### Features
